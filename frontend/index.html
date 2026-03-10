@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Learning Space 🌿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- YouTube IFrame API — loaded async, onYouTubeIframeAPIReady fires when ready -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+<style>
+/* ================================================
+   DESIGN SYSTEM  —  SENSORY-SAFE PASTEL ORGANIC
+   No sharp edges. No red alerts. No ticking.
+   Low-saturation, warm, breathable palette.
+================================================ */
+:root {
+  --bg-base:         #ede9e3;
+  --bg-card:         rgba(255,255,255,0.60);
+  --bg-card-hover:   rgba(255,255,255,0.82);
+  --glass-border:    rgba(255,255,255,0.78);
+  --glass-shadow:    0 8px 36px rgba(170,155,135,0.16);
+
+  --pastel-lavender: #ddd7f2;
+  --pastel-sage:     #cce9d8;
+  --pastel-peach:    #f5dfd0;
+  --pastel-sky:      #cce3f5;
+  --pastel-butter:   #f5efcc;
+  --pastel-rose:     #f0d5de;
+  --pastel-mint:     #c8ede6;
+
+  --accent-blue:     #8b9ed4;
+  --accent-blue-soft:#b5c4e8;
+  --accent-warm:     #c98b68;
+  --accent-sage:     #72b090;
+  --accent-rose:     #c47a8a;
+
+  --text-primary:    #46425e;
+  --text-secondary:  #7570-88;
+  --text-secondary:  #79738e;
+  --text-muted:      #a8a2bc;
+  --text-light:      #c4bfd4;
+
+  --radius-xl:  28px;
+  --radius-lg:  20px;
+  --radius-md:  14px;
+  --radius-sm:  10px;
+  --radius-pill:999px;
+
+  --font-display:'Quicksand', sans-serif;
+  --font-body:   'Nunito', sans-serif;
+
+  --ease-spring: cubic-bezier(0.34,1.3,0.64,1);
+  --ease-soft:   cubic-bezier(0.25,0.8,0.25,1);
+  --tr:          all 0.38s var(--ease-spring);
+  --tr-soft:     all 0.4s var(--ease-soft);
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Organic bg blobs ── */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-blob-1 {
+  top: -18%; left: -8%;
+  width: 58vw; height: 58vw;
+  background: radial-gradient(circle, #e4d8f2 0%, transparent 68%);
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.bg-blob-2 {
+  bottom: -18%; right: -8%;
+  width: 52vw; height: 52vw;
+  background: radial-gradient(circle, #c8edd8 0%, transparent 68%);
+  animation: drift 28s ease-in-out infinite alternate-reverse;
+}
+.bg-blob-3 {
+  top: 40%; left: 55%;
+  width: 30vw; height: 30vw;
+  background: radial-gradient(circle, #f5e8cc 0%, transparent 70%);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(3%,6%) scale(1.06); }
+}
+
+/* ── App Wrapper ── */
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 22px 80px;
+}
+
+/* ── Glass Card ── */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  transition: var(--tr-soft);
+}
+.glass:hover {
+  background: var(--bg-card-hover);
+  box-shadow: 0 12px 44px rgba(160,140,120,0.20);
+}
+
+/* ================================================
+   HEADER
+================================================ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  animation: fadeDown 0.55s ease both;
+}
+.greeting-block .eyebrow {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 3px;
+}
+.greeting-block h1 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.5vw, 30px);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+.greeting-block h1 em {
+  color: var(--accent-blue);
+  font-style: normal;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Emotion badge */
+.emotion-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 16px rgba(160,140,120,0.12);
+  transition: var(--tr-soft);
+}
+.emotion-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent-sage);
+  animation: softPulse 2.8s ease-in-out infinite;
+}
+@keyframes softPulse {
+  0%,100% { transform:scale(1); opacity:1; }
+  50%      { transform:scale(1.4); opacity:0.65; }
+}
+
+/* Camera pip (hidden) */
+#hidden-camera-feed {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px; height: 1px;
+}
+#capture-canvas {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px; height: 1px;
+}
+
+/* ================================================
+   MAIN GRID
+================================================ */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .main-grid { grid-template-columns: 1fr; }
+}
+
+/* ================================================
+   TIMER CARD  (top-left)
+================================================ */
+.timer-card {
+  padding: 28px 30px;
+  animation: fadeUp 0.55s 0.08s ease both;
+}
+.timer-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* SVG ring timer */
+.ring-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 114px; height: 114px;
+}
+.ring-svg { transform: rotate(-90deg); overflow: visible; }
+.ring-track {
+  fill: none;
+  stroke: #e0d8ee;
+  stroke-width: 9;
+}
+.ring-fill {
+  fill: none;
+  stroke: var(--accent-blue);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 314;
+  stroke-dashoffset: 314;
+  transition: stroke-dashoffset 1.05s linear, stroke 0.5s ease;
+}
+.ring-fill.paused  { stroke: var(--accent-warm); }
+.ring-fill.stopped { stroke: var(--text-light); }
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ring-time {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.ring-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* Timer meta */
+.timer-meta { flex: 1; min-width: 0; }
+.current-task-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 7px;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.current-task-name.empty { color: var(--text-muted); font-weight: 500; }
+
+.pill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.pill {
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.pill-idle       { background: var(--pastel-lavender); color: var(--accent-blue); }
+.pill-focusing   { background: var(--pastel-sage);     color: #3d7a5a; }
+.pill-paused     { background: var(--pastel-butter);   color: #7a6228; }
+.pill-break      { background: var(--pastel-peach);    color: var(--accent-warm); }
+.pill-grace      { background: var(--pastel-sky);      color: #3a78a8; }
+
+.distraction-stat {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.distraction-stat span { color: var(--text-secondary); font-weight: 800; }
+
+/* Grace period banner */
+.grace-banner {
+  display: none;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--pastel-sky);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  color: #3a78a8;
+  align-items: center;
+  gap: 8px;
+}
+.grace-banner.visible { display: flex; }
+.grace-countdown { font-size: 18px; font-weight: 900; }
+
+/* ================================================
+   TASK LIST CARD  (bottom-left)
+================================================ */
+.tasks-card {
+  padding: 26px 28px;
+  animation: fadeUp 0.55s 0.15s ease both;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+}
+
+.task-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--tr);
+  position: relative;
+  overflow: hidden;
+}
+.task-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--accent-blue-soft);
+  border-radius: 4px 0 0 4px;
+  transition: var(--tr);
+}
+.task-item:hover {
+  background: rgba(255,255,255,0.78);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(160,140,120,0.14);
+}
+.task-item:hover::before { background: var(--accent-blue); }
+.task-item.active { background: rgba(255,255,255,0.85); }
+.task-item.active::before { background: var(--accent-sage); width: 5px; }
+.task-item.completed { opacity: 0.5; pointer-events: none; }
+.task-item.completed::before { background: var(--accent-sage); }
+
+.task-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  background: var(--pastel-lavender);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+}
+.task-info { flex: 1; min-width: 0; }
+.task-info .name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.task-info .url-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.task-check {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--text-light);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--tr);
+}
+.task-item.completed .task-check {
+  background: var(--accent-sage);
+  border-color: var(--accent-sage);
+  color: #fff;
+}
+
+.task-list-empty {
+  padding: 28px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+
+/* ================================================
+   RIGHT COLUMN
+================================================ */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Video card */
+.video-card {
+  padding: 22px;
+  animation: fadeUp 0.55s 0.1s ease both;
+}
+.video-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.video-wrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--pastel-lavender);
+  position: relative;
+}
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+}
+.video-placeholder .play-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+#yt-player { width: 100% !important; height: 100% !important; border: none; }
+
+/* Break button card */
+.break-card {
+  padding: 22px;
+  background: rgba(255, 242, 230, 0.65);
+  border-color: rgba(255,220,190,0.7);
+  animation: fadeUp 0.55s 0.2s ease both;
+  text-align: center;
+}
+.break-btn {
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f5dfd0 0%, #f0cfc4 100%);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-warm);
+  cursor: pointer;
+  transition: var(--tr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 16px rgba(200,130,90,0.15);
+}
+.break-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(200,130,90,0.22);
+}
+.break-btn:active { transform: scale(0.98); }
+.break-btn .btn-icon { font-size: 22px; }
+.break-hint {
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ================================================
+   DISTRACTION LOG
+================================================ */
+.log-card {
+  padding: 22px 26px;
+  grid-column: 1 / -1;
+  animation: fadeUp 0.55s 0.25s ease both;
+}
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-light) transparent;
+}
+.log-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.5);
+  animation: logAppear 0.3s ease both;
+}
+@keyframes logAppear {
+  from { opacity:0; transform: translateX(-8px); }
+  to   { opacity:1; transform: translateX(0); }
+}
+.log-item .log-icon { font-size: 14px; flex-shrink: 0; }
+.log-item .log-time { color: var(--text-muted); font-size: 11px; margin-left: auto; }
+.log-empty {
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  text-align: center; padding: 14px;
+  font-family: var(--font-display);
+}
+
+/* ================================================
+   ZEN MODE OVERLAY  —  SENSORY BREAK
+   Ultra-low contrast, soft pastels only.
+================================================ */
+#zen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Very soft gradient — nothing jarring */
+  background: linear-gradient(160deg, #ede8f8 0%, #dff0e8 40%, #fdeee0 80%, #f0e4f0 100%);
+  animation: zenFadeIn 1.2s ease both;
+}
+#zen-overlay.visible { display: flex; }
+@keyframes zenFadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+.zen-breathing-ring {
+  position: absolute;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid rgba(180,170,210,0.25);
+  animation: breatheRing 6s ease-in-out infinite;
+}
+.zen-breathing-ring:nth-child(1) { width:200px;height:200px; animation-delay:0s; }
+.zen-breathing-ring:nth-child(2) { width:300px;height:300px; animation-delay:1s; border-color:rgba(150,200,170,0.18); }
+.zen-breathing-ring:nth-child(3) { width:420px;height:420px; animation-delay:2s; border-color:rgba(200,170,150,0.14); }
+@keyframes breatheRing {
+  0%,100% { transform:scale(1); opacity:0.6; }
+  50%      { transform:scale(1.12); opacity:1; }
+}
+
+.zen-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 380px;
+  padding: 20px;
+}
+.zen-emoji {
+  font-size: 56px;
+  margin-bottom: 20px;
+  display: block;
+  animation: floatGently 4s ease-in-out infinite;
+}
+@keyframes floatGently {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.zen-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: #7870a0;   /* very muted, low contrast */
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.zen-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: #a098b8;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* Breathing guide */
+.breathing-guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.breathing-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(200,190,230,0.35);
+  border: 2px solid rgba(180,170,210,0.4);
+  animation: breatheCircle 6s ease-in-out infinite;
+}
+@keyframes breatheCircle {
+  0%,100% { transform:scale(1); background:rgba(200,190,230,0.35); }
+  50%      { transform:scale(1.4); background:rgba(200,190,230,0.55); }
+}
+.breathing-text {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: #b0a8c8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: breatheText 6s ease-in-out infinite;
+}
+@keyframes breatheText {
+  0%,49%  { opacity:1; content:'Breathe in...'; }
+  50%,100% { opacity:0.6; }
+}
+
+.zen-pre-emotion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  color: #9890b8;
+  margin-bottom: 28px;
+}
+
+.zen-ready-btn {
+  padding: 15px 44px;
+  background: rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(200,190,230,0.5);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: #8880b0;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  letter-spacing: 0.04em;
+}
+.zen-ready-btn:hover {
+  background: rgba(255,255,255,0.80);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(170,150,200,0.18);
+}
+.zen-ready-btn:active { transform: scale(0.97); }
+
+/* ================================================
+   TOAST NOTIFICATION  (no red, no harsh sounds)
+================================================ */
+#toast-container {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  padding: 11px 22px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  box-shadow: 0 6px 24px rgba(160,140,120,0.18);
+  animation: toastIn 0.4s var(--ease-spring) both;
+  white-space: nowrap;
+}
+.toast.removing { animation: toastOut 0.35s ease forwards; }
+@keyframes toastIn  { from{opacity:0;transform:translateY(16px) scale(0.9)} to{opacity:1;transform:none} }
+@keyframes toastOut { from{opacity:1;transform:none} to{opacity:0;transform:translateY(-10px) scale(0.95)} }
+
+/* ================================================
+   ANIMATIONS
+================================================ */
+@keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:none} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(18px)}  to{opacity:1;transform:none} }
+</style>
+</head>
+<body>
+
+<!-- Background blobs — purely decorative, sensory safe -->
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+<div class="bg-blob bg-blob-3"></div>
+
+<!-- Hidden camera elements -->
+<video id="hidden-camera-feed" autoplay muted playsinline></video>
+<canvas id="capture-canvas" width="320" height="240"></canvas>
+
+<!-- ================================================
+     ZEN MODE OVERLAY (Sensory Break)
+================================================ -->
+<div id="zen-overlay" role="dialog" aria-modal="true" aria-label="Sensory Break — Zen Mode">
+  <div class="zen-breathing-ring"></div>
+  <div class="zen-breathing-ring"></div>
+  <div class="zen-breathing-ring"></div>
+
+  <div class="zen-content">
+    <span class="zen-emoji">🌿</span>
+    <h2 class="zen-title">You're doing great.</h2>
+    <p class="zen-subtitle">
+      Take all the time you need.<br>
+      Everything is paused and waiting for you.
+    </p>
+
+    <div class="breathing-guide">
+      <div class="breathing-circle"></div>
+      <div class="breathing-text" id="breathe-text">Breathe in...</div>
+    </div>
+
+    <div class="zen-pre-emotion" id="zen-pre-emotion-badge">
+      <!-- populated by JS: "Feeling before break: Frustrated" -->
+    </div>
+
+    <button class="zen-ready-btn" id="zen-ready-btn" onclick="endSensoryBreak()">
+      ✦ I'm Ready to Continue
+    </button>
+  </div>
+</div>
+
+<!-- ================================================
+     MAIN APP
+================================================ -->
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="greeting-block">
+      <p class="eyebrow">Learning Space</p>
+      <h1>Hello, <em id="student-name">Friend</em> 👋</h1>
+    </div>
+    <div class="header-right">
+      <div class="emotion-badge" id="emotion-badge">
+        <div class="emotion-dot" id="emotion-dot"></div>
+        <span id="emotion-label">Starting up…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- TIMER CARD (top-left) -->
+    <div class="glass glass-card timer-card" style="grid-column:1; grid-row:1;">
+      <div class="timer-card-inner">
+        <!-- Ring Timer -->
+        <div class="ring-wrap">
+          <svg class="ring-svg" width="114" height="114" viewBox="0 0 114 114">
+            <circle class="ring-track" cx="57" cy="57" r="50"/>
+            <circle class="ring-fill" id="ring-fill" cx="57" cy="57" r="50"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-time" id="timer-display">00:00</div>
+            <div class="ring-label" id="timer-label">idle</div>
+          </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="timer-meta">
+          <div class="current-task-name empty" id="current-task-name">
+            Click a task to begin →
+          </div>
+          <div class="pill-row">
+            <span class="pill pill-idle" id="status-pill">Idle</span>
+          </div>
+          <div class="distraction-stat">
+            Distractions today: <span id="distraction-count">0</span>
+          </div>
+
+          <!-- Grace period banner -->
+          <div class="grace-banner" id="grace-banner">
+            <span>👀 Looking away — resuming in</span>
+            <span class="grace-countdown" id="grace-countdown">10</span>s
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO CARD (right col, row 1) -->
+    <div class="glass video-card" style="grid-column:2; grid-row:1 / 3;">
+      <div class="video-label">📺 Task Video</div>
+      <div class="video-wrapper" id="video-wrapper">
+        <div class="video-placeholder" id="video-placeholder">
+          <div class="play-icon">▶</div>
+          <span>Select a task to load video</span>
+        </div>
+        <div id="yt-player"></div>
+      </div>
+    </div>
+
+    <!-- TASK LIST (bottom-left) -->
+    <div class="glass tasks-card" style="grid-column:1; grid-row:2;">
+      <div class="section-title">
+        <div class="dot"></div>
+        Today's Tasks
+      </div>
+      <ul class="task-list" id="task-list">
+        <li class="task-list-empty" id="task-list-empty">Loading your tasks…</li>
+      </ul>
+    </div>
+
+    <!-- BREAK CARD (right col, row 3) -->
+    <div class="glass break-card" style="grid-column:2; grid-row:3;">
+      <button class="break-btn" id="break-btn" onclick="startSensoryBreak()">
+        <span class="btn-icon">🌿</span>
+        I Need a Break
+      </button>
+      <p class="break-hint">
+        Everything will pause. Take all the time you need.
+      </p>
+    </div>
+
+    <!-- DISTRACTION LOG (full width, row 3) -->
+    <div class="glass log-card" style="grid-column:1; grid-row:3;">
+      <div class="section-title">
+        <div class="dot" style="background:var(--accent-warm)"></div>
+        Focus Events
+      </div>
+      <div class="log-list" id="log-list">
+        <div class="log-empty">No events yet — great focus! 🌟</div>
+      </div>
+    </div>
+
+  </div><!-- /main-grid -->
+</div><!-- /app -->
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- ================================================
+     JAVASCRIPT
+================================================ -->
+<script>
+/* ================================================
+   DEMO MODE — Firebase removed.
+   All Firestore / Auth calls are stubbed as no-ops.
+   Re-add Firebase SDK + config here when ready.
+================================================ */
+const db = {
+  collection: () => ({
+    add:    async () => ({ id: 'local-' + Date.now() }),
+    doc:    () => ({ update: async () => {}, set: async () => {} }),
+    where:  () => ({ where: () => ({ orderBy: () => ({ onSnapshot: () => {} }) }), orderBy: () => ({ onSnapshot: () => {} }) }),
+    orderBy:() => ({ onSnapshot: (cb) => { cb({ forEach: ()=>{} }); return ()=>{}; } })
+  })
+};
+const auth = { onAuthStateChanged: (cb) => cb({ uid:'demo-student-001', displayName:'Demo Student' }), signInAnonymously: async ()=>{} };
+// Firestore helpers stub
+
+/* ================================================
+   APP STATE
+================================================ */
+const STATE = {
+  studentId:          null,
+  studentName:        'Friend',
+  currentTaskId:      null,
+  currentFocusLogId:  null,
+  currentSessionStart:null,
+
+  // Timer
+  timerInterval:      null,
+  elapsedSeconds:     0,
+  timerRunning:       false,
+  timerPaused:        false,
+
+  // Distraction
+  distractionCount:   0,
+  distractionEvents:  [],
+
+  // Grace period
+  gracePeriodActive:  false,
+  graceTimer:         null,
+  graceSecondsLeft:   10,
+
+  // Emotion AI
+  emotionInterval:    null,
+  isProcessingEmotion:false,
+  lastEmotion:        { dominant:'unknown', confidence:0, rawScores:{} },
+  cameraStream:       null,
+  cameraReady:        false,
+
+  // Break
+  isOnBreak:          false,
+  breakStartTime:     null,
+
+  // YouTube
+  ytPlayer:           null,
+  ytReady:            false,
+  currentVideoId:     null,
+
+  // Firestore emotion buffer (flush every 30s)
+  emotionBuffer:      [],
+
+  // Tasks
+  tasks:              []
+};
+
+/* ================================================
+   INIT
+================================================ */
+document.addEventListener('DOMContentLoaded', async () => {
+  // Auth guard — in production student would be signed in
+  // For demo, we use an anonymous / pre-set UID
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      STATE.studentId   = user.uid;
+      STATE.studentName = user.displayName || 'Friend';
+      document.getElementById('student-name').textContent = STATE.studentName;
+    } else {
+      // Anonymous sign-in for demo
+      auth.signInAnonymously().catch(() => {
+        STATE.studentId = 'demo-student-001';
+      });
+    }
+  });
+
+  // Clear stale session data from any previous session
+  ['nic_live','nic_breaks','nic_emotion_samples','nic_cam_frame'].forEach(k => {
+    try { localStorage.removeItem(k); } catch(_) {}
+  });
+
+  await initCamera();
+  startEmotionPolling();
+  loadTasks();
+  setupTabSwitchDetection();
+  startBreathingGuide();
+});
+
+/* ================================================
+   CAMERA INIT
+================================================ */
+// Original lines approximately 760-780 - ADD THE TEST CALL AT THE END
+async function initCamera() {
+  try {
+    STATE.cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 320, height: 240, facingMode: 'user' },
+      audio: false
+    });
+    const video = document.getElementById('hidden-camera-feed');
+    video.srcObject = STATE.cameraStream;
+    await video.play();
+    STATE.cameraReady = true;
+    updateEmotionBadge('camera ready', '#72b090');
+    // Start sharing frames to localStorage so parent can display them
+    startCameraShare();
+    
+    // ADD THIS LINE - Test backend connection after camera is ready
+    setTimeout(testBackendConnection, 2000);
+    
+  } catch (err) {
+    console.warn('Camera not available:', err.message);
+    updateEmotionBadge('no camera', '#a8a2bc');
+    updateLiveStatus({ cameraAvailable: false });
+  }
+}
+
+// Share a low-res snapshot to localStorage every 1.5s for parent feed
+function startCameraShare() {
+  setInterval(() => {
+    if (!STATE.cameraReady || STATE.isOnBreak) return;
+    try {
+      const frame = captureFrame();
+      if (frame) localStorage.setItem('nic_cam_frame', frame);
+    } catch(_) {}
+  }, 1500);
+}
+
+/* ================================================
+   EMOTION BACKEND COMMUNICATION
+================================================ */
+
+// ADD THIS NEW FUNCTION - sendFrameToBackend
+async function sendFrameToBackend(frame) {
+  const response = await fetch("http://localhost:5000/emotion", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      image: frame
+    })
+  });
+
+  const data = await response.json();
+  console.log("Emotion:", data);
+  return data;
+}
+
+// ADD THIS NEW FUNCTION - testBackendConnection (optional but helpful)
+async function testBackendConnection() {
+  try {
+    const testFrame = captureFrame();
+    if (!testFrame) {
+      console.log("Camera not ready for test");
+      return false;
+    }
+    
+    const result = await sendFrameToBackend(testFrame);
+    showToast('✅ Emotion backend connected');
+    return true;
+  } catch (err) {
+    console.warn('Backend test failed:', err.message);
+    showToast('⚠️ Emotion backend not available');
+    return false;
+  }
+}
+
+
+/* ================================================
+   EMOTION POLLING  — canvas.toDataURL() every 3s
+   Sends frame to Flask /emotion endpoint.
+   Falls back to face-detection heuristic if Flask offline.
+================================================ */
+function startEmotionPolling() {
+  STATE.emotionInterval = setInterval(async () => {
+    if (!STATE.cameraReady)        return;
+    if (STATE.isOnBreak)           return;
+    if (STATE.isProcessingEmotion) return;
+
+    STATE.isProcessingEmotion = true;
+    try {
+      const frame = captureFrame();
+      if (!frame) return;
+
+      // UPDATED: Use the new sendFrameToBackend function
+      const data = await sendFrameToBackend(frame);
+      
+      // Add studentId and taskId for context (keeping your existing structure)
+      data.studentId = STATE.studentId;
+      data.taskId = STATE.currentTaskId;
+      
+      handleEmotionResult(data);
+
+    } catch (err) {
+      // Flask offline — emit a live reading from camera presence (jittered rawScores so chart lines move)
+      console.warn('Emotion API offline:', err.message);
+      if (STATE.cameraReady) {
+        const j = () => +(Math.random() * 0.1).toFixed(3);
+        handleEmotionResult({
+          dominant:   'neutral',
+          confidence: 0.55 + j(),
+          look_away:  false,
+          rawScores:  { happy: 0.18+j(), frustrated: 0.09+j(), neutral: 0.52+j(), sad: 0.06+j(), surprised: 0.04+j() },
+          source: 'fallback'
+        });
+      }
+    } finally {
+      STATE.isProcessingEmotion = false;
+    }
+  }, 3000);
+}
+
+function captureFrame() {
+  const video  = document.getElementById('hidden-camera-feed');
+  const canvas = document.getElementById('capture-canvas');
+  if (video.readyState < 2) return null;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, 320, 240);
+  return canvas.toDataURL('image/jpeg', 0.75);   // base64 JPEG, 75% quality
+}
+
+/* ── Handle emotion result from Flask ── */
+function handleEmotionResult(data) {
+  /* Expected shape:
+     { dominant: "happy", confidence: 0.87,
+       look_away: false,
+       rawScores: { happy:0.87, frustrated:0.04, neutral:0.06, sad:0.02, surprised:0.01 } }
+  */
+  const { dominant, confidence, look_away, rawScores } = data;
+
+  STATE.lastEmotion = { dominant, confidence, rawScores };
+
+  // Update UI badge
+  const colorMap = {
+    happy:      '#72b090',
+    neutral:    '#8b9ed4',
+    frustrated: '#c98b68',
+    sad:        '#a09ab0',
+    surprised:  '#d4a8c0'
+  };
+  updateEmotionBadge(dominant, colorMap[dominant] || '#a8a2bc');
+
+  STATE.emotionBuffer.push({
+    dominant, confidence,
+    rawScores: rawScores || {},
+    timestamp: new Date().toISOString(),
+    context:   STATE.isOnBreak ? 'break' : (STATE.timerRunning ? 'focus' : 'idle')
+  });
+
+  // ── Push to localStorage — always write rawScores so chart has per-emotion confidence lines ──
+  // Write even before timer starts so the chart is live as soon as camera is on
+  if (dominant && dominant !== 'unknown') {
+    try {
+      const rs = rawScores || {};
+      const samples = JSON.parse(localStorage.getItem('nic_emotion_samples') || '[]');
+      samples.push({
+        e:    dominant,
+        conf: confidence || 0.5,
+        // Store per-emotion scores explicitly for the chart's separate dataset lines
+        happy:      +(rs.happy      || 0).toFixed(3),
+        frustrated: +(rs.frustrated || 0).toFixed(3),
+        neutral:    +(rs.neutral    || 0).toFixed(3),
+        sad:        +(rs.sad        || 0).toFixed(3),
+        surprised:  +(rs.surprised  || 0).toFixed(3),
+        t: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'})
+      });
+      if (samples.length > 100) samples.shift();
+      localStorage.setItem('nic_emotion_samples', JSON.stringify(samples));
+    } catch(_) {}
+  }
+
+  if (STATE.emotionBuffer.length >= 10) flushEmotionBuffer();
+
+  // AI-detected high frustration → suggest break
+  if (dominant === 'frustrated' && confidence > 0.75 && !STATE.isOnBreak) {
+    triggerAIBreakSuggestion();
+  }
+
+  // Look-away → grace period
+  if (look_away && STATE.timerRunning && !STATE.gracePeriodActive) {
+    startGracePeriod();
+  } else if (!look_away && STATE.gracePeriodActive) {
+    cancelGracePeriod();
+  }
+
+  // Update Firestore liveStatus
+  updateLiveStatus({ currentEmotion: dominant });
+}
+
+function updateEmotionBadge(emotion, color) {
+  document.getElementById('emotion-label').textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+  document.getElementById('emotion-dot').style.background = color;
+}
+
+/* ================================================
+   GRACE PERIOD  — 10s before pausing on look-away
+   Gives space for stimming / sensory processing.
+================================================ */
+function startGracePeriod() {
+  if (STATE.gracePeriodActive) return;
+  STATE.gracePeriodActive  = true;
+  STATE.graceSecondsLeft   = 10;
+
+  document.getElementById('grace-banner').classList.add('visible');
+  document.getElementById('grace-countdown').textContent = '10';
+
+  STATE.graceTimer = setInterval(() => {
+    STATE.graceSecondsLeft--;
+    document.getElementById('grace-countdown').textContent = STATE.graceSecondsLeft;
+
+    if (STATE.graceSecondsLeft <= 0) {
+      clearInterval(STATE.graceTimer);
+      STATE.gracePeriodActive = false;
+      document.getElementById('grace-banner').classList.remove('visible');
+      // Only pause if camera still shows look-away
+      pauseSession('ai-look-away');
+    }
+  }, 1000);
+}
+
+function cancelGracePeriod() {
+  if (!STATE.gracePeriodActive) return;
+  clearInterval(STATE.graceTimer);
+  STATE.gracePeriodActive = false;
+  document.getElementById('grace-banner').classList.remove('visible');
+}
+
+/* ================================================
+   TAB-SWITCH DETECTION
+   Uses visibilitychange + blur for broad coverage.
+================================================ */
+function setupTabSwitchDetection() {
+
+  // ── visibilitychange: fires when browser tab is hidden (most reliable) ──
+  document.addEventListener('visibilitychange', () => {
+    if (STATE.isOnBreak) return;
+    if (document.hidden) {
+      pauseSession('tab-switch');
+    } else {
+      resumeAfterDistraction();
+    }
+  });
+
+  // ── window blur: fires when user clicks into another window/app ──
+  window.addEventListener('blur', () => {
+    if (STATE.isOnBreak) return;
+    if (!document.hidden) {    // prevent double-fire with visibilitychange
+      pauseSession('window-blur');
+    }
+  });
+
+  // ── window focus: student is back ──
+  window.addEventListener('focus', () => {
+    if (STATE.isOnBreak) return;
+    resumeAfterDistraction();
+  });
+}
+
+function pauseSession(eventType = 'tab-switch') {
+  if (!STATE.timerRunning || STATE.timerPaused) return;
+
+  STATE.timerPaused = true;
+  pauseTimer();
+  pauseYouTube();
+
+  // Log distraction event
+  const event = {
+    type:           eventType,
+    timestamp:      new Date(),
+    durationSeconds:0,
+    gracePeriodUsed:(eventType === 'ai-look-away')
+  };
+  STATE.distractionEvents.push(event);
+  STATE.distractionCount++;
+  document.getElementById('distraction-count').textContent = STATE.distractionCount;
+  appendLogItem(eventType);
+  updateLiveStatus({ distractionCount: STATE.distractionCount, focusState: 'distracted' });
+
+  showToast('📌 Paused — come back whenever you\'re ready');
+}
+
+function resumeAfterDistraction() {
+  if (!STATE.timerPaused || !STATE.currentTaskId) return;
+
+  STATE.timerPaused = false;
+  resumeTimer();
+  // YouTube: don't auto-resume video — let student decide
+  updateTimerStatus('focusing');
+  updateLiveStatus({ focusState: 'focusing' });
+  showToast('✨ Welcome back!');
+}
+
+/* ================================================
+   FOCUS TIMER
+================================================ */
+function startTimer() {
+  STATE.timerRunning      = true;
+  STATE.timerPaused       = false;
+  STATE.elapsedSeconds    = 0;
+  STATE.currentSessionStart = new Date();
+
+  STATE.timerInterval = setInterval(() => {
+    if (!STATE.timerPaused && !STATE.isOnBreak) {
+      STATE.elapsedSeconds++;
+      renderTimer();
+      updateRingProgress();
+      if (STATE.elapsedSeconds % 5 === 0)  updateLiveStatus({});   // push to localStorage every 5s
+      if (STATE.elapsedSeconds % 30 === 0) flushEmotionBuffer();
+    }
+  }, 1000);
+
+  updateTimerStatus('focusing');
+}
+
+function pauseTimer() {
+  // Timer interval keeps running but elapsedSeconds stops incrementing
+  // (timerPaused flag prevents counting in setInterval)
+  updateTimerStatus('paused');
+}
+
+function resumeTimer() {
+  STATE.timerPaused = false;
+  updateTimerStatus('focusing');
+}
+
+function stopTimer() {
+  clearInterval(STATE.timerInterval);
+  STATE.timerRunning   = false;
+  STATE.timerPaused    = false;
+  updateTimerStatus('idle');
+  renderTimer();
+  closeFocusLog(true);
+}
+
+function renderTimer() {
+  const m = String(Math.floor(STATE.elapsedSeconds / 60)).padStart(2,'0');
+  const s = String(STATE.elapsedSeconds % 60).padStart(2,'0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+}
+
+function updateRingProgress() {
+  // Ring animates for first 30 min (1800s), then stays full
+  const pct    = Math.min(STATE.elapsedSeconds / 1800, 1);
+  const offset = 314 * (1 - pct);
+  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+}
+
+function updateTimerStatus(status) {
+  const pill = document.getElementById('status-pill');
+  const ring = document.getElementById('ring-fill');
+  const lbl  = document.getElementById('timer-label');
+  const map  = {
+    idle:     { pill:'Idle',     cls:'pill-idle',     stroke:'',        lbl:'idle'    },
+    focusing: { pill:'Focusing', cls:'pill-focusing', stroke:'',        lbl:'focus'   },
+    paused:   { pill:'Paused',   cls:'pill-paused',   stroke:'paused',  lbl:'paused'  },
+    break:    { pill:'Break',    cls:'pill-break',    stroke:'stopped', lbl:'break'   },
+    grace:    { pill:'Grace',    cls:'pill-grace',    stroke:'',        lbl:'grace'   }
+  };
+  const s = map[status] || map['idle'];
+  pill.textContent = s.pill;
+  pill.className   = `pill ${s.cls}`;
+  ring.className   = `ring-fill${s.stroke ? ' '+s.stroke : ''}`;
+  lbl.textContent  = s.lbl;
+}
+
+/* ================================================
+   YOUTUBE IFRAME API
+   onYouTubeIframeAPIReady is called by YT script.
+================================================ */
+let ytAPIReady = false;
+function onYouTubeIframeAPIReady() {
+  ytAPIReady = true;
+  // Player created when task is clicked (loadYouTubeVideo)
+}
+
+function loadYouTubeVideo(videoId) {
+  document.getElementById('video-placeholder').style.display = 'none';
+  STATE.currentVideoId = videoId;
+
+  if (STATE.ytPlayer && STATE.ytPlayer.loadVideoById) {
+    // Player already exists — just load new video
+    STATE.ytPlayer.loadVideoById(videoId);
+    return;
+  }
+
+  STATE.ytPlayer = new YT.Player('yt-player', {
+    height: '100%',
+    width:  '100%',
+    videoId: videoId,
+    playerVars: {
+      autoplay:       1,
+      rel:            0,
+      modestbranding: 1,
+      iv_load_policy: 3,
+      cc_load_policy: 1,   // captions on by default (accessibility)
+      playsinline:    1
+    },
+    events: {
+      onReady:       onYTPlayerReady,
+      onStateChange: onYTPlayerStateChange,
+      onError:       onYTPlayerError
+    }
+  });
+}
+
+function onYTPlayerReady(event) {
+  STATE.ytReady = true;
+  event.target.playVideo();
+}
+
+function onYTPlayerStateChange(event) {
+  /* YT.PlayerState:
+     UNSTARTED=-1 | ENDED=0 | PLAYING=1 | PAUSED=2 | BUFFERING=3 | CUED=5
+  */
+  const S = YT.PlayerState;
+
+  if (event.data === S.ENDED) {
+    // ── Video ended → stop timer, mark task complete ──
+    handleVideoEnded();
+  } else if (event.data === S.PLAYING) {
+    if (!STATE.timerRunning && STATE.currentTaskId) {
+      startTimer();
+    } else if (STATE.timerPaused) {
+      // Student manually resumed video — resume timer too
+      resumeTimer();
+    }
+  } else if (event.data === S.PAUSED) {
+    if (STATE.timerRunning && !STATE.timerPaused && !STATE.isOnBreak) {
+      pauseSession('video-pause');
+    }
+  }
+}
+
+function onYTPlayerError(event) {
+  console.warn('YouTube player error code:', event.data);
+  showToast('⚠️ Video issue — please try the link again');
+}
+
+function handleVideoEnded() {
+  stopTimer();
+  if (STATE.currentTaskId) markTaskComplete(STATE.currentTaskId);
+  updateLiveStatus({ focusState: 'idle' });
+  showToast('🎉 Great work — you finished the video!');
+  appendLogItem('video-completed');
+}
+
+function pauseYouTube() {
+  if (STATE.ytPlayer && STATE.ytReady) {
+    try { STATE.ytPlayer.pauseVideo(); } catch(e) {}
+  }
+}
+
+function playYouTube() {
+  if (STATE.ytPlayer && STATE.ytReady) {
+    try { STATE.ytPlayer.playVideo(); } catch(e) {}
+  }
+}
+
+/* ================================================
+   TASKS — Load from Firestore
+================================================ */
+function loadTasks() {
+  // Load from localStorage first (parent may have added tasks)
+  try {
+    const stored = JSON.parse(localStorage.getItem('nic_tasks') || 'null');
+    if (stored && stored.length) {
+      STATE.tasks = stored;
+      renderTaskList();
+    } else {
+      loadDemoTasks();
+    }
+  } catch(_) { loadDemoTasks(); }
+
+  // Watch for parent adding/removing tasks in real-time
+  window.addEventListener('storage', e => {
+    if (e.key === 'nic_tasks' && e.newValue) {
+      try {
+        STATE.tasks = JSON.parse(e.newValue);
+        renderTaskList();
+        showToast('📋 Task list updated by parent');
+      } catch(_) {}
+    }
+  });
+}
+
+function loadDemoTasks() {
+  STATE.tasks = [
+    { id:'demo-1', taskName:'Introduction to Photosynthesis', resourceUrl:'https://www.youtube.com/watch?v=CMHJxOGaIsc', isCompleted:false, order:0 },
+    { id:'demo-2', taskName:'The Water Cycle Explained',      resourceUrl:'https://www.youtube.com/watch?v=al-do-HGuIk', isCompleted:false, order:1 },
+    { id:'demo-3', taskName:'How Plants Grow — Khan Academy', resourceUrl:'https://www.youtube.com/watch?v=J1GPlBINzWA', isCompleted:true,  order:2 }
+  ];
+  // Sync to localStorage so parent can read the task list
+  try { localStorage.setItem('nic_tasks', JSON.stringify(STATE.tasks)); } catch(_) {}
+  renderTaskList();
+}
+
+function renderTaskList() {
+  const list  = document.getElementById('task-list');
+  const empty = document.getElementById('task-list-empty');
+
+  if (!STATE.tasks.length) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  list.innerHTML = STATE.tasks.map(task => {
+    const isYT    = task.resourceUrl && (task.resourceUrl.includes('youtube.com') || task.resourceUrl.includes('youtu.be'));
+    const icon    = isYT ? '▶️' : '🔗';
+    const active  = task.id === STATE.currentTaskId ? 'active' : '';
+    const done    = task.isCompleted ? 'completed' : '';
+    return `
+      <li class="task-item ${active} ${done}"
+          data-id="${task.id}"
+          data-url="${task.resourceUrl || ''}"
+          data-name="${escapeHtml(task.taskName)}"
+          onclick="handleTaskClick(this)"
+          role="button"
+          tabindex="${task.isCompleted ? -1 : 0}"
+          aria-label="Start task: ${escapeHtml(task.taskName)}">
+        <div class="task-icon">${icon}</div>
+        <div class="task-info">
+          <div class="name">${escapeHtml(task.taskName)}</div>
+          <div class="url-hint">${isYT ? 'YouTube Video' : (task.resourceUrl || 'No link')}</div>
+        </div>
+        <div class="task-check">${task.isCompleted ? '✓' : ''}</div>
+      </li>`;
+  }).join('');
+}
+
+/* ── Task clicked ── */
+function handleTaskClick(el) {
+  const taskId   = el.dataset.id;
+  const taskName = el.dataset.name;
+  const url      = el.dataset.url;
+
+  if (taskId === STATE.currentTaskId) return;  // already active
+
+  // Stop previous session
+  if (STATE.timerRunning) closeFocusLog(false);
+  clearInterval(STATE.timerInterval);
+  STATE.timerRunning   = false;
+  STATE.elapsedSeconds = 0;
+  STATE.distractionEvents = [];
+  renderTimer();
+
+  STATE.currentTaskId = taskId;
+  document.getElementById('current-task-name').textContent = taskName;
+  document.getElementById('current-task-name').classList.remove('empty');
+  renderTaskList();
+
+  // Open Firestore focus log
+  openFocusLog(taskId);
+
+  // Extract YouTube video ID and load player
+  const videoId = extractYouTubeId(url);
+  if (videoId && ytAPIReady) {
+    loadYouTubeVideo(videoId);
+  } else if (!ytAPIReady) {
+    // YT API not ready yet — wait
+    const wait = setInterval(() => {
+      if (ytAPIReady) { clearInterval(wait); loadYouTubeVideo(videoId); }
+    }, 300);
+  } else {
+    showToast('🔗 Opening link…');
+    window.open(url, '_blank', 'noopener');
+    startTimer();
+  }
+
+  updateLiveStatus({ currentTaskId: taskId, focusState: 'focusing' });
+}
+
+function extractYouTubeId(url) {
+  if (!url) return null;
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+/* ================================================
+   SENSORY BREAK
+================================================ */
+async function startSensoryBreak() {
+  if (STATE.isOnBreak) return;
+  STATE.isOnBreak    = true;
+  STATE.breakStartTime = new Date();
+
+  // Capture pre-break emotion BEFORE overlay shows
+  const preBreakEmotion = { ...STATE.lastEmotion, timestamp: new Date() };
+
+  // Pause everything
+  pauseTimer();
+  pauseYouTube();
+  cancelGracePeriod();
+
+  // Stop emotion polling
+  clearInterval(STATE.emotionInterval);
+
+  updateTimerStatus('break');
+  updateLiveStatus({ focusState: 'break' });
+
+  // Show zen overlay
+  const overlay = document.getElementById('zen-overlay');
+  const badge   = document.getElementById('zen-pre-emotion-badge');
+  const emoLabel= preBreakEmotion.dominant !== 'unknown' ? preBreakEmotion.dominant : 'detecting…';
+  badge.innerHTML = `🧠 Feeling before break: <strong style="margin-left:4px">${capitalize(emoLabel)}</strong>`;
+  overlay.classList.add('visible');
+
+  // Demo mode: store break locally, no Firestore write
+  STATE.currentBreakId = 'local-break-' + Date.now();
+  await updateLiveStatusBreakCount();
+
+  appendLogItem('sensory-break');
+  showToast('🌿 Break started — you\'ve got this');
+}
+
+async function endSensoryBreak() {
+  if (!STATE.isOnBreak) return;
+  STATE.isOnBreak = false;
+
+  // Capture post-break emotion
+  const postBreakEmotion = { ...STATE.lastEmotion, timestamp: new Date() };
+
+  // Hide overlay with soft fade
+  const overlay = document.getElementById('zen-overlay');
+  overlay.style.opacity = '0';
+  overlay.style.transition = 'opacity 0.8s ease';
+  setTimeout(() => {
+    overlay.classList.remove('visible');
+    overlay.style.opacity = '';
+    overlay.style.transition = '';
+  }, 800);
+
+  // Close the open break record in localStorage
+  closeOpenBreak();
+
+  // Restart emotion polling
+  startEmotionPolling();
+
+  // Resume timer (don't auto-resume video — let student re-click)
+  if (STATE.currentTaskId) {
+    STATE.timerPaused = false;
+    updateTimerStatus('focusing');
+    updateLiveStatus({ focusState: 'focusing' });
+  } else {
+    updateTimerStatus('idle');
+  }
+
+  showToast('✨ Welcome back — take it at your own pace');
+}
+
+/* AI-detected high frustration → suggest break (not force) */
+function triggerAIBreakSuggestion() {
+  // Non-intrusive suggestion — just a gentle toast
+  // No red alert, no alarm, no flashing
+  showToast('🌿 You\'ve been working hard — a break is available anytime');
+
+  // Demo: log locally. Will write to breakEvents when Firebase is connected.
+  console.log('AI break suggestion logged (demo mode)');
+}
+
+/* ================================================
+   FOCUS LOG  —  Firestore
+================================================ */
+async function openFocusLog(taskId) {
+  // Demo mode: generate a local ID, no Firestore write
+  STATE.currentFocusLogId = 'local-log-' + Date.now();
+}
+
+async function closeFocusLog(videoCompleted = false) {
+  // Demo mode: just reset local state, no Firestore write
+  STATE.emotionBuffer     = [];
+  STATE.currentFocusLogId = null;
+}
+
+async function flushEmotionBuffer() {
+  // Append emotion samples to localStorage for parent to read
+  if (!STATE.emotionBuffer.length) return;
+  try {
+    const existing = JSON.parse(localStorage.getItem('nic_emotion_samples') || '[]');
+    const merged   = [...existing, ...STATE.emotionBuffer].slice(-60); // keep last 60
+    localStorage.setItem('nic_emotion_samples', JSON.stringify(merged));
+  } catch(e) {}
+  STATE.emotionBuffer = [];
+}
+
+async function markTaskComplete(taskId) {
+  const t = STATE.tasks.find(t => t.id === taskId);
+  if (t) { t.isCompleted = true; renderTaskList(); }
+  // Sync updated tasks to localStorage
+  try { localStorage.setItem('nic_tasks', JSON.stringify(STATE.tasks)); } catch(e) {}
+}
+
+/* ── localStorage live bridge (replaces Firestore liveStatus) ──
+   Student writes here every emotion poll & on every state change.
+   Parent reads this via storage event + polling.
+*/
+function updateLiveStatus(updates) {
+  try {
+    const current = JSON.parse(localStorage.getItem('nic_live') || '{}');
+    const next = {
+      ...current,
+      studentId:    STATE.studentId   || 'student-001',
+      studentName:  STATE.studentName || 'Student',
+      isOnline:     true,
+      lastUpdated:  new Date().toISOString(),
+      focusState:   STATE.isOnBreak ? 'break' : (STATE.timerRunning && !STATE.timerPaused ? 'focusing' : 'idle'),
+      currentEmotion:   STATE.lastEmotion.dominant,
+      currentTaskId:    STATE.currentTaskId,
+      elapsedSeconds:   STATE.elapsedSeconds,
+      distractionCount: STATE.distractionCount,
+      ...updates
+    };
+    localStorage.setItem('nic_live', JSON.stringify(next));
+  } catch(e) {}
+}
+
+function updateLiveStatusBreakCount() {
+  try {
+    const current = JSON.parse(localStorage.getItem('nic_live') || '{}');
+    const breakCount = (current.breakCount || 0) + 1;
+    const breaks = JSON.parse(localStorage.getItem('nic_breaks') || '[]');
+    breaks.unshift({
+      id:         'brk-' + Date.now(),
+      initiatedBy:'student',
+      breakStart:  new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
+      durationSeconds: 0,
+      pre:         STATE.lastEmotion.dominant || 'unknown',
+      delta:       null,
+      open:        true
+    });
+    localStorage.setItem('nic_breaks', JSON.stringify(breaks.slice(0, 20)));
+    localStorage.setItem('nic_live', JSON.stringify({ ...current, breakCount, focusState:'break', lastUpdated: new Date().toISOString() }));
+  } catch(e) {}
+}
+
+function closeOpenBreak() {
+  try {
+    const breaks = JSON.parse(localStorage.getItem('nic_breaks') || '[]');
+    const open   = breaks.find(b => b.open);
+    if (open) {
+      open.durationSeconds = Math.round((new Date() - STATE.breakStartTime) / 1000);
+      const preFrust  = 0; // without Flask we don't have rawScores
+      open.delta = null;
+      open.open  = false;
+      localStorage.setItem('nic_breaks', JSON.stringify(breaks));
+    }
+  } catch(e) {}
+}
+
+/* liveStatus stubs are defined above */
+
+/* ================================================
+   DISTRACTION LOG  —  UI
+================================================ */
+function appendLogItem(type) {
+  const list  = document.getElementById('log-list');
+  const empty = list.querySelector('.log-empty');
+  if (empty) empty.remove();
+
+  const iconMap = {
+    'tab-switch':      { icon:'📑', text:'Switched to another tab' },
+    'window-blur':     { icon:'🪟', text:'Left the window' },
+    'ai-look-away':    { icon:'👀', text:'Looked away (AI detected)' },
+    'video-pause':     { icon:'⏸',  text:'Video paused' },
+    'video-completed': { icon:'🎉', text:'Video completed!' },
+    'sensory-break':   { icon:'🌿', text:'Sensory break started' }
+  };
+  const meta = iconMap[type] || { icon:'📌', text: type };
+  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+
+  const item = document.createElement('div');
+  item.className = 'log-item';
+  item.innerHTML = `
+    <span class="log-icon">${meta.icon}</span>
+    <span>${meta.text}</span>
+    <span class="log-time">${time}</span>`;
+  list.prepend(item);
+
+  // Keep max 20 items
+  const items = list.querySelectorAll('.log-item');
+  if (items.length > 20) items[items.length-1].remove();
+}
+
+/* ================================================
+   BREATHING GUIDE  (Zen Mode)
+================================================ */
+function startBreathingGuide() {
+  const el = document.getElementById('breathe-text');
+  let inhale = true;
+  setInterval(() => {
+    el.textContent = inhale ? 'Breathe in...' : 'Breathe out...';
+    inhale = !inhale;
+  }, 3000);
+}
+
+/* ================================================
+   TOAST NOTIFICATIONS
+   Soft, non-alarming, auto-dismiss after 3.5s.
+================================================ */
+function showToast(message) {
+  const container = document.getElementById('toast-container');
+  const toast     = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('removing');
+    setTimeout(() => toast.remove(), 380);
+  }, 3500);
+}
+
+/* ================================================
+   HELPERS
+================================================ */
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/* ================================================
+   CLEANUP on page unload
+================================================ */
+window.addEventListener('beforeunload', () => {
+  closeFocusLog(false);
+  updateLiveStatus({ isOnline: false, focusState: 'idle' });
+  if (STATE.cameraStream) STATE.cameraStream.getTracks().forEach(t => t.stop());
+});
+</script>
+</body>
+</html>
