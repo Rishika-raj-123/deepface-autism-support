@@ -24,3 +24,17 @@ frontend/
 - Flask
 - DeepFace
 - HTML/CSS
+
+## How to Run the Project
+
+1. Clone the repository
+git clone https://github.com/Rishika-raj-123/deepface-autism-support.git
+
+2. Install dependencies
+pip install -r requirements.txt
+
+3. Run the backend
+python backend/app.py
+
+4. Open the frontend
+Open frontend/index.html in your browser
