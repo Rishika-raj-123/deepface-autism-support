@@ -16,7 +16,7 @@ backend/
 - utils – helper utilities
 
 frontend/
-- index.html – main interface - student dashboard
+- index.html – main interface - student dashboard (child)
 - parent.html – parent dashboard
 
 ## Tech Stack
