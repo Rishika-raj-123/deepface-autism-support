@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Parent Dashboard — Learning Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg-base:#f4f6fb; --bg-card:#ffffff; --bg-subtle:#f0f4ff; --bg-hover:#e8eeff;
+  --blue-50:#eff6ff; --blue-100:#dbeafe; --blue-200:#bfdbfe;
+  --blue-400:#60a5fa; --blue-500:#3b82f6; --blue-600:#2563eb; --blue-700:#1d4ed8;
+  --lav-50:#f5f3ff; --lav-100:#ede9fe; --lav-200:#ddd6fe; --lav-400:#a78bfa; --lav-500:#8b5cf6;
+  --mint-50:#f0fdf4; --mint-100:#dcfce7; --mint-200:#bbf7d0; --mint-400:#4ade80; --mint-500:#22c55e; --mint-600:#16a34a;
+  --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-300:#fcd34d; --amber-400:#fbbf24; --amber-500:#f59e0b;
+  --rose-50:#fff1f2; --rose-100:#ffe4e6; --rose-200:#fecdd3; --rose-400:#fb7185; --rose-500:#f43f5e;
+  --txt-primary:#1e2a3a; --txt-sec:#4a5568; --txt-muted:#8a97a8; --txt-light:#b8c4d0;
+  --border:rgba(0,0,0,0.07); --border-h:rgba(59,130,246,0.3);
+  --sh-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --sh-md:0 4px 16px rgba(0,0,0,0.07),0 1px 4px rgba(0,0,0,0.05);
+  --sh-lg:0 8px 32px rgba(0,0,0,0.09),0 2px 8px rgba(0,0,0,0.05);
+  --sh-blue:0 4px 20px rgba(59,130,246,0.18);
+  --r-sm:10px; --r:16px; --r-lg:22px;
+  --ff:'Plus Jakarta Sans',sans-serif; --fb:'Inter',sans-serif;
+  --tr:all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg-base);color:var(--txt-primary);min-height:100vh;font-size:14px}
+
+/* SHELL */
+.shell{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:240px;flex-shrink:0;background:var(--bg-card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.s-logo{display:flex;align-items:center;gap:10px;padding:0 8px 28px}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blue-500),var(--lav-500));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:var(--sh-blue)}
+.logo-txt{font-family:var(--ff);font-size:14px;font-weight:700;color:var(--txt-primary);line-height:1.15}
+.logo-sub{font-size:10px;color:var(--txt-muted);font-weight:500}
+.nav-sec{margin-bottom:22px}
+.nav-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--txt-light);padding:0 10px;margin-bottom:5px}
+.nav-i{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--r-sm);font-size:13px;font-weight:500;color:var(--txt-sec);cursor:pointer;transition:var(--tr)}
+.nav-i:hover{background:var(--bg-subtle);color:var(--blue-600)}
+.nav-i.active{background:var(--blue-50);color:var(--blue-600);font-weight:600}
+.nav-i .ic{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.dbadge{margin-left:auto;width:7px;height:7px;border-radius:50%;background:var(--rose-400);display:none}
+.s-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
+.s-student{padding:12px;background:var(--bg-subtle);border-radius:var(--r-sm);border:1px solid var(--border)}
+.ss-name{font-weight:700;font-size:13px;color:var(--txt-primary)}
+.ss-status{font-size:11px;color:var(--txt-muted);margin-top:3px;display:flex;align-items:center;gap:5px}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--txt-light);transition:background .5s}
+.sdot.on{background:var(--mint-500);animation:sPulse 2s ease-in-out infinite}
+@keyframes sPulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* MAIN */
+.main{flex:1;padding:28px 32px;overflow-x:hidden;min-width:0}
+@media(max-width:900px){.sidebar{display:none}.main{padding:16px}}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.pg-title{font-family:var(--ff);font-size:22px;font-weight:800;color:var(--txt-primary)}
+.pg-sub{font-size:13px;color:var(--txt-muted);margin-top:2px}
+.topbar-r{display:flex;align-items:center;gap:10px}
+.live-b{display:flex;align-items:center;gap:7px;padding:7px 16px;background:var(--mint-50);border:1px solid var(--mint-100);border-radius:999px;font-size:12px;font-weight:600;color:var(--mint-600)}
+.live-b .ld{width:7px;height:7px;border-radius:50%;background:var(--mint-500);animation:sPulse 1.8s ease-in-out infinite}
+.wait-b{display:flex;align-items:center;gap:7px;padding:7px 16px;background:var(--amber-50);border:1px solid var(--amber-100);border-radius:999px;font-size:12px;font-weight:600;color:#92400e}
+
+/* OFFLINE BANNER */
+.off-banner{display:none;padding:12px 18px;background:var(--amber-50);border:1px solid var(--amber-100);border-radius:var(--r-sm);font-size:13px;font-weight:500;color:#78350f;margin-bottom:20px;align-items:center;gap:10px;line-height:1.5}
+.off-banner.show{display:flex}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}}
+.sc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh-sm);transition:var(--tr)}
+.sc:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.sc-ic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.ic-b{background:var(--blue-50)} .ic-m{background:var(--mint-50)} .ic-a{background:var(--amber-50)} .ic-l{background:var(--lav-50)}
+.sc-val{font-family:var(--ff);font-size:26px;font-weight:800;color:var(--txt-primary);line-height:1;margin-bottom:3px}
+.sc-lbl{font-size:12px;font-weight:500;color:var(--txt-muted)}
+.sc-trend{font-size:11px;font-weight:600;margin-top:5px}
+.t-up{color:var(--mint-600)} .t-dn{color:var(--rose-400)} .t-nu{color:var(--txt-muted)}
+
+/* CONTENT */
+.grid{display:grid;grid-template-columns:1fr 356px;gap:18px}
+@media(max-width:1100px){.grid{grid-template-columns:1fr}}
+.lcol,.rcol{display:flex;flex-direction:column;gap:18px}
+
+/* CARD */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;box-shadow:var(--sh-sm);transition:var(--tr)}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.ct{font-family:var(--ff);font-size:15px;font-weight:700;color:var(--txt-primary)}
+.cbadge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:999px}
+.cb-b{background:var(--blue-50);color:var(--blue-600)} .cb-m{background:var(--mint-50);color:var(--mint-600)}
+.cb-a{background:var(--amber-50);color:#92400e}        .cb-l{background:var(--lav-50);color:var(--lav-500)}
+
+/* LIVE MONITOR */
+.mon-top{display:flex;gap:14px;margin-bottom:16px}
+.cam-box{width:210px;height:158px;flex-shrink:0;background:linear-gradient(135deg,#e8eeff,#f0f4ff);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;position:relative}
+.cam-box img{width:100%;height:100%;object-fit:cover;display:none}
+.cam-box img.vis{display:block}
+.cam-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--txt-muted);font-size:11px;font-weight:500;text-align:center;padding:12px}
+.cam-ph-i{font-size:28px;opacity:.4}
+.cam-lbl{position:absolute;bottom:7px;left:7px;padding:2px 8px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;font-size:10px;font-weight:700;color:var(--txt-sec)}
+.mon-info{flex:1;display:flex;flex-direction:column;gap:8px}
+.ir{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg-subtle);border-radius:var(--r-sm);border:1px solid var(--border)}
+.il{font-size:11px;font-weight:600;color:var(--txt-muted)}
+.iv{font-size:13px;font-weight:700;color:var(--txt-primary)}
+
+/* STATE / EMOTION PILLS */
+.sp{padding:4px 11px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:inline-flex;align-items:center;gap:4px}
+.sp-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.sf{background:var(--mint-50);color:var(--mint-600);border:1px solid var(--mint-100)}
+.sb{background:var(--amber-50);color:#92400e;border:1px solid var(--amber-100)}
+.sd{background:var(--rose-50);color:var(--rose-500);border:1px solid var(--rose-100)}
+.si{background:var(--bg-subtle);color:var(--txt-muted);border:1px solid var(--border)}
+.eb{padding:4px 11px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid transparent}
+.eh{background:#f0fdf4;color:#15803d;border-color:var(--mint-200)}
+.en{background:#f0f4ff;color:#4338ca;border-color:#c7d2fe}
+.ef{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+.es{background:#faf5ff;color:#7e22ce;border-color:#e9d5ff}
+.eu{background:var(--bg-subtle);color:var(--txt-muted);border-color:var(--border)}
+
+/* CHART */
+.chart-wrap{position:relative;height:196px}
+.chart-empty{text-align:center;padding:24px 12px;color:var(--txt-muted);font-size:12px;font-weight:500;line-height:1.6}
+.ce-icon{font-size:28px;opacity:.35;margin-bottom:8px}
+
+/* BREAKS */
+.bk-hdr{display:grid;grid-template-columns:80px 90px 1fr 80px 90px;gap:10px;padding:6px 12px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-muted);border-bottom:1px solid var(--border);margin-bottom:8px}
+.bk-row{display:grid;grid-template-columns:80px 90px 1fr 80px 90px;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:6px;transition:var(--tr);font-size:12px;font-weight:600}
+.bk-row:hover{background:var(--bg-subtle)}
+.bt{color:var(--txt-sec);font-weight:600}
+.by-s{background:var(--blue-50);color:var(--blue-600);border:1px solid var(--blue-100);padding:2px 7px;border-radius:999px;font-size:10px;font-weight:700}
+.by-a{background:var(--lav-50);color:var(--lav-500);border:1px solid var(--lav-200);padding:2px 7px;border-radius:999px;font-size:10px;font-weight:700}
+.dp{color:var(--mint-600)} .dn{color:var(--rose-400)} .dz{color:var(--txt-muted)}
+
+/* TASKS */
+.ti{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--border);border-radius:var(--r-sm);transition:var(--tr);margin-bottom:7px}
+.ti:hover{background:var(--bg-subtle);border-color:var(--border-h)}
+.tc{width:20px;height:20px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px}
+.tc-d{background:var(--mint-100);color:var(--mint-600);border:1px solid var(--mint-200)}
+.tc-t{background:var(--bg-subtle);border:1px solid var(--border)}
+.tn{font-size:13px;font-weight:600;color:var(--txt-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tn.done{color:var(--txt-muted);text-decoration:line-through}
+.ttype{font-size:11px;color:var(--txt-muted);margin-top:1px}
+.tdl{background:none;border:none;color:var(--txt-light);cursor:pointer;padding:4px;border-radius:6px;transition:var(--tr);font-size:14px;line-height:1;flex-shrink:0}
+.tdl:hover{background:var(--rose-50);color:var(--rose-400)}
+
+/* FORM */
+.fl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--txt-muted);display:block;margin-bottom:4px}
+.fi{width:100%;padding:10px 12px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--fb);font-size:13px;font-weight:500;color:var(--txt-primary);outline:none;transition:var(--tr);margin-bottom:10px}
+.fi::placeholder{color:var(--txt-light)}
+.fi:focus{border-color:var(--blue-400);background:#fff;box-shadow:0 0 0 3px var(--blue-100)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.frow .fi{margin-bottom:0}
+.btn-add{width:100%;padding:11px;background:linear-gradient(135deg,var(--blue-500),var(--lav-500));border:none;border-radius:var(--r-sm);font-family:var(--ff);font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:var(--tr);margin-top:12px;box-shadow:var(--sh-blue)}
+.btn-add:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(59,130,246,.28)}
+.btn-add:active{transform:scale(.98)}
+
+/* CHAT */
+.chat-msgs{overflow-y:auto;max-height:230px;display:flex;flex-direction:column;gap:8px;padding:2px 0 12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;margin-bottom:10px}
+.msg{display:flex;gap:8px;align-items:flex-start;animation:mIn .28s ease both}
+.msg.u{flex-direction:row-reverse}
+@keyframes mIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.mav{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:var(--sh-sm)}
+.msg.b .mav{background:linear-gradient(135deg,var(--blue-400),var(--lav-400))}
+.msg.u .mav{background:linear-gradient(135deg,#e2e8f0,#cbd5e1)}
+.mbub{max-width:82%;padding:9px 13px;border-radius:11px;font-size:13px;line-height:1.55;font-weight:500}
+.msg.b .mbub{background:var(--bg-subtle);border:1px solid var(--border);color:var(--txt-primary);border-radius:3px 11px 11px 11px}
+.msg.u .mbub{background:var(--blue-500);color:#fff;border-radius:11px 3px 11px 11px}
+.mbub.typ{display:flex;gap:4px;align-items:center;padding:11px 14px}
+.td{width:5px;height:5px;border-radius:50%;background:var(--blue-400);animation:td 1.2s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-4px);opacity:1}}
+.qchips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.qc{padding:4px 10px;background:#fff;border:1px solid var(--border);border-radius:999px;font-size:11px;font-weight:600;color:var(--txt-sec);cursor:pointer;transition:var(--tr);white-space:nowrap;box-shadow:var(--sh-sm)}
+.qc:hover{background:var(--blue-50);border-color:var(--blue-200);color:var(--blue-600)}
+.c-row{display:flex;gap:8px}
+.cinp{flex:1;padding:9px 12px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--fb);font-size:13px;color:var(--txt-primary);outline:none;transition:var(--tr)}
+.cinp::placeholder{color:var(--txt-light)}
+.cinp:focus{border-color:var(--blue-400);background:#fff;box-shadow:0 0 0 3px var(--blue-100)}
+.csend{padding:9px 14px;background:var(--blue-500);border:none;border-radius:var(--r-sm);color:#fff;font-size:15px;cursor:pointer;transition:var(--tr)}
+.csend:hover{background:var(--blue-600)}
+
+/* REPORT */
+.rrow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.rrow:last-child{border-bottom:none}
+.rk{font-size:12px;font-weight:600;color:var(--txt-muted)}
+.rv{font-size:13px;font-weight:700;color:var(--txt-primary)}
+.rw{color:var(--amber-500)} .rg{color:var(--mint-600)}
+.rbtns{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.rbtn{padding:10px;border-radius:var(--r-sm);font-family:var(--ff);font-size:12px;font-weight:700;cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:5px}
+.rp{background:linear-gradient(135deg,var(--blue-500),var(--lav-500));border:none;color:#fff;box-shadow:var(--sh-blue)}
+.rp:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(59,130,246,.28)}
+.ro{background:#fff;border:1px solid var(--border);color:var(--txt-sec)}
+.ro:hover{background:var(--bg-subtle);border-color:var(--border-h);color:var(--blue-600)}
+
+/* EMPTY */
+.empty{text-align:center;padding:28px 12px;color:var(--txt-muted)}
+.ei{font-size:30px;opacity:.35;margin-bottom:8px}
+.et{font-size:12px;font-weight:500;line-height:1.6}
+
+/* TOAST */
+#toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{padding:11px 18px;background:#fff;border:1px solid var(--border);border-radius:var(--r);font-size:13px;font-weight:600;color:var(--txt-primary);box-shadow:var(--sh-lg);white-space:nowrap;animation:tIn .28s cubic-bezier(.16,1,.3,1) both}
+.toast.out{animation:tOut .22s ease forwards}
+@keyframes tIn{from{opacity:0;transform:translateY(8px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes tOut{to{opacity:0;transform:translateY(-5px) scale(.97)}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="s-logo">
+    <div class="logo-mark">🧠</div>
+    <div>
+      <div class="logo-txt">LearningCompanion</div>
+      <div class="logo-sub">Parent Dashboard</div>
+    </div>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">Monitor</div>
+    <div class="nav-i active"><span class="ic">📊</span>Overview</div>
+    <div class="nav-i"><span class="ic">📷</span>Live Feed</div>
+    <div class="nav-i"><span class="ic">😊</span>Emotions<span class="dbadge" id="dbadge"></span></div>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">Manage</div>
+    <div class="nav-i"><span class="ic">📋</span>Tasks</div>
+    <div class="nav-i"><span class="ic">🌿</span>Breaks</div>
+  </div>
+  <div class="nav-sec">
+    <div class="nav-lbl">Insights</div>
+    <div class="nav-i"><span class="ic">💬</span>Ask AI</div>
+    <div class="nav-i"><span class="ic">📄</span>Report</div>
+  </div>
+  <div class="s-foot">
+    <div class="s-student">
+      <div class="ss-name" id="ss-name">Student</div>
+      <div class="ss-status">
+        <div class="sdot" id="sdot"></div>
+        <span id="ss-st">Waiting for session…</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="pg-title">Good day 👋</div>
+      <div class="pg-sub" id="pg-sub">Open <strong>index.html</strong> in another tab to start monitoring</div>
+    </div>
+    <div class="topbar-r">
+      <div id="conn-badge"><div class="wait-b">⏳ Waiting for student…</div></div>
+    </div>
+  </div>
+
+  <div class="off-banner show" id="off-banner">
+    📡 Student page not detected. Open <strong>index.html</strong> in another browser tab on the same device. All data will appear automatically once connected.
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="sc"><div class="sc-ic ic-b">⏱️</div><div class="sc-val" id="sv-f">—</div><div class="sc-lbl">Focus Time</div><div class="sc-trend t-nu" id="st-f">No session yet</div></div>
+    <div class="sc"><div class="sc-ic ic-m">🌿</div><div class="sc-val" id="sv-b">—</div><div class="sc-lbl">Breaks Taken</div><div class="sc-trend t-nu" id="st-b">—</div></div>
+    <div class="sc"><div class="sc-ic ic-a">⚡</div><div class="sc-val" id="sv-d">—</div><div class="sc-lbl">Distractions</div><div class="sc-trend t-nu" id="st-d">—</div></div>
+    <div class="sc"><div class="sc-ic ic-l">✅</div><div class="sc-val" id="sv-t">—</div><div class="sc-lbl">Tasks Done</div><div class="sc-trend t-nu" id="st-t">—</div></div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="lcol">
+      <!-- LIVE MONITOR -->
+      <div class="card">
+        <div class="ch">
+          <div class="ct">📡 Live Monitor <span class="cbadge cb-m" id="mon-badge" style="margin-left:6px">Waiting</span></div>
+          <span style="font-size:11px;color:var(--txt-muted)" id="upd-txt">Not connected</span>
+        </div>
+        <div class="mon-top">
+          <div class="cam-box" id="cam-box">
+            <div class="cam-ph" id="cam-ph">
+              <div class="cam-ph-i">📷</div>
+              <span>Open student page<br>to see camera feed</span>
+            </div>
+            <img id="cam-img" alt="Live feed"/>
+            <div class="cam-lbl" id="cam-lbl">No feed</div>
+          </div>
+          <div class="mon-info">
+            <div class="ir"><span class="il">Focus State</span><span class="sp si" id="focus-pill"><span class="sp-dot"></span>Idle</span></div>
+            <div class="ir"><span class="il">Current Emotion</span><span class="eb eu" id="emo-badge">Unknown</span></div>
+            <div class="ir"><span class="il">Active Task</span><span class="iv" id="task-val" style="font-size:12px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span></div>
+            <div class="ir"><span class="il">Breaks Today</span><span class="iv" id="breaks-today">—</span></div>
+          </div>
+        </div>
+        <!-- CHART -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Emotion Timeline — Live</div>
+          <div id="chart-empty" class="chart-empty"><div class="ce-icon">📈</div>Emotion data will appear here once the student starts a session and the camera is active.</div>
+          <div class="chart-wrap" id="chart-wrap" style="display:none"><canvas id="echart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- BREAK EVENTS -->
+      <div class="card">
+        <div class="ch">
+          <div class="ct">🌿 Break Events</div>
+          <span class="cbadge cb-a" id="bk-badge">0 today</span>
+        </div>
+        <div id="bk-empty" class="empty"><div class="ei">🌿</div><div class="et">No breaks yet. When your child takes a sensory break on the learning page, you'll see their pre-break emotion and recovery data here.</div></div>
+        <div id="bk-list" style="display:none">
+          <div class="bk-hdr"><span>Time</span><span>By</span><span>Pre-Emotion</span><span>Duration</span><span>Recovery</span></div>
+          <div id="bk-rows"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="rcol">
+      <!-- TASK ASSIGN -->
+      <div class="card">
+        <div class="ch">
+          <div class="ct">📋 Assign Tasks</div>
+          <span class="cbadge cb-b" id="task-badge">0 tasks</span>
+        </div>
+        <div>
+          <label class="fl">Task Name</label>
+          <input class="fi" type="text" id="t-name" placeholder="e.g. Watch Chapter 3 Video" maxlength="80"/>
+          <label class="fl">Resource URL</label>
+          <input class="fi" type="url" id="t-url" placeholder="https://youtube.com/watch?v=..."/>
+          <div class="frow">
+            <div><label class="fl">Est. Minutes</label><input class="fi" type="number" id="t-mins" placeholder="15" min="1" max="120"/></div>
+            <div><label class="fl">Student</label><input class="fi" id="t-stu" value="Your child" readonly/></div>
+          </div>
+          <button class="btn-add" onclick="addTask()">＋ Add Task</button>
+        </div>
+        <div id="task-list" style="margin-top:13px"></div>
+      </div>
+
+      <!-- CHATBOT -->
+      <div class="card">
+        <div class="ch"><div class="ct">💬 Ask the Data</div><span class="cbadge cb-l">AI Insights</span></div>
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="msg b"><div class="mav">🤖</div><div class="mbub">Hi! Ask me anything about today's session — focus, emotions, breaks, or tasks. I'll answer based on real session data once your child is active.</div></div>
+        </div>
+        <div class="qchips">
+          <div class="qc" onclick="sq('How has focus been today?')">Focus?</div>
+          <div class="qc" onclick="sq('What emotions were detected?')">Emotions?</div>
+          <div class="qc" onclick="sq('What triggered the breaks?')">Breaks?</div>
+          <div class="qc" onclick="sq('Task progress?')">Tasks?</div>
+        </div>
+        <div class="c-row">
+          <input class="cinp" id="cinp" type="text" placeholder="Ask about today's session…" onkeydown="if(event.key==='Enter')sendChat()"/>
+          <button class="csend" onclick="sendChat()">↑</button>
+        </div>
+      </div>
+
+      <!-- REPORT -->
+      <div class="card">
+        <div class="ch"><div class="ct">📄 Session Report</div><span class="cbadge cb-b">Clinical</span></div>
+        <div class="rrow"><span class="rk">Session Duration</span><span class="rv" id="rp-dur">—</span></div>
+        <div class="rrow"><span class="rk">Student Breaks</span><span class="rv" id="rp-sb">—</span></div>
+        <div class="rrow"><span class="rk">AI-Flagged Moments</span><span class="rv rw" id="rp-ab">—</span></div>
+        <div class="rrow"><span class="rk">Dominant Emotion</span><span class="rv" id="rp-dom">—</span></div>
+        <div class="rrow"><span class="rk">Avg. Regulation Δ</span><span class="rv" id="rp-d">—</span></div>
+        <div class="rrow"><span class="rk">Tasks Completed</span><span class="rv rg" id="rp-tk">—</span></div>
+        <div class="rrow" style="border-bottom:none"><span class="rk">Distractions</span><span class="rv" id="rp-di">—</span></div>
+        <div class="rbtns">
+          <button class="rbtn rp" onclick="exportReport('json')">📄 Export JSON</button>
+          <button class="rbtn ro" onclick="exportReport('copy')">📋 Copy Summary</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div id="toasts"></div>
+
+<script>
+/* ══════════════════════════════════════
+   STATE — all populated from localStorage
+   Zero hardcoded data anywhere.
+══════════════════════════════════════ */
+const S = { live:null, tasks:[], breaks:[], emoHistory:[], chart:null, chatBusy:false, connected:false };
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initChart();
+  syncFromStorage();
+  setInterval(syncFromStorage, 2000);
+  setInterval(pollCam, 1500);
+  window.addEventListener('storage', e => { if (e.key?.startsWith('nic_')) syncFromStorage(); });
+});
+
+/* ══════════════════════════════════════
+   REAL-TIME BRIDGE
+   Reads keys written by index.html:
+   nic_live, nic_tasks, nic_breaks,
+   nic_emotion_samples, nic_cam_frame
+══════════════════════════════════════ */
+function syncFromStorage() {
+  try {
+    const live    = JSON.parse(localStorage.getItem('nic_live')            || 'null');
+    const tasks   = JSON.parse(localStorage.getItem('nic_tasks')           || 'null');
+    const breaks  = JSON.parse(localStorage.getItem('nic_breaks')          || 'null');
+    const samples = JSON.parse(localStorage.getItem('nic_emotion_samples') || 'null');
+
+    const wasConn = S.connected;
+    S.connected = !!live;
+
+    if (live)    { S.live = live; updateMonitor(live); }
+    if (tasks)   { S.tasks   = tasks;   renderTasks(); }
+    if (breaks)  { S.breaks  = breaks;  renderBreaks(); }
+    if (samples && samples.length) { S.emoHistory = samples; showChart(); refreshChart(); }
+
+    updateStats();
+    updateReport();
+    updateConnUI(S.connected);
+    if (!wasConn && S.connected) toast('✅ Connected to student session');
+  } catch(e) { console.warn('Sync error', e); }
+}
+
+function pollCam() {
+  try {
+    const frame = localStorage.getItem('nic_cam_frame');
+    const img   = document.getElementById('cam-img');
+    const ph    = document.getElementById('cam-ph');
+    const lbl   = document.getElementById('cam-lbl');
+    if (frame?.startsWith('data:image')) {
+      img.src = frame;
+      img.classList.add('vis');
+      ph.style.display = 'none';
+      lbl.textContent  = '● Live';
+      lbl.style.color  = 'var(--mint-600)';
+    }
+  } catch(_) {}
+}
+
+/* ══════════════════════════════════════
+   UI UPDATE
+══════════════════════════════════════ */
+function updateConnUI(conn) {
+  document.getElementById('conn-badge').innerHTML = conn
+    ? `<div class="live-b"><div class="ld"></div>Session Live</div>`
+    : `<div class="wait-b">⏳ Waiting for student…</div>`;
+  document.getElementById('off-banner').className = conn ? 'off-banner' : 'off-banner show';
+  const dot = document.getElementById('sdot');
+  dot.className = conn ? 'sdot on' : 'sdot';
+  setText('ss-st', conn ? 'Session active' : 'Not connected');
+}
+
+function updateMonitor(live) {
+  if (live.studentName) {
+    setText('ss-name', live.studentName);
+    setText('t-stu', live.studentName);
+    setText('pg-sub', `Monitoring ${live.studentName}'s session`);
+  }
+
+  // Focus state
+  const sm = { focusing:['Focusing','sf'], break:['On Break','sb'], distracted:['Distracted','sd'], idle:['Idle','si'] };
+  const [sl, sc] = sm[live.focusState] || sm.idle;
+  const pill = document.getElementById('focus-pill');
+  pill.innerHTML = `<span class="sp-dot"></span>${sl}`;
+  pill.className = `sp ${sc}`;
+
+  // Monitor badge
+  const mb = document.getElementById('mon-badge');
+  mb.textContent = sl;
+  mb.className   = `cbadge ${live.focusState==='focusing'?'cb-m':live.focusState==='break'?'cb-a':'cb-b'}`;
+
+  // Emotion badge
+  const emo  = live.currentEmotion || 'unknown';
+  const em   = {happy:'eh',neutral:'en',frustrated:'ef',sad:'es',unknown:'eu',surprised:'es'};
+  const eb   = document.getElementById('emo-badge');
+  eb.className  = `eb ${em[emo]||'eu'}`;
+  eb.textContent = cap(emo);
+
+  // Info rows
+  setText('breaks-today', live.breakCount ?? '0');
+  const taskMatch = S.tasks.find(t=>t.id===live.currentTaskId);
+  setText('task-val', taskMatch ? (taskMatch.taskName||taskMatch.name) : (live.currentTaskId ? 'Active' : '—'));
+
+  if (live.lastUpdated)
+    setText('upd-txt', 'Updated ' + new Date(live.lastUpdated).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}));
+
+  // Sidebar distraction dot
+  document.getElementById('dbadge').style.display = live.focusState==='distracted' ? '' : 'none';
+}
+
+function updateStats() {
+  const live=S.live, breaks=S.breaks, tasks=S.tasks;
+  if (live?.elapsedSeconds != null) {
+    const m=Math.floor(live.elapsedSeconds/60), s=live.elapsedSeconds%60;
+    setText('sv-f', m+'m');
+    setText('st-f', `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} elapsed`);
+    document.getElementById('st-f').className='sc-trend t-up';
+  }
+  if (breaks.length) {
+    const sb=breaks.filter(b=>(b.by||b.initiatedBy)==='student').length;
+    setText('sv-b', breaks.length);
+    setText('st-b', `${sb} student · ${breaks.length-sb} AI`);
+    document.getElementById('st-b').className=`sc-trend ${breaks.length>4?'t-dn':'t-up'}`;
+  }
+  if (live?.distractionCount != null) {
+    setText('sv-d', live.distractionCount);
+    const dc=live.distractionCount;
+    setText('st-d', dc>3?'High today':dc>0?'Moderate':'None so far');
+    document.getElementById('st-d').className=`sc-trend ${dc>3?'t-dn':dc>0?'t-nu':'t-up'}`;
+  }
+  if (tasks.length) {
+    const done=tasks.filter(t=>t.isCompleted||t.done).length;
+    setText('sv-t', `${done}/${tasks.length}`);
+    const pct=Math.round(done/tasks.length*100);
+    setText('st-t', pct+'% complete');
+    document.getElementById('st-t').className=`sc-trend ${pct===100?'t-up':pct>50?'t-up':'t-nu'}`;
+    setText('task-badge', tasks.length+' tasks');
+  }
+}
+
+/* ══ CHART ══ */
+function initChart() {
+  const ctx=document.getElementById('echart').getContext('2d');
+  S.chart=new Chart(ctx,{
+    type:'line',
+    data:{labels:[],datasets:[
+      {label:'Happy',     data:[],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.09)',  tension:.42,fill:true, pointRadius:3,pointHoverRadius:5,borderWidth:2},
+      {label:'Frustrated',data:[],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.07)', tension:.42,fill:true, pointRadius:3,pointHoverRadius:5,borderWidth:2},
+      {label:'Neutral',   data:[],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.05)', tension:.42,fill:false,pointRadius:2,borderWidth:1.5,borderDash:[4,4]}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:{duration:300},
+      plugins:{legend:{labels:{color:'#6b7280',font:{size:11,family:'Inter'},boxWidth:10,padding:14}}},
+      scales:{
+        x:{ticks:{color:'#9ca3af',font:{size:10},maxTicksLimit:10},grid:{color:'rgba(0,0,0,0.04)'}},
+        y:{min:0,max:1,ticks:{color:'#9ca3af',font:{size:10},callback:v=>(v*100).toFixed(0)+'%'},grid:{color:'rgba(0,0,0,0.04)'}}
+      }
+    }
+  });
+}
+function showChart() {
+  document.getElementById('chart-empty').style.display='none';
+  document.getElementById('chart-wrap').style.display='';
+}
+function refreshChart() {
+  if (!S.chart||!S.emoHistory.length) return;
+  S.chart.data.labels           = S.emoHistory.map(e=>e.t);
+  S.chart.data.datasets[0].data = S.emoHistory.map(e=>e.e==='happy'      ?(e.conf||e.c||.82):0.02);
+  S.chart.data.datasets[1].data = S.emoHistory.map(e=>e.e==='frustrated' ?(e.conf||e.c||.78):0.02);
+  S.chart.data.datasets[2].data = S.emoHistory.map(e=>e.e==='neutral'    ?(e.conf||e.c||.65):0.02);
+  S.chart.update('none');
+}
+
+/* ══ BREAKS ══ */
+function renderBreaks() {
+  const cnt=S.breaks.length;
+  setText('bk-badge', cnt+' today');
+  if (!cnt) {
+    document.getElementById('bk-empty').style.display='';
+    document.getElementById('bk-list').style.display='none';
+    return;
+  }
+  document.getElementById('bk-empty').style.display='none';
+  document.getElementById('bk-list').style.display='';
+  document.getElementById('bk-rows').innerHTML=S.breaks.map(b=>{
+    const by=(b.by||b.initiatedBy)==='student'?'<span class="by-s">Student</span>':'<span class="by-a">AI</span>';
+    const pre=cap(b.pre||b.preBreakEmotion?.dominant||'—');
+    const dur=b.open?'<em style="color:var(--amber-500);font-size:11px">ongoing…</em>':fmtDur(b.durationSeconds||b.dur||0);
+    const d=b.delta;
+    const delta=d==null?'<span class="dz">—</span>':d>0.05?`<span class="dp">↑ Calmer</span>`:d<-0.05?`<span class="dn">↓ Tense</span>`:`<span class="dz">→ Stable</span>`;
+    return `<div class="bk-row"><span class="bt">${b.time||b.breakStart||'—'}</span><span>${by}</span><span style="color:var(--txt-sec)">${pre}</span><span style="color:var(--txt-sec)">${dur}</span><span>${delta}</span></div>`;
+  }).join('');
+}
+
+/* ══ TASKS ══ */
+function addTask() {
+  const name=document.getElementById('t-name').value.trim();
+  const url =document.getElementById('t-url').value.trim();
+  const mins=document.getElementById('t-mins').value;
+  if (!name) { toast('⚠️ Enter a task name'); return; }
+  const isYt=url.includes('youtube')||url.includes('youtu.be');
+  const task={
+    id:'t-'+Date.now(), taskName:name, name, resourceUrl:url, url,
+    resourceType:isYt?'youtube':'link', type:isYt?'youtube':'link',
+    isCompleted:false, done:false, estimatedMins:parseInt(mins)||15, mins:parseInt(mins)||15,
+    order:S.tasks.length, createdAt:new Date().toISOString()
+  };
+  S.tasks.push(task);
+  try { localStorage.setItem('nic_tasks',JSON.stringify(S.tasks)); } catch(_) {}
+  document.getElementById('t-name').value='';
+  document.getElementById('t-url').value='';
+  document.getElementById('t-mins').value='';
+  renderTasks(); updateStats();
+  toast('✅ Task assigned — student page will update');
+}
+function delTask(id) {
+  S.tasks=S.tasks.filter(t=>t.id!==id);
+  try { localStorage.setItem('nic_tasks',JSON.stringify(S.tasks)); } catch(_) {}
+  renderTasks(); updateStats();
+  toast('🗑 Task removed');
+}
+function renderTasks() {
+  const el=document.getElementById('task-list');
+  if (!S.tasks.length) {
+    el.innerHTML=`<div class="empty" style="padding:14px"><div class="ei" style="font-size:22px">📋</div><div class="et">No tasks yet. Add one above.</div></div>`;
+    return;
+  }
+  el.innerHTML=S.tasks.map(t=>{
+    const done=t.isCompleted||t.done;
+    const nm=t.taskName||t.name;
+    const tp=(t.resourceType||t.type)==='youtube'?'▶ YouTube':'🔗 Link';
+    return `<div class="ti">
+      <div class="tc ${done?'tc-d':'tc-t'}">${done?'✓':''}</div>
+      <div style="flex:1;min-width:0"><div class="tn ${done?'done':''}">${esc(nm)}</div><div class="ttype">${tp}${t.estimatedMins||t.mins?' · '+(t.estimatedMins||t.mins)+' min':''}</div></div>
+      <button class="tdl" onclick="delTask('${t.id}')">×</button>
+    </div>`;
+  }).join('');
+}
+
+/* ══ REPORT ══ */
+function updateReport() {
+  const live=S.live, breaks=S.breaks, tasks=S.tasks, emos=S.emoHistory;
+  if (!live&&!breaks.length&&!tasks.length&&!emos.length) return;
+  if (live?.elapsedSeconds!=null) {
+    const m=Math.floor(live.elapsedSeconds/60),s=live.elapsedSeconds%60;
+    setText('rp-dur', `${m}m ${s}s`);
+  }
+  const sb=breaks.filter(b=>(b.by||b.initiatedBy)==='student').length;
+  const ab=breaks.filter(b=>(b.by||b.initiatedBy)==='ai').length;
+  setText('rp-sb', sb||'0');
+  const abEl=document.getElementById('rp-ab'); abEl.textContent=ab||'0'; abEl.className=`rv ${ab>0?'rw':'rg'}`;
+  if (emos.length) {
+    const freq=emos.reduce((a,e)=>{a[e.e]=(a[e.e]||0)+1;return a},{});
+    const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+    setText('rp-dom',cap(top[0]?.[0]||'—'));
+  }
+  const deltas=breaks.map(b=>b.delta).filter(d=>d!=null);
+  if (deltas.length) {
+    const avg=deltas.reduce((a,b)=>a+b,0)/deltas.length;
+    const dEl=document.getElementById('rp-d'); dEl.textContent=(avg>=0?'+':'')+avg.toFixed(2); dEl.className=`rv ${avg>0?'rg':avg<-0.05?'rw':''}`;
+  }
+  if (tasks.length) { const done=tasks.filter(t=>t.isCompleted||t.done).length; setText('rp-tk',`${done}/${tasks.length}`); }
+  if (live?.distractionCount!=null) setText('rp-di',live.distractionCount);
+}
+function exportReport(fmt) {
+  const report={generatedAt:new Date().toISOString(),studentName:S.live?.studentName||'Student',
+    session:{focusSeconds:S.live?.elapsedSeconds||0,distractionCount:S.live?.distractionCount||0},
+    selfRegulation:{studentBreaks:S.breaks.filter(b=>(b.by||b.initiatedBy)==='student').length,aiDetected:S.breaks.filter(b=>(b.by||b.initiatedBy)==='ai').length,breakEvents:S.breaks},
+    emotionProfile:{samples:S.emoHistory},taskSummary:{total:S.tasks.length,completed:S.tasks.filter(t=>t.isCompleted||t.done).length,tasks:S.tasks}};
+  if (fmt==='json') {
+    const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url; a.download=`session-report-${new Date().toISOString().split('T')[0]}.json`; a.click(); URL.revokeObjectURL(url);
+    toast('📄 Report downloaded');
+  } else {
+    const freq=S.emoHistory.reduce((a,e)=>{a[e.e]=(a[e.e]||0)+1;return a},{});
+    const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+    const m=Math.floor((S.live?.elapsedSeconds||0)/60);
+    const txt=`SESSION SUMMARY — ${new Date().toLocaleDateString()}\nStudent: ${S.live?.studentName||'Student'}\nFocus: ${m}min | Breaks: ${S.breaks.length} | Distractions: ${S.live?.distractionCount||0}\nTasks: ${S.tasks.filter(t=>t.isCompleted||t.done).length}/${S.tasks.length} | Dominant Emotion: ${cap(top[0]?.[0]||'—')}`;
+    navigator.clipboard.writeText(txt).then(()=>toast('📋 Copied to clipboard'));
+  }
+}
+
+/* ══ CHATBOT ══ */
+function sq(t) { document.getElementById('cinp').value=t; sendChat(); }
+async function sendChat() {
+  const inp=document.getElementById('cinp'), q=inp.value.trim();
+  if (!q||S.chatBusy) return;
+  S.chatBusy=true; inp.value='';
+  addMsg('u',q); const tid=addTyping();
+  await sleep(650+Math.random()*500); removeTyping(tid);
+  let r;
+  try {
+    const res=await fetch('http://localhost:5000/chatbot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q,context:{live:S.live,tasks:S.tasks,breaks:S.breaks,emoHistory:S.emoHistory}}),signal:AbortSignal.timeout(5000)});
+    r=res.ok?(await res.json()).response:localReply(q);
+  } catch { r=localReply(q); }
+  addMsg('b',r); S.chatBusy=false;
+}
+function localReply(q) {
+  const ql=q.toLowerCase(), live=S.live;
+  if (!live&&!S.emoHistory.length&&!S.breaks.length)
+    return "No session data yet. Open index.html in another tab and start a learning session — data will appear here automatically.";
+  if (ql.includes('focus')||ql.includes('how')) {
+    const m=Math.floor((live?.elapsedSeconds||0)/60),dc=live?.distractionCount||0,done=S.tasks.filter(t=>t.isCompleted||t.done).length;
+    return `${m} minutes of focus logged, ${dc} distraction${dc!==1?'s':''}, ${done}/${S.tasks.length} tasks complete. ${dc>3?'Several interruptions — worth checking in.':m>0?'Solid session so far.':'Just getting started.'}`;
+  }
+  if (ql.includes('emotion')||ql.includes('feeling')||ql.includes('mood')) {
+    if (!S.emoHistory.length) return 'No emotion data yet. The student camera needs to be active on the learning page.';
+    const freq=S.emoHistory.reduce((a,e)=>{a[e.e]=(a[e.e]||0)+1;return a},{});
+    const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+    const pct=n=>Math.round(n/S.emoHistory.length*100);
+    return `Emotion breakdown: ${top.map(([e,c])=>`${cap(e)} ${pct(c)}%`).join(', ')}. Current: ${cap(live?.currentEmotion||'unknown')}. ${top[0]?.[0]==='happy'?'😊 Great positive mood!':top[0]?.[0]==='frustrated'?'⚠️ High frustration — consider checking in.':'Mixed emotions, fairly normal.'}`;
+  }
+  if (ql.includes('break')||ql.includes('trigger')) {
+    if (!S.breaks.length) return 'No breaks taken yet this session.';
+    const sb=S.breaks.filter(b=>(b.by||b.initiatedBy)==='student').length,ab=S.breaks.filter(b=>(b.by||b.initiatedBy)==='ai').length;
+    const pres=S.breaks.map(b=>b.pre||b.preBreakEmotion?.dominant).filter(Boolean);
+    const top=pres.reduce((a,b,_,arr)=>arr.filter(v=>v===b).length>=arr.filter(v=>v===a).length?b:a,pres[0]);
+    return `${sb} student-initiated break${sb!==1?'s':''}, ${ab} AI-detected moment${ab!==1?'s':''}. Most common pre-break feeling: ${cap(top||'—')}. ${ab>1?'⚠️ Multiple frustration peaks flagged.':'Self-regulation looks healthy.'}`;
+  }
+  if (ql.includes('task')||ql.includes('done')||ql.includes('progress')) {
+    if (!S.tasks.length) return 'No tasks assigned yet. Use the Assign Tasks panel to add some.';
+    const done=S.tasks.filter(t=>t.isCompleted||t.done).length,rem=S.tasks.filter(t=>!t.isCompleted&&!t.done).map(t=>t.taskName||t.name);
+    return `${done}/${S.tasks.length} tasks done (${Math.round(done/S.tasks.length*100)}%). ${rem.length?`Remaining: ${rem.join(', ')}.`:'All done! 🎉'}`;
+  }
+  return `I can answer questions about focus time, emotions, breaks, and tasks. ${live?`Currently: ${live.focusState}, emotion: ${cap(live.currentEmotion)}.`:''}`;
+}
+function addMsg(role,text) {
+  const c=document.getElementById('chat-msgs'),d=document.createElement('div');
+  d.className=`msg ${role}`;
+  d.innerHTML=`<div class="mav">${role==='b'?'🤖':'👤'}</div><div class="mbub">${esc(text)}</div>`;
+  c.appendChild(d); c.scrollTop=c.scrollHeight;
+}
+function addTyping() {
+  const c=document.getElementById('chat-msgs'),id='ty'+Date.now(),d=document.createElement('div');
+  d.className='msg b'; d.id=id;
+  d.innerHTML=`<div class="mav">🤖</div><div class="mbub typ"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  c.appendChild(d); c.scrollTop=c.scrollHeight; return id;
+}
+function removeTyping(id) { const el=document.getElementById(id); if(el) el.remove(); }
+
+/* ══ HELPERS ══ */
+function toast(msg) {
+  const b=document.getElementById('toasts'),el=document.createElement('div');
+  el.className='toast'; el.textContent=msg; b.appendChild(el);
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),250);},3400);
+}
+function cap(s)    { return s?s.charAt(0).toUpperCase()+s.slice(1):'—'; }
+function esc(s)    { return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''; }
+function setText(id,v) { const el=document.getElementById(id); if(el) el.textContent=v; }
+function fmtDur(s) { if(!s) return '—'; return s<60?s+'s':Math.floor(s/60)+'m '+(s%60)+'s'; }
+function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+</script>
+</body>
+</html>
