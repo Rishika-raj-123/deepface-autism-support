@@ -7,15 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- YouTube IFrame API — loaded async, onYouTubeIframeAPIReady fires when ready -->
   <script src="https://www.youtube.com/iframe_api"></script>
 
 <style>
 /* ================================================
    DESIGN SYSTEM  —  SENSORY-SAFE PASTEL ORGANIC
-   No sharp edges. No red alerts. No ticking.
-   Low-saturation, warm, breathable palette.
 ================================================ */
 :root {
   --bg-base:         #ede9e3;
@@ -39,7 +35,6 @@
   --accent-rose:     #c47a8a;
 
   --text-primary:    #46425e;
-  --text-secondary:  #7570-88;
   --text-secondary:  #79738e;
   --text-muted:      #a8a2bc;
   --text-light:      #c4bfd4;
@@ -60,9 +55,7 @@
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-
 html { scroll-behavior:smooth; }
-
 body {
   font-family: var(--font-body);
   background: var(--bg-base);
@@ -71,933 +64,1067 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Organic bg blobs ── */
-.bg-blob {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-}
-.bg-blob-1 {
-  top: -18%; left: -8%;
-  width: 58vw; height: 58vw;
-  background: radial-gradient(circle, #e4d8f2 0%, transparent 68%);
-  animation: drift 22s ease-in-out infinite alternate;
-}
-.bg-blob-2 {
-  bottom: -18%; right: -8%;
-  width: 52vw; height: 52vw;
-  background: radial-gradient(circle, #c8edd8 0%, transparent 68%);
-  animation: drift 28s ease-in-out infinite alternate-reverse;
-}
-.bg-blob-3 {
-  top: 40%; left: 55%;
-  width: 30vw; height: 30vw;
-  background: radial-gradient(circle, #f5e8cc 0%, transparent 70%);
-  animation: drift 18s ease-in-out infinite alternate;
-}
-@keyframes drift {
-  0%   { transform: translate(0,0) scale(1); }
-  100% { transform: translate(3%,6%) scale(1.06); }
-}
+/* Organic bg blobs */
+.bg-blob { position:fixed; border-radius:50%; pointer-events:none; z-index:0; }
+.bg-blob-1 { top:-18%;left:-8%;width:58vw;height:58vw;background:radial-gradient(circle,#e4d8f2 0%,transparent 68%);animation:drift 22s ease-in-out infinite alternate; }
+.bg-blob-2 { bottom:-18%;right:-8%;width:52vw;height:52vw;background:radial-gradient(circle,#c8edd8 0%,transparent 68%);animation:drift 28s ease-in-out infinite alternate-reverse; }
+.bg-blob-3 { top:40%;left:55%;width:30vw;height:30vw;background:radial-gradient(circle,#f5e8cc 0%,transparent 70%);animation:drift 18s ease-in-out infinite alternate; }
+@keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(3%,6%) scale(1.06)} }
 
-/* ── App Wrapper ── */
-.app {
+.app { position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:28px 22px 80px; }
+
+/* Glass Card */
+.glass { background:var(--bg-card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1.5px solid var(--glass-border);border-radius:var(--radius-xl);box-shadow:var(--glass-shadow);transition:var(--tr-soft); }
+.glass:hover { background:var(--bg-card-hover);box-shadow:0 12px 44px rgba(160,140,120,0.20); }
+
+/* ================================================
+   WELCOME BANNER  —  animated, energetic greeting
+================================================ */
+.welcome-banner {
   position: relative;
-  z-index: 1;
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 28px 22px 80px;
-}
-
-/* ── Glass Card ── */
-.glass {
-  background: var(--bg-card);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1.5px solid var(--glass-border);
+  overflow: hidden;
+  padding: 30px 36px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #e8e2f8 0%, #d8f0e4 50%, #f8ecd8 100%);
   border-radius: var(--radius-xl);
-  box-shadow: var(--glass-shadow);
-  transition: var(--tr-soft);
+  border: 1.5px solid rgba(255,255,255,0.85);
+  box-shadow: 0 8px 36px rgba(170,155,135,0.16);
+  animation: bannerEntrance 0.8s var(--ease-spring) both;
 }
-.glass:hover {
-  background: var(--bg-card-hover);
-  box-shadow: 0 12px 44px rgba(160,140,120,0.20);
+@keyframes bannerEntrance {
+  from { opacity:0; transform:translateY(-24px) scale(0.97); }
+  to   { opacity:1; transform:none; }
+}
+.welcome-banner::before {
+  content:'';
+  position:absolute;inset:0;
+  background: linear-gradient(90deg,
+    rgba(221,215,242,0.6) 0%,
+    rgba(200,237,214,0.4) 40%,
+    rgba(245,223,208,0.5) 100%);
+  animation: shimmer 4s ease-in-out infinite alternate;
+}
+@keyframes shimmer {
+  from { opacity:0.4; transform:scaleX(0.98); }
+  to   { opacity:1;   transform:scaleX(1.01); }
+}
+.welcome-inner {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap:20px;
+}
+.welcome-text .eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--text-muted); margin-bottom: 5px;
+}
+.welcome-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 34px);
+  font-weight: 800; line-height: 1.15;
+  color: var(--text-primary);
+}
+.welcome-text h1 .hero-name {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-sage));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nameGlow 3s ease-in-out infinite alternate;
+}
+@keyframes nameGlow {
+  from { filter: brightness(1); }
+  to   { filter: brightness(1.18); }
+}
+.welcome-text .tagline {
+  font-size: 14px; font-weight: 600;
+  color: var(--text-secondary); margin-top: 6px;
+  animation: taglineIn 1s 0.4s var(--ease-soft) both;
+}
+@keyframes taglineIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:none} }
+
+.welcome-right { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.emotion-badge {
+  display:flex; align-items:center; gap:7px;
+  padding:8px 16px;
+  background:rgba(255,255,255,0.65); backdrop-filter:blur(12px);
+  border:1.5px solid rgba(255,255,255,0.85);
+  border-radius:var(--radius-pill);
+  font-family:var(--font-display); font-size:13px; font-weight:700;
+  color:var(--text-secondary); box-shadow:0 4px 16px rgba(160,140,120,0.12);
+  transition:var(--tr-soft);
+}
+.emotion-dot { width:8px;height:8px;border-radius:50%;background:var(--accent-sage);animation:softPulse 2.8s ease-in-out infinite; }
+@keyframes softPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.65} }
+
+/* Floating sparkles in welcome banner */
+.sparkle { position:absolute; pointer-events:none; font-size:18px; animation:sparkleFly 6s ease-in-out infinite; opacity:0; }
+.sparkle:nth-child(1){top:14%;left:8%; animation-delay:0s;}
+.sparkle:nth-child(2){top:60%;left:18%;animation-delay:1.2s;}
+.sparkle:nth-child(3){top:20%;right:22%;animation-delay:2.4s;}
+.sparkle:nth-child(4){top:70%;right:12%;animation-delay:0.8s;}
+.sparkle:nth-child(5){top:40%;left:40%;animation-delay:3.1s;}
+@keyframes sparkleFly {
+  0%,100%{opacity:0;transform:translateY(0) scale(0.7) rotate(0deg)}
+  30%    {opacity:0.9;transform:translateY(-12px) scale(1.1) rotate(15deg)}
+  60%    {opacity:0.5;transform:translateY(-6px) scale(0.95) rotate(-8deg)}
 }
 
 /* ================================================
-   HEADER
+   TAB NAV
 ================================================ */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  animation: fadeDown 0.55s ease both;
-}
-.greeting-block .eyebrow {
-  font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 3px;
-}
-.greeting-block h1 {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 3.5vw, 30px);
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.1;
-}
-.greeting-block h1 em {
-  color: var(--accent-blue);
-  font-style: normal;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Emotion badge */
-.emotion-badge {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 15px;
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
+.tab-nav {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 22px;
+  padding: 6px;
+  background: rgba(255,255,255,0.45); backdrop-filter:blur(14px);
   border: 1.5px solid var(--glass-border);
   border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  box-shadow: 0 4px 16px rgba(160,140,120,0.12);
-  transition: var(--tr-soft);
+  box-shadow: 0 4px 16px rgba(160,140,120,0.1);
+  width: fit-content;
 }
-.emotion-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent-sage);
-  animation: softPulse 2.8s ease-in-out infinite;
+.tab-btn {
+  padding: 9px 22px;
+  border: none; background: transparent;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  color: var(--text-muted); cursor: pointer;
+  border-radius: var(--radius-pill); transition: var(--tr);
+  white-space: nowrap; display:flex; align-items:center; gap:7px;
 }
-@keyframes softPulse {
-  0%,100% { transform:scale(1); opacity:1; }
-  50%      { transform:scale(1.4); opacity:0.65; }
+.tab-btn:hover { color:var(--text-primary); background:rgba(255,255,255,0.6); }
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--pastel-lavender), var(--pastel-mint));
+  color: var(--text-primary);
+  box-shadow: 0 3px 12px rgba(140,120,200,0.18);
 }
-
-/* Camera pip (hidden) */
-#hidden-camera-feed {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 1px; height: 1px;
-}
-#capture-canvas {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 1px; height: 1px;
-}
+.tab-panel { display:none; animation:fadeUp 0.35s var(--ease-spring) both; }
+.tab-panel.active { display:block; }
 
 /* ================================================
-   MAIN GRID
+   LEARN TAB — Video-centric layout
 ================================================ */
-.main-grid {
+.learn-layout {
   display: grid;
   grid-template-columns: 1fr 340px;
-  grid-template-rows: auto auto;
   gap: 20px;
 }
-@media (max-width: 860px) {
-  .main-grid { grid-template-columns: 1fr; }
-}
+@media(max-width:860px){ .learn-layout{grid-template-columns:1fr;} }
 
-/* ================================================
-   TIMER CARD  (top-left)
-================================================ */
-.timer-card {
-  padding: 28px 30px;
-  animation: fadeUp 0.55s 0.08s ease both;
-}
-.timer-card-inner {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-
-/* SVG ring timer */
-.ring-wrap {
-  position: relative;
-  flex-shrink: 0;
-  width: 114px; height: 114px;
-}
-.ring-svg { transform: rotate(-90deg); overflow: visible; }
-.ring-track {
-  fill: none;
-  stroke: #e0d8ee;
-  stroke-width: 9;
-}
-.ring-fill {
-  fill: none;
-  stroke: var(--accent-blue);
-  stroke-width: 9;
-  stroke-linecap: round;
-  stroke-dasharray: 314;
-  stroke-dashoffset: 314;
-  transition: stroke-dashoffset 1.05s linear, stroke 0.5s ease;
-}
-.ring-fill.paused  { stroke: var(--accent-warm); }
-.ring-fill.stopped { stroke: var(--text-light); }
-
-.ring-center {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.ring-time {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.ring-label {
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-muted);
-  margin-top: 3px;
-}
-
-/* Timer meta */
-.timer-meta { flex: 1; min-width: 0; }
-.current-task-name {
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 7px;
-  line-height: 1.25;
-  white-space: nowrap;
+/* Video card — large, centered, hero */
+.video-hero {
+  padding: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
+  animation: fadeUp 0.55s 0.06s ease both;
 }
-.current-task-name.empty { color: var(--text-muted); font-weight: 500; }
-
-.pill-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+.video-hero-top {
+  padding: 18px 22px 14px;
+  display: flex; align-items:center; justify-content:space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
 }
-.pill {
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+.video-task-info { min-width:0; }
+.video-task-label {
+  font-family: var(--font-display); font-size:11px; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted);
+  margin-bottom:3px;
 }
-.pill-idle       { background: var(--pastel-lavender); color: var(--accent-blue); }
-.pill-focusing   { background: var(--pastel-sage);     color: #3d7a5a; }
-.pill-paused     { background: var(--pastel-butter);   color: #7a6228; }
-.pill-break      { background: var(--pastel-peach);    color: var(--accent-warm); }
-.pill-grace      { background: var(--pastel-sky);      color: #3a78a8; }
-
-.distraction-stat {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 600;
+.video-task-name {
+  font-family: var(--font-display); font-size:16px; font-weight:800;
+  color:var(--text-primary);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  max-width:440px;
 }
-.distraction-stat span { color: var(--text-secondary); font-weight: 800; }
-
-/* Grace period banner */
-.grace-banner {
-  display: none;
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: var(--pastel-sky);
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  font-weight: 700;
-  color: #3a78a8;
-  align-items: center;
-  gap: 8px;
-}
-.grace-banner.visible { display: flex; }
-.grace-countdown { font-size: 18px; font-weight: 900; }
-
-/* ================================================
-   TASK LIST CARD  (bottom-left)
-================================================ */
-.tasks-card {
-  padding: 26px 28px;
-  animation: fadeUp 0.55s 0.15s ease both;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  margin-bottom: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.section-title .dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--accent-blue);
-}
-
-.task-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
-.task-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: rgba(255,255,255,0.5);
-  border: 1.5px solid rgba(255,255,255,0.8);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: var(--tr);
-  position: relative;
-  overflow: hidden;
-}
-.task-item::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
-  background: var(--accent-blue-soft);
-  border-radius: 4px 0 0 4px;
-  transition: var(--tr);
-}
-.task-item:hover {
-  background: rgba(255,255,255,0.78);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(160,140,120,0.14);
-}
-.task-item:hover::before { background: var(--accent-blue); }
-.task-item.active { background: rgba(255,255,255,0.85); }
-.task-item.active::before { background: var(--accent-sage); width: 5px; }
-.task-item.completed { opacity: 0.5; pointer-events: none; }
-.task-item.completed::before { background: var(--accent-sage); }
-
-.task-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-  width: 36px; height: 36px;
-  background: var(--pastel-lavender);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-}
-.task-info { flex: 1; min-width: 0; }
-.task-info .name {
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.task-info .url-hint {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.task-check {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--text-light);
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  transition: var(--tr);
-}
-.task-item.completed .task-check {
-  background: var(--accent-sage);
-  border-color: var(--accent-sage);
-  color: #fff;
-}
-
-.task-list-empty {
-  padding: 28px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 600;
-  font-family: var(--font-display);
-}
-
-/* ================================================
-   RIGHT COLUMN
-================================================ */
-.right-col {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Video card */
-.video-card {
-  padding: 22px;
-  animation: fadeUp 0.55s 0.1s ease both;
-}
-.video-label {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 12px;
-}
+.video-task-name.empty { color:var(--text-muted); font-weight:600; }
 .video-wrapper {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--pastel-lavender);
-  position: relative;
+  width:100%; aspect-ratio:16/9;
+  background: linear-gradient(135deg, var(--pastel-lavender), var(--pastel-mint));
+  position:relative;
 }
 .video-placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: var(--text-muted);
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 600;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; color:var(--text-muted);
+  font-family:var(--font-display); font-size:15px; font-weight:600;
 }
-.video-placeholder .play-icon {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
+.video-placeholder .play-ico {
+  width:60px; height:60px; border-radius:50%;
+  background:rgba(255,255,255,0.6);
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px;
+  animation: playPulse 2s ease-in-out infinite;
 }
-#yt-player { width: 100% !important; height: 100% !important; border: none; }
+@keyframes playPulse { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,0.4)} 50%{transform:scale(1.06);box-shadow:0 0 0 12px rgba(255,255,255,0)} }
+#yt-player { width:100%!important; height:100%!important; border:none; }
 
-/* Break button card */
-.break-card {
-  padding: 22px;
-  background: rgba(255, 242, 230, 0.65);
-  border-color: rgba(255,220,190,0.7);
-  animation: fadeUp 0.55s 0.2s ease both;
-  text-align: center;
+/* ── Timer strip below video ── */
+.timer-strip {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 22px;
+  border-top: 1px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.3);
 }
-.break-btn {
-  width: 100%;
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #f5dfd0 0%, #f0cfc4 100%);
-  border: none;
-  border-radius: var(--radius-lg);
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--accent-warm);
-  cursor: pointer;
-  transition: var(--tr);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  letter-spacing: 0.02em;
-  box-shadow: 0 4px 16px rgba(200,130,90,0.15);
+.ring-wrap { position:relative; flex-shrink:0; width:58px; height:58px; }
+.ring-svg { transform:rotate(-90deg); overflow:visible; }
+.ring-track { fill:none; stroke:#e0d8ee; stroke-width:6; }
+.ring-fill  { fill:none; stroke:var(--accent-blue); stroke-width:6; stroke-linecap:round;
+              stroke-dasharray:157; stroke-dashoffset:157;
+              transition:stroke-dashoffset 1.05s linear, stroke 0.5s ease; }.ring-fill.paused  { stroke:var(--accent-warm); }
+.ring-fill.stopped { stroke:var(--text-light); }
+.ring-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.ring-time { font-family:var(--font-display); font-size:13px; font-weight:800; color:var(--text-primary); line-height:1; }
+.ring-lbl  { font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); margin-top:2px; }
+
+.timer-meta-strip { flex:1; }
+.timer-pill-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+.pill { padding:4px 12px; border-radius:var(--radius-pill); font-size:11px; font-weight:800; letter-spacing:0.07em; text-transform:uppercase; }
+.pill-idle     { background:var(--pastel-lavender); color:var(--accent-blue); }
+.pill-focusing { background:var(--pastel-sage);     color:#3d7a5a; }
+.pill-paused   { background:var(--pastel-butter);   color:#7a6228; }
+.pill-break    { background:var(--pastel-peach);    color:var(--accent-warm); }
+.pill-grace    { background:var(--pastel-sky);      color:#3a78a8; }
+.distraction-stat { font-size:12px; color:var(--text-muted); font-weight:600; }
+.distraction-stat span { color:var(--text-secondary); font-weight:800; }
+
+/* Distraction notice */
+.distraction-notice {
+  display:none; align-items:center; gap:8px;
+  font-size:12px; font-weight:700; color:#3a78a8;
+  padding:6px 12px; background:var(--pastel-sky);
+  border-radius:var(--radius-sm); margin-top:6px;
 }
-.break-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(200,130,90,0.22);
+.distraction-notice.visible { display:flex; }
+.distraction-countdown { font-size:16px; font-weight:900; color:#3a78a8; }
+
+/* ── Right sidebar ── */
+.learn-sidebar { display:flex; flex-direction:column; gap:16px; }
+
+/* Task list card */
+.tasks-card { padding:22px 24px; animation:fadeUp 0.55s 0.12s ease both; }
+.section-title {
+  font-family:var(--font-display); font-size:13px; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted);
+  margin-bottom:16px; display:flex; align-items:center; gap:8px;
 }
-.break-btn:active { transform: scale(0.98); }
+.section-title .dot { width:7px;height:7px;border-radius:50%;background:var(--accent-blue); }
+.task-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.task-item {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px;
+  background:rgba(255,255,255,0.5); border:1.5px solid rgba(255,255,255,0.8);
+  border-radius:var(--radius-lg); cursor:pointer; transition:var(--tr);
+  position:relative; overflow:hidden;
+}
+.task-item::before { content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent-blue-soft);border-radius:4px 0 0 4px;transition:var(--tr); }
+.task-item:hover { background:rgba(255,255,255,0.78);transform:translateY(-2px);box-shadow:0 6px 20px rgba(160,140,120,0.14); }
+.task-item:hover::before { background:var(--accent-blue); }
+.task-item.active { background:rgba(255,255,255,0.85); }
+.task-item.active::before { background:var(--accent-sage); width:5px; }
+.task-item.completed { opacity:0.5; pointer-events:none; }
+.task-item.completed::before { background:var(--accent-sage); }
+.task-icon { font-size:18px; flex-shrink:0; width:34px;height:34px; background:var(--pastel-lavender); border-radius:var(--radius-sm); display:flex;align-items:center;justify-content:center; }
+.task-info { flex:1; min-width:0; }
+.task-info .name { font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.task-info .url-hint { font-size:11px;color:var(--text-muted);font-weight:600; }
+.task-check { width:20px;height:20px;border-radius:50%;border:2px solid var(--text-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:var(--tr); }
+.task-item.completed .task-check { background:var(--accent-sage);border-color:var(--accent-sage);color:#fff; }
+.task-list-empty { padding:24px;text-align:center;color:var(--text-muted);font-size:13px;font-weight:600;font-family:var(--font-display); }
+
+/* Break card */
+.break-card { padding:20px 22px; background:rgba(255,242,230,0.65); border-color:rgba(255,220,190,0.7); animation:fadeUp 0.55s 0.18s ease both; text-align:center; }
+.break-btn { width:100%; padding:14px 18px; background:linear-gradient(135deg,#f5dfd0 0%,#f0cfc4 100%); border:none; border-radius:var(--radius-lg); font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--accent-warm); cursor:pointer; transition:var(--tr); display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 16px rgba(200,130,90,0.15); }
+.break-btn:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 8px 24px rgba(200,130,90,0.22); }
+.break-btn:active { transform:scale(0.98); }
 .break-btn .btn-icon { font-size: 22px; }
-.break-hint {
-  margin-top: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  line-height: 1.5;
+.break-hint { margin-top:8px; font-size:11px; font-weight:600; color:var(--text-muted); line-height:1.5; }
+
+/* Event log */
+.log-card { padding:20px 24px; animation:fadeUp 0.55s 0.22s ease both; }
+.log-list { display:flex;flex-direction:column;gap:6px;max-height:130px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--text-light) transparent; }
+.log-item { display:flex;align-items:center;gap:10px;padding:7px 11px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;color:var(--text-secondary);background:rgba(255,255,255,0.5);animation:logAppear 0.3s ease both; }
+@keyframes logAppear { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:none} }
+.log-icon { font-size:13px;flex-shrink:0; }
+.log-time { color:var(--text-muted);font-size:11px;margin-left:auto; }
+.log-empty { font-size:13px;font-weight:600;color:var(--text-muted);text-align:center;padding:14px;font-family:var(--font-display); }
+
+/* Grace period banner */
+.grace-banner { display:none; margin-top:10px; padding:9px 13px; background:var(--pastel-sky); border-radius:var(--radius-md); font-size:13px; font-weight:700; color:#3a78a8; align-items:center; gap:8px; }
+.grace-banner.visible { display:flex; }
+.grace-countdown { font-size:17px; font-weight:900; }
+
+/* ================================================
+   MISSION ACCOMPLISHED  —  confetti + badge
+================================================ */
+#mission-overlay {
+  position:fixed; inset:0; z-index:9998;
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(237,233,240,0.85); backdrop-filter:blur(8px);
+  animation:missionFade 0.5s ease both;
+}
+#mission-overlay.show { display:flex; }
+@keyframes missionFade { from{opacity:0} to{opacity:1} }
+
+.mission-badge {
+  text-align:center; padding:44px 56px;
+  background:linear-gradient(135deg,#e8e2f8 0%,#d8f0e4 50%,#f8ecd8 100%);
+  border:1.5px solid rgba(255,255,255,0.9); border-radius:var(--radius-xl);
+  box-shadow:0 24px 72px rgba(150,130,200,0.28);
+  animation:badgePop 0.7s var(--ease-spring) both;
+}
+@keyframes badgePop { from{opacity:0;transform:scale(0.5) rotate(-8deg)} to{opacity:1;transform:scale(1) rotate(0)} }
+.mission-emoji { font-size:72px; display:block; margin-bottom:16px; animation:missionFloat 2s ease-in-out infinite; }
+@keyframes missionFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.mission-title { font-family:var(--font-display); font-size:36px; font-weight:900; margin-bottom:8px; background:linear-gradient(135deg,var(--accent-blue),var(--accent-sage),var(--accent-warm)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.mission-sub   { font-family:var(--font-display); font-size:16px; font-weight:700; color:var(--text-secondary); margin-bottom:28px; }
+.mission-btn   { padding:14px 40px; background:linear-gradient(135deg,var(--pastel-lavender),var(--pastel-sage)); border:1.5px solid rgba(255,255,255,0.8); border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--text-primary); cursor:pointer; transition:var(--tr); box-shadow:0 6px 20px rgba(150,130,200,0.18); }
+.mission-btn:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(150,130,200,0.28); }
+
+/* Confetti pieces */
+.confetti-piece {
+  position:fixed; width:10px; height:10px;
+  pointer-events:none; z-index:9999;
+  border-radius:2px;
+  animation:confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0%   { transform:translateY(-20px) rotate(0deg) scale(1); opacity:1; }
+  80%  { opacity:1; }
+  100% { transform:translateY(110vh) rotate(720deg) scale(0.5); opacity:0; }
 }
 
 /* ================================================
-   DISTRACTION LOG
+   GAMES TAB
 ================================================ */
-.log-card {
-  padding: 22px 26px;
-  grid-column: 1 / -1;
-  animation: fadeUp 0.55s 0.25s ease both;
+.games-layout { display:flex; flex-direction:column; align-items:center; gap:28px; }
+.games-header { text-align:center; padding:10px 0 4px; }
+.games-header h2 { font-family:var(--font-display); font-size:26px; font-weight:800; color:var(--text-primary); margin-bottom:6px; }
+.games-header p { font-family:var(--font-display); font-size:14px; font-weight:600; color:var(--text-muted); }
+
+/* Memory Match game */
+.memory-card-wrap {
+  width:100%; max-width:560px;
+  padding:28px; animation:fadeUp 0.5s ease both;
 }
-.log-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 140px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--text-light) transparent;
+.memory-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.memory-stat { font-family:var(--font-display); font-size:14px; font-weight:700; color:var(--text-secondary); }
+.memory-stat span { font-size:22px; font-weight:900; color:var(--text-primary); }
+.btn-reset { padding:8px 20px; background:var(--pastel-lavender); border:none; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--accent-blue); cursor:pointer; transition:var(--tr); }
+.btn-reset:hover { background:var(--accent-blue-soft); color:#fff; transform:scale(1.04); }
+
+.memory-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; perspective:800px; }
+.mem-card {
+  aspect-ratio:1; border-radius:var(--radius-lg);
+  cursor:pointer; position:relative;
+  transition:transform 0.45s var(--ease-spring);
+  transform-style: preserve-3d;
 }
-.log-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: rgba(255,255,255,0.5);
-  animation: logAppear 0.3s ease both;
+.mem-card.flipped { transform: rotateY(180deg); }
+.mem-card.matched { transform:rotateY(180deg) scale(0.96); cursor:default; }
+.mem-card-face {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:var(--radius-lg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border:2px solid rgba(255,255,255,0.8);
+  font-size:32px;
 }
-@keyframes logAppear {
-  from { opacity:0; transform: translateX(-8px); }
-  to   { opacity:1; transform: translateX(0); }
+.mem-card-back {
+  background:linear-gradient(135deg,var(--pastel-lavender),var(--pastel-sky));
+  box-shadow:0 4px 14px rgba(140,120,200,0.14);
 }
-.log-item .log-icon { font-size: 14px; flex-shrink: 0; }
-.log-item .log-time { color: var(--text-muted); font-size: 11px; margin-left: auto; }
-.log-empty {
-  font-size: 13px; font-weight: 600; color: var(--text-muted);
-  text-align: center; padding: 14px;
-  font-family: var(--font-display);
+.mem-card-front {
+  background:linear-gradient(135deg,#fff,var(--pastel-mint));
+  transform: rotateY(180deg);
+  box-shadow:0 6px 18px rgba(140,120,200,0.18);
 }
+.mem-card.matched .mem-card-front {
+  background:linear-gradient(135deg,var(--pastel-sage),var(--pastel-mint));
+  animation:matchPop 0.4s var(--ease-spring);
+}
+@keyframes matchPop { 0%{transform:rotateY(180deg) scale(1)} 50%{transform:rotateY(180deg) scale(1.15)} 100%{transform:rotateY(180deg) scale(0.96)} }
+
+.memory-win {
+  text-align:center; padding:28px;
+  animation:fadeUp 0.5s var(--ease-spring) both;
+}
+.memory-win h3 { font-family:var(--font-display); font-size:26px; font-weight:900; color:var(--text-primary); margin-bottom:8px; }
+.memory-win p  { font-family:var(--font-display); font-size:14px; color:var(--text-secondary); font-weight:600; }
 
 /* ================================================
-   ZEN MODE OVERLAY  —  SENSORY BREAK
-   Ultra-low contrast, soft pastels only.
+   TOAST
 ================================================ */
-#zen-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* Very soft gradient — nothing jarring */
-  background: linear-gradient(160deg, #ede8f8 0%, #dff0e8 40%, #fdeee0 80%, #f0e4f0 100%);
-  animation: zenFadeIn 1.2s ease both;
-}
-#zen-overlay.visible { display: flex; }
-@keyframes zenFadeIn {
-  from { opacity:0; }
-  to   { opacity:1; }
-}
-
-.zen-breathing-ring {
-  position: absolute;
-  border-radius: 50%;
-  background: transparent;
-  border: 2px solid rgba(180,170,210,0.25);
-  animation: breatheRing 6s ease-in-out infinite;
-}
-.zen-breathing-ring:nth-child(1) { width:200px;height:200px; animation-delay:0s; }
-.zen-breathing-ring:nth-child(2) { width:300px;height:300px; animation-delay:1s; border-color:rgba(150,200,170,0.18); }
-.zen-breathing-ring:nth-child(3) { width:420px;height:420px; animation-delay:2s; border-color:rgba(200,170,150,0.14); }
-@keyframes breatheRing {
-  0%,100% { transform:scale(1); opacity:0.6; }
-  50%      { transform:scale(1.12); opacity:1; }
-}
-
-.zen-content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  max-width: 380px;
-  padding: 20px;
-}
-.zen-emoji {
-  font-size: 56px;
-  margin-bottom: 20px;
-  display: block;
-  animation: floatGently 4s ease-in-out infinite;
-}
-@keyframes floatGently {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
-}
-.zen-title {
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 700;
-  color: #7870a0;   /* very muted, low contrast */
-  margin-bottom: 10px;
-  letter-spacing: -0.01em;
-}
-.zen-subtitle {
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 500;
-  color: #a098b8;
-  line-height: 1.7;
-  margin-bottom: 28px;
-}
-
-/* Breathing guide */
-.breathing-guide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 36px;
-}
-.breathing-circle {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: rgba(200,190,230,0.35);
-  border: 2px solid rgba(180,170,210,0.4);
-  animation: breatheCircle 6s ease-in-out infinite;
-}
-@keyframes breatheCircle {
-  0%,100% { transform:scale(1); background:rgba(200,190,230,0.35); }
-  50%      { transform:scale(1.4); background:rgba(200,190,230,0.55); }
-}
-.breathing-text {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: #b0a8c8;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  animation: breatheText 6s ease-in-out infinite;
-}
-@keyframes breatheText {
-  0%,49%  { opacity:1; content:'Breathe in...'; }
-  50%,100% { opacity:0.6; }
-}
-
-.zen-pre-emotion {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 16px;
-  background: rgba(255,255,255,0.45);
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: var(--radius-pill);
-  font-size: 12px;
-  font-weight: 700;
-  color: #9890b8;
-  margin-bottom: 28px;
-}
-
-.zen-ready-btn {
-  padding: 15px 44px;
-  background: rgba(255,255,255,0.55);
-  border: 1.5px solid rgba(200,190,230,0.5);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 700;
-  color: #8880b0;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  letter-spacing: 0.04em;
-}
-.zen-ready-btn:hover {
-  background: rgba(255,255,255,0.80);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(170,150,200,0.18);
-}
-.zen-ready-btn:active { transform: scale(0.97); }
-
-/* ================================================
-   TOAST NOTIFICATION  (no red, no harsh sounds)
-================================================ */
-#toast-container {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9000;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: none;
-}
-.toast {
-  padding: 11px 22px;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(12px);
-  border: 1.5px solid var(--glass-border);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  box-shadow: 0 6px 24px rgba(160,140,120,0.18);
-  animation: toastIn 0.4s var(--ease-spring) both;
-  white-space: nowrap;
-}
-.toast.removing { animation: toastOut 0.35s ease forwards; }
+#toast-container { position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:9000;display:flex;flex-direction:column;gap:8px;pointer-events:none; }
+.toast { padding:11px 22px;background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border:1.5px solid var(--glass-border);border-radius:var(--radius-pill);font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--text-secondary);box-shadow:0 6px 24px rgba(160,140,120,0.18);animation:toastIn 0.4s var(--ease-spring) both;white-space:nowrap; }
+.toast.removing { animation:toastOut 0.35s ease forwards; }
 @keyframes toastIn  { from{opacity:0;transform:translateY(16px) scale(0.9)} to{opacity:1;transform:none} }
 @keyframes toastOut { from{opacity:1;transform:none} to{opacity:0;transform:translateY(-10px) scale(0.95)} }
 
-/* ================================================
-   ANIMATIONS
-================================================ */
+/* Camera */
+#hidden-camera-feed,#capture-canvas { position:absolute;opacity:0;pointer-events:none;width:1px;height:1px; }
+
 @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:none} }
 @keyframes fadeUp   { from{opacity:0;transform:translateY(18px)}  to{opacity:1;transform:none} }
+
+/* ================================================
+   CALM SPACE  —  The Break Panel
+   Muted pastels, nothing energetic or sharp.
+================================================ */
+.calm-space {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  animation: calmFadeIn 1s ease both;
+}
+@keyframes calmFadeIn { from{opacity:0;transform:scale(0.98)} to{opacity:1;transform:none} }
+
+.calm-card {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(24px);
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: 36px;
+  box-shadow: 0 16px 56px rgba(170,155,200,0.14);
+  padding: 52px 60px;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.calm-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg,
+    rgba(221,215,242,0.35) 0%,
+    rgba(204,233,216,0.25) 45%,
+    rgba(245,223,208,0.30) 100%);
+  pointer-events: none;
+}
+.calm-card-inner { position: relative; z-index: 1; }
+
+/* Floating leaves/orbs decoration */
+.calm-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.18;
+}
+.calm-orb-1 { width:180px;height:180px; top:-50px; right:-50px; background:var(--pastel-lavender); animation:driftSlow 14s ease-in-out infinite alternate; }
+.calm-orb-2 { width:120px;height:120px; bottom:-30px; left:-30px; background:var(--pastel-sage);   animation:driftSlow 18s ease-in-out infinite alternate-reverse; }
+@keyframes driftSlow { 0%{transform:translate(0,0)} 100%{transform:translate(12px,18px)} }
+
+.calm-emoji-wrap {
+  width: 88px; height: 88px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--pastel-lavender), var(--pastel-mint));
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.75);
+  box-shadow: 0 8px 28px rgba(170,150,200,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  animation: calmFloat 5s ease-in-out infinite;
+}
+@keyframes calmFloat {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+.calm-title {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 800;
+  color: #7870a0;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.calm-sub {
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 500;
+  color: #a098b8;
+  line-height: 1.75;
+  margin-bottom: 36px;
+}
+
+/* ── Breathing animation ── */
+.breath-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.breath-ring-outer {
+  position: relative;
+  width: 140px; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+/* Outer ripple rings */
+.breath-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(170,160,210,0.22);
+  animation: breathRipple 4s ease-in-out infinite;
+}
+.breath-ripple:nth-child(1){ width:140px;height:140px;animation-delay:0s; }
+.breath-ripple:nth-child(2){ width:114px;height:114px;animation-delay:0.4s; border-color:rgba(140,200,170,0.18); }
+@keyframes breathRipple {
+  0%,100%{ transform:scale(1);   opacity:0.5; }
+  50%    { transform:scale(1.14); opacity:1;   }
+}
+/* Core breathing circle — the main guide */
+.breath-circle {
+  position: relative; z-index: 1;
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(200,190,230,0.55), rgba(180,220,200,0.45));
+  border: 2px solid rgba(200,190,230,0.5);
+  box-shadow: 0 0 0 0 rgba(180,170,220,0.4);
+  animation: breathCore 8s ease-in-out infinite;
+}
+@keyframes breathCore {
+  0%,100% {
+    transform: scale(1);
+    background: linear-gradient(135deg,rgba(200,190,230,0.45),rgba(180,220,200,0.35));
+    box-shadow: 0 0 0 0 rgba(180,170,220,0.3);
+  }
+  40% {
+    transform: scale(1.48);
+    background: linear-gradient(135deg,rgba(210,200,245,0.65),rgba(190,235,215,0.55));
+    box-shadow: 0 0 0 18px rgba(180,170,220,0);
+  }
+  50% {
+    transform: scale(1.48);
+  }
+  90% {
+    transform: scale(1);
+    background: linear-gradient(135deg,rgba(200,190,230,0.45),rgba(180,220,200,0.35));
+  }
+}
+.breath-label {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 800;
+  color: #b0a8c8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  min-height: 22px;
+  transition: opacity 0.5s ease;
+}
+
+/* ── Calm space action buttons ── */
+.calm-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.calm-go-games {
+  padding: 14px 40px;
+  background: linear-gradient(135deg, var(--pastel-lavender) 0%, var(--pastel-mint) 100%);
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 800;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--tr);
+  box-shadow: 0 6px 22px rgba(150,130,200,0.18);
+  display: flex; align-items: center; gap: 9px;
+}
+.calm-go-games:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(150,130,200,0.28); }
+.calm-go-games:active{ transform:scale(0.97); }
+
+.calm-go-learn {
+  padding: 10px 28px;
+  background: transparent;
+  border: 1.5px solid rgba(190,180,220,0.4);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  color: #9890b8;
+  cursor: pointer;
+  transition: var(--tr);
+}
+.calm-go-learn:hover { background:rgba(255,255,255,0.55); color:var(--text-secondary); }
+
+/* ================================================
+   GAMES TAB  —  3 games in tabbed sub-layout
+================================================ */
+.games-page { animation: fadeUp 0.35s var(--ease-spring) both; }
+
+.games-page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.games-page-header h2 {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 800;
+  color: var(--text-primary); margin-bottom: 6px;
+}
+.games-page-header p {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 600; color: var(--text-muted);
+}
+
+/* Game sub-tabs */
+.game-tabs {
+  display: flex; gap: 8px; justify-content: center;
+  margin-bottom: 24px; flex-wrap: wrap;
+}
+.game-tab-btn {
+  padding: 10px 24px;
+  background: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.75);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  color: var(--text-muted); cursor: pointer; transition: var(--tr);
+  display: flex; align-items: center; gap: 7px;
+}
+.game-tab-btn:hover { background: rgba(255,255,255,0.75); color: var(--text-primary); }
+.game-tab-btn.active {
+  background: linear-gradient(135deg, var(--pastel-lavender), var(--pastel-sky));
+  color: var(--text-primary);
+  box-shadow: 0 4px 14px rgba(140,120,200,0.2);
+  border-color: rgba(255,255,255,0.9);
+}
+.game-panel { display:none; animation: fadeUp 0.3s var(--ease-spring) both; }
+.game-panel.active { display:block; }
+
+.game-wrap {
+  max-width: 640px; margin: 0 auto;
+  padding: 28px;
+}
+
+/* ── Pattern Match (memory) ── already has mem-* styles above ── */
+
+/* ── Zen Puzzle — shape sort ── */
+.zen-puzzle-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.zen-shapes-source {
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+  min-height: 80px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.4);
+  border: 1.5px dashed rgba(200,190,230,0.5);
+  border-radius: var(--radius-lg);
+  width: 100%;
+}
+.zen-slots-row {
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+  width: 100%;
+}
+.zen-slot {
+  width: 72px; height: 72px;
+  border: 2.5px dashed rgba(180,170,210,0.45);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; transition: var(--tr);
+  background: rgba(255,255,255,0.3);
+  position: relative;
+}
+.zen-slot.over  { border-color: var(--accent-sage); background: var(--pastel-sage); transform: scale(1.06); }
+.zen-slot.correct { border-color: var(--accent-sage); background: var(--pastel-mint); border-style: solid; }
+.zen-slot.wrong   { border-color: var(--accent-warm); background: var(--pastel-peach); animation: shakePuzz 0.35s ease; }
+@keyframes shakePuzz { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+.zen-shape {
+  font-size: 30px; cursor: grab;
+  padding: 8px;
+  background: rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: var(--radius-sm);
+  transition: var(--tr);
+  user-select: none;
+}
+.zen-shape:hover   { transform: scale(1.12) translateY(-3px); box-shadow: 0 6px 18px rgba(160,140,120,0.16); }
+.zen-shape.dragging { opacity: 0.45; transform: scale(0.9); cursor: grabbing; }
+.zen-shape.placed  { opacity: 0.3; pointer-events: none; }
+
+.zen-puzzle-msg {
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  color: var(--text-muted); text-align: center; min-height: 22px;
+}
+.zen-win-msg { color: var(--accent-sage); font-size: 18px; }
+
+/* ── Path Finder — maze ── */
+.maze-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.maze-grid {
+  display: grid;
+  gap: 2px;
+  background: rgba(255,255,255,0.3);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid rgba(255,255,255,0.7);
+  box-shadow: var(--glass-shadow);
+}
+.maze-cell {
+  width: 38px; height: 38px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; transition: background 0.2s ease;
+}
+.maze-cell.wall   { background: linear-gradient(135deg,var(--pastel-lavender),#c8bfe8); }
+.maze-cell.path   { background: rgba(255,255,255,0.55); cursor: pointer; }
+.maze-cell.path:hover:not(.visited):not(.player):not(.goal) { background: rgba(255,255,255,0.82); }
+.maze-cell.visited{ background: linear-gradient(135deg,var(--pastel-mint),var(--pastel-sky)); }
+.maze-cell.player { background: linear-gradient(135deg,var(--pastel-sage),#a8dfc0); }
+.maze-cell.goal   { background: linear-gradient(135deg,var(--pastel-butter),var(--pastel-peach)); animation:goalPulse 1.6s ease-in-out infinite; }
+@keyframes goalPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+.maze-cell.solved { background: linear-gradient(135deg,var(--pastel-sage),var(--pastel-mint)) !important; }
+
+.maze-controls { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.maze-dpad { display: grid; grid-template-columns: repeat(3,40px); grid-template-rows: repeat(3,40px); gap: 4px; }
+.dpad-btn {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.55); border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: var(--radius-sm);
+  font-size: 18px; cursor: pointer; transition: var(--tr);
+  display: flex; align-items: center; justify-content: center;
+}
+.dpad-btn:hover  { background: var(--pastel-lavender); transform: scale(1.1); }
+.dpad-btn:active { transform: scale(0.93); }
+.dpad-blank { width:40px; height:40px; }
+.maze-hint { font-family:var(--font-display); font-size:12.5px; font-weight:600; color:var(--text-muted); }
+.maze-win  { font-family:var(--font-display); font-size:17px; font-weight:800; color:var(--accent-sage); text-align:center; animation:fadeUp 0.4s ease both; }
 </style>
 </head>
 <body>
 
-<!-- Background blobs — purely decorative, sensory safe -->
 <div class="bg-blob bg-blob-1"></div>
 <div class="bg-blob bg-blob-2"></div>
 <div class="bg-blob bg-blob-3"></div>
 
-<!-- Hidden camera elements -->
 <video id="hidden-camera-feed" autoplay muted playsinline></video>
 <canvas id="capture-canvas" width="320" height="240"></canvas>
 
-<!-- ================================================
-     ZEN MODE OVERLAY (Sensory Break)
-================================================ -->
-<div id="zen-overlay" role="dialog" aria-modal="true" aria-label="Sensory Break — Zen Mode">
-  <div class="zen-breathing-ring"></div>
-  <div class="zen-breathing-ring"></div>
-  <div class="zen-breathing-ring"></div>
-
-  <div class="zen-content">
-    <span class="zen-emoji">🌿</span>
-    <h2 class="zen-title">You're doing great.</h2>
-    <p class="zen-subtitle">
-      Take all the time you need.<br>
-      Everything is paused and waiting for you.
-    </p>
-
-    <div class="breathing-guide">
-      <div class="breathing-circle"></div>
-      <div class="breathing-text" id="breathe-text">Breathe in...</div>
-    </div>
-
-    <div class="zen-pre-emotion" id="zen-pre-emotion-badge">
-      <!-- populated by JS: "Feeling before break: Frustrated" -->
-    </div>
-
-    <button class="zen-ready-btn" id="zen-ready-btn" onclick="endSensoryBreak()">
-      ✦ I'm Ready to Continue
-    </button>
+<!-- ── MISSION ACCOMPLISHED OVERLAY ── -->
+<div id="mission-overlay" role="dialog" aria-modal="true">
+  <div class="mission-badge">
+    <span class="mission-emoji">🏆</span>
+    <div class="mission-title">Mission Accomplished!</div>
+    <div class="mission-sub" id="mission-task-name">Task complete — incredible work!</div>
+    <button class="mission-btn" onclick="dismissMission()">✨ Keep Going!</button>
   </div>
 </div>
 
-<!-- ================================================
-     MAIN APP
-================================================ -->
+<!-- ── MAIN APP ── -->
 <div class="app">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="greeting-block">
-      <p class="eyebrow">Learning Space</p>
-      <h1>Hello, <em id="student-name">Friend</em> 👋</h1>
-    </div>
-    <div class="header-right">
-      <div class="emotion-badge" id="emotion-badge">
-        <div class="emotion-dot" id="emotion-dot"></div>
-        <span id="emotion-label">Starting up…</span>
+  <!-- WELCOME BANNER -->
+  <div class="welcome-banner" id="welcome-banner">
+    <span class="sparkle">⭐</span>
+    <span class="sparkle">✨</span>
+    <span class="sparkle">🌟</span>
+    <span class="sparkle">💫</span>
+    <span class="sparkle">⚡</span>
+    <div class="welcome-inner">
+      <div class="welcome-text">
+        <p class="eyebrow">Learning Space</p>
+        <h1>Hey, <span class="hero-name" id="student-name">Hero</span>! 🚀</h1>
+        <p class="tagline" id="welcome-tagline">Ready to learn something amazing today?</p>
       </div>
-    </div>
-  </header>
-
-  <!-- MAIN GRID -->
-  <div class="main-grid">
-
-    <!-- TIMER CARD (top-left) -->
-    <div class="glass glass-card timer-card" style="grid-column:1; grid-row:1;">
-      <div class="timer-card-inner">
-        <!-- Ring Timer -->
-        <div class="ring-wrap">
-          <svg class="ring-svg" width="114" height="114" viewBox="0 0 114 114">
-            <circle class="ring-track" cx="57" cy="57" r="50"/>
-            <circle class="ring-fill" id="ring-fill" cx="57" cy="57" r="50"/>
-          </svg>
-          <div class="ring-center">
-            <div class="ring-time" id="timer-display">00:00</div>
-            <div class="ring-label" id="timer-label">idle</div>
-          </div>
-        </div>
-
-        <!-- Meta -->
-        <div class="timer-meta">
-          <div class="current-task-name empty" id="current-task-name">
-            Click a task to begin →
-          </div>
-          <div class="pill-row">
-            <span class="pill pill-idle" id="status-pill">Idle</span>
-          </div>
-          <div class="distraction-stat">
-            Distractions today: <span id="distraction-count">0</span>
-          </div>
-
-          <!-- Grace period banner -->
-          <div class="grace-banner" id="grace-banner">
-            <span>👀 Looking away — resuming in</span>
-            <span class="grace-countdown" id="grace-countdown">10</span>s
-          </div>
+      <div class="welcome-right">
+        <div class="emotion-badge" id="emotion-badge">
+          <div class="emotion-dot" id="emotion-dot"></div>
+          <span id="emotion-label">Starting up…</span>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- VIDEO CARD (right col, row 1) -->
-    <div class="glass video-card" style="grid-column:2; grid-row:1 / 3;">
-      <div class="video-label">📺 Task Video</div>
-      <div class="video-wrapper" id="video-wrapper">
-        <div class="video-placeholder" id="video-placeholder">
-          <div class="play-icon">▶</div>
-          <span>Select a task to load video</span>
+  <!-- TAB NAV -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('learn')" id="tab-learn">📚 Learn</button>
+    <button class="tab-btn"        onclick="switchTab('calm')"  id="tab-calm"> 🌿 Calm Space</button>
+    <button class="tab-btn"        onclick="switchTab('games')" id="tab-games">🎮 Games</button>
+  </nav>
+
+  <!-- ═══ LEARN TAB ═══ -->
+  <div class="tab-panel active" id="panel-learn">
+    <div class="learn-layout">
+
+      <!-- LEFT: video hero + timer + log -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <!-- Video hero -->
+        <div class="glass video-hero">
+          <div class="video-hero-top">
+            <div class="video-task-info">
+              <div class="video-task-label">📺 Now Learning</div>
+              <div class="video-task-name empty" id="current-task-name">Select a task to begin →</div>
+            </div>
+            <div class="timer-pill-row">
+              <span class="pill pill-idle" id="status-pill">Idle</span>
+            </div>
+          </div>
+          <div class="video-wrapper" id="video-wrapper">
+            <div class="video-placeholder" id="video-placeholder">
+              <div class="play-ico">▶</div>
+              <span>Pick a task from the list →</span>
+            </div>
+            <div id="yt-player"></div>
+          </div>
+          <div class="timer-strip">
+            <div class="ring-wrap">
+              <svg class="ring-svg" width="58" height="58" viewBox="0 0 58 58">
+                <circle class="ring-track" cx="29" cy="29" r="25"/>
+                <circle class="ring-fill" id="ring-fill" cx="29" cy="29" r="25"/>
+              </svg>
+              <div class="ring-center">
+                <div class="ring-time" id="timer-display">00:00</div>
+                <div class="ring-lbl"  id="timer-label">idle</div>
+              </div>
+            </div>
+            <div class="timer-meta-strip">
+              <div class="distraction-stat">Distractions: <span id="distraction-count">0</span></div>
+              <!-- Grace period (10s look-away warning) -->
+              <div class="grace-banner" id="grace-banner">
+                <span>👀 Looking away — resuming in</span>
+                <span class="grace-countdown" id="grace-countdown">10</span>s
+              </div>
+              <!-- 2-minute distraction rule notice -->
+              <div class="distraction-notice" id="distraction-notice">
+                <span>⏳ Away for</span>
+                <span class="distraction-countdown" id="distraction-countdown">0:00</span>
+                <span>— timer paused after 2 min</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="yt-player"></div>
+
+        <!-- Event log -->
+        <div class="glass log-card">
+          <div class="section-title">
+            <div class="dot" style="background:var(--accent-warm)"></div>
+            Focus Events
+          </div>
+          <div class="log-list" id="log-list">
+            <div class="log-empty">No events yet — great focus! 🌟</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="learn-sidebar">
+        <div class="glass tasks-card">
+          <div class="section-title"><div class="dot"></div>Today's Tasks</div>
+          <ul class="task-list" id="task-list">
+            <li class="task-list-empty" id="task-list-empty">Loading your tasks…</li>
+          </ul>
+        </div>
+
+        <div class="glass break-card">
+          <button class="break-btn" id="break-btn" onclick="startSensoryBreak()">
+            <span class="btn-icon">🌿</span>
+            I Need a Break
+          </button>
+          <p class="break-hint">Everything will pause. Take all the time you need.</p>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /panel-learn -->
+
+  <!-- ═══ CALM SPACE TAB ═══ -->
+  <div class="tab-panel" id="panel-calm">
+    <div class="calm-space">
+      <div class="calm-card">
+        <div class="calm-orb calm-orb-1"></div>
+        <div class="calm-orb calm-orb-2"></div>
+        <div class="calm-card-inner">
+
+          <div class="calm-emoji-wrap">🌿</div>
+
+          <h2 class="calm-title">Don't worry, you're doing great!</h2>
+          <p class="calm-sub">
+            Take it easy — let's take a moment for ourselves.<br>
+            Everything is paused and waiting for you. 💜
+          </p>
+
+          <!-- Breathing animation -->
+          <div class="breath-stage">
+            <div class="breath-ring-outer">
+              <div class="breath-ripple"></div>
+              <div class="breath-ripple"></div>
+              <div class="breath-circle"></div>
+            </div>
+            <div class="breath-label" id="calm-breath-lbl">Breathe in…</div>
+          </div>
+
+          <!-- Pre-break emotion badge -->
+          <div style="margin-bottom:28px" id="calm-pre-emotion" hidden>
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.7);border-radius:999px;font-size:12px;font-weight:700;color:#9890b8" id="calm-emotion-badge"></span>
+          </div>
+
+          <div class="calm-actions">
+            <button class="calm-go-games" onclick="goToGamesFromCalm()">
+              🎮 Go to Game Zone
+            </button>
+            <button class="calm-go-learn" id="calm-resume-btn" onclick="endSensoryBreak()">
+              ✦ I'm Ready to Continue Learning
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
+  </div><!-- /panel-calm -->
 
-    <!-- TASK LIST (bottom-left) -->
-    <div class="glass tasks-card" style="grid-column:1; grid-row:2;">
-      <div class="section-title">
-        <div class="dot"></div>
-        Today's Tasks
+  <!-- ═══ GAMES TAB ═══ -->
+  <div class="tab-panel" id="panel-games">
+    <div class="games-page">
+
+      <div class="games-page-header">
+        <h2>🎮 Mind Games</h2>
+        <p>Three calming games designed just for you — play at your own pace.</p>
       </div>
-      <ul class="task-list" id="task-list">
-        <li class="task-list-empty" id="task-list-empty">Loading your tasks…</li>
-      </ul>
-    </div>
 
-    <!-- BREAK CARD (right col, row 3) -->
-    <div class="glass break-card" style="grid-column:2; grid-row:3;">
-      <button class="break-btn" id="break-btn" onclick="startSensoryBreak()">
-        <span class="btn-icon">🌿</span>
-        I Need a Break
-      </button>
-      <p class="break-hint">
-        Everything will pause. Take all the time you need.
-      </p>
-    </div>
-
-    <!-- DISTRACTION LOG (full width, row 3) -->
-    <div class="glass log-card" style="grid-column:1; grid-row:3;">
-      <div class="section-title">
-        <div class="dot" style="background:var(--accent-warm)"></div>
-        Focus Events
+      <!-- Game sub-tabs -->
+      <div class="game-tabs">
+        <button class="game-tab-btn active" onclick="switchGame('pattern')" id="gtab-pattern">🃏 Pattern Match</button>
+        <button class="game-tab-btn"        onclick="switchGame('zen')"     id="gtab-zen"    >🧩 Zen Puzzle</button>
+        <button class="game-tab-btn"        onclick="switchGame('path')"    id="gtab-path"   >🗺 Path Finder</button>
       </div>
-      <div class="log-list" id="log-list">
-        <div class="log-empty">No events yet — great focus! 🌟</div>
-      </div>
-    </div>
 
-  </div><!-- /main-grid -->
+      <!-- ── Game 1: Pattern Match (memory flip) ── -->
+      <div class="game-panel active" id="gpanel-pattern">
+        <div class="glass game-wrap">
+          <div class="memory-header">
+            <div class="memory-stat">Moves: <span id="mem-moves">0</span></div>
+            <div class="memory-stat">Pairs: <span id="mem-pairs">0</span>/8</div>
+            <button class="btn-reset" onclick="resetMemoryGame()">🔀 New Game</button>
+          </div>
+          <div class="memory-grid" id="memory-grid"></div>
+          <div class="memory-win" id="memory-win" style="display:none">
+            <h3>🎉 You Won!</h3>
+            <p id="memory-win-msg">Amazing! You matched all pairs!</p>
+            <br/>
+            <button class="btn-reset" onclick="resetMemoryGame()">Play Again</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Game 2: Zen Puzzle (shape drag-and-drop sort) ── -->
+      <div class="game-panel" id="gpanel-zen">
+        <div class="glass game-wrap">
+          <div class="memory-header">
+            <div class="memory-stat">Sort the shapes! <span id="zen-progress">0/6</span></div>
+            <button class="btn-reset" onclick="resetZenPuzzle()">🔀 Shuffle</button>
+          </div>
+          <div class="zen-puzzle-board">
+            <div class="zen-shapes-source" id="zen-source"
+                 ondragover="event.preventDefault()" ondrop="zenDropOnSource(event)">
+              <!-- draggable shapes injected by JS -->
+            </div>
+            <div class="zen-slots-row" id="zen-slots">
+              <!-- drop slots injected by JS -->
+            </div>
+          </div>
+          <div class="zen-puzzle-msg" id="zen-msg">Drag each shape to its matching slot 🌸</div>
+        </div>
+      </div>
+
+      <!-- ── Game 3: Path Finder (keyboard/dpad maze) ── -->
+      <div class="game-panel" id="gpanel-path">
+        <div class="glass game-wrap">
+          <div class="memory-header">
+            <div class="memory-stat">Steps: <span id="maze-steps">0</span></div>
+            <button class="btn-reset" onclick="resetMaze()">🔀 New Maze</button>
+          </div>
+          <div class="maze-wrap">
+            <div class="maze-grid" id="maze-grid"></div>
+            <div class="maze-controls">
+              <div class="maze-dpad">
+                <div class="dpad-blank"></div>
+                <button class="dpad-btn" onclick="movePlayer(0,-1)" aria-label="Up">↑</button>
+                <div class="dpad-blank"></div>
+                <button class="dpad-btn" onclick="movePlayer(-1,0)" aria-label="Left">←</button>
+                <div class="dpad-blank"></div>
+                <button class="dpad-btn" onclick="movePlayer(1,0)"  aria-label="Right">→</button>
+                <div class="dpad-blank"></div>
+                <button class="dpad-btn" onclick="movePlayer(0,1)"  aria-label="Down">↓</button>
+                <div class="dpad-blank"></div>
+              </div>
+              <div class="maze-hint">Use arrow keys or the buttons above 🗺</div>
+            </div>
+            <div class="maze-win" id="maze-win" style="display:none">🎉 You found the way out! Amazing!</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /panel-games -->
+
 </div><!-- /app -->
 
-<!-- Toast container -->
 <div id="toast-container"></div>
 
-<!-- ================================================
-     JAVASCRIPT
-================================================ -->
 <script>
-/* ================================================
-   DEMO MODE — Firebase removed.
-   All Firestore / Auth calls are stubbed as no-ops.
-   Re-add Firebase SDK + config here when ready.
-================================================ */
-const db = {
-  collection: () => ({
-    add:    async () => ({ id: 'local-' + Date.now() }),
-    doc:    () => ({ update: async () => {}, set: async () => {} }),
-    where:  () => ({ where: () => ({ orderBy: () => ({ onSnapshot: () => {} }) }), orderBy: () => ({ onSnapshot: () => {} }) }),
-    orderBy:() => ({ onSnapshot: (cb) => { cb({ forEach: ()=>{} }); return ()=>{}; } })
-  })
-};
-const auth = { onAuthStateChanged: (cb) => cb({ uid:'demo-student-001', displayName:'Demo Student' }), signInAnonymously: async ()=>{} };
-// Firestore helpers stub
+'use strict';
 
 /* ================================================
-   APP STATE
+   DEMO MODE stubs
+================================================ */
+const db   = { collection:()=>({ add:async()=>({id:'local-'+Date.now()}), doc:()=>({ update:async()=>{}, set:async()=>{} }) }) };
+const auth = { onAuthStateChanged:(cb)=>cb({uid:'demo-student-001',displayName:'Hero'}), signInAnonymously:async()=>{} };
+
+/* ================================================
+   STATE
 ================================================ */
 const STATE = {
-  studentId:          null,
-  studentName:        'Friend',
-  currentTaskId:      null,
-  currentFocusLogId:  null,
-  currentSessionStart:null,
+  studentId:null, studentName:'Hero', currentTaskId:null,
+  currentFocusLogId:null, currentSessionStart:null,
 
   // Timer
-  timerInterval:      null,
-  elapsedSeconds:     0,
-  timerRunning:       false,
-  timerPaused:        false,
+  timerInterval:null, elapsedSeconds:0,
+  timerRunning:false, timerPaused:false,
 
-  // Distraction
-  distractionCount:   0,
-  distractionEvents:  [],
+  // Distraction counting
+  distractionCount:0, distractionEvents:[],
 
-  // Grace period
-  gracePeriodActive:  false,
-  graceTimer:         null,
-  graceSecondsLeft:   10,
+  // Grace period (10s look-away before any action)
+  gracePeriodActive:false, graceTimer:null, graceSecondsLeft:10,
+
+  // ── 2-MINUTE RULE ──
+  // When student is away, we count UP to 120s.
+  // Under 2 min: do nothing (processing time).
+  // At 2 min:    stop timer, deduct 120s from elapsedSeconds.
+  // Beyond 2 min: continue deducting each second.
+  awayTimer:null,         // setInterval counting away-seconds
+  awaySeconds:0,          // how long they've been away this distraction
+  timerStoppedByRule:false, // did the 2-min rule fire?
+  deductedSeconds:0,       // total deducted from session
 
   // Emotion AI
-  emotionInterval:    null,
-  isProcessingEmotion:false,
-  lastEmotion:        { dominant:'unknown', confidence:0, rawScores:{} },
-  cameraStream:       null,
-  cameraReady:        false,
+  emotionInterval:null, isProcessingEmotion:false,
+  lastEmotion:{ dominant:'unknown', confidence:0, rawScores:{} },
+  cameraStream:null, cameraReady:false,
 
   // Break
-  isOnBreak:          false,
-  breakStartTime:     null,
+  isOnBreak:false, breakStartTime:null, currentBreakId:null,
 
   // YouTube
-  ytPlayer:           null,
-  ytReady:            false,
-  currentVideoId:     null,
+  ytPlayer:null, ytReady:false, currentVideoId:null,
 
-  // Firestore emotion buffer (flush every 30s)
-  emotionBuffer:      [],
-
-  // Tasks
-  tasks:              []
+  emotionBuffer:[], tasks:[]
 };
 
 /* ================================================
    INIT
 ================================================ */
 document.addEventListener('DOMContentLoaded', async () => {
-  // Auth guard — in production student would be signed in
-  // For demo, we use an anonymous / pre-set UID
   auth.onAuthStateChanged(user => {
     if (user) {
       STATE.studentId   = user.uid;
-      STATE.studentName = user.displayName || 'Friend';
+      STATE.studentName = user.displayName || 'Hero';
       document.getElementById('student-name').textContent = STATE.studentName;
-    } else {
-      // Anonymous sign-in for demo
-      auth.signInAnonymously().catch(() => {
-        STATE.studentId = 'demo-student-001';
-      });
+      animateWelcomeTagline(STATE.studentName);
     }
   });
 
-  // Clear stale session data from any previous session
   ['nic_live','nic_breaks','nic_emotion_samples','nic_cam_frame'].forEach(k => {
     try { localStorage.removeItem(k); } catch(_) {}
   });
@@ -1006,237 +1133,177 @@ document.addEventListener('DOMContentLoaded', async () => {
   startEmotionPolling();
   loadTasks();
   setupTabSwitchDetection();
-  startBreathingGuide();
+  initMemoryGame();
+  initZenPuzzle();
+  initMaze();
 });
+
+/* ── Rotating welcome taglines ── */
+const TAGLINES = [
+  'Ready to learn something amazing today? 🌟',
+  "Let's crush today's tasks, Hero! 💪",
+  'Every video you watch makes you smarter! 🧠',
+  "You've got this — let's go! 🚀",
+  'Big brain energy activated! ⚡',
+];
+function animateWelcomeTagline(name) {
+  const el = document.getElementById('welcome-tagline');
+  let i = 0;
+  el.textContent = TAGLINES[0];
+  setInterval(() => {
+    el.style.opacity = '0';
+    setTimeout(() => {
+      i = (i + 1) % TAGLINES.length;
+      el.textContent = TAGLINES[i];
+      el.style.opacity = '1';
+      el.style.transition = 'opacity 0.6s ease';
+    }, 400);
+  }, 5000);
+}
+
+/* ================================================
+   TAB NAVIGATION
+================================================ */
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+
+  // Pause timer whenever leaving Learn tab
+  if (name !== 'learn' && STATE.timerRunning && !STATE.timerPaused) {
+    pauseTimer();
+    pauseYouTube();
+    stopAwayCounter();
+    cancelGracePeriod();
+  }
+}
+
+function switchGame(name) {
+  document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.game-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('gpanel-' + name).classList.add('active');
+  document.getElementById('gtab-' + name).classList.add('active');
+}
+
+function goToGamesFromCalm() {
+  // Switch to games tab without ending the break
+  switchTab('games');
+  document.getElementById('tab-calm').classList.remove('active');
+}
 
 /* ================================================
    CAMERA INIT
 ================================================ */
-// Original lines approximately 760-780 - ADD THE TEST CALL AT THE END
 async function initCamera() {
   try {
-    STATE.cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 320, height: 240, facingMode: 'user' },
-      audio: false
-    });
+    STATE.cameraStream = await navigator.mediaDevices.getUserMedia({ video:{width:320,height:240,facingMode:'user'}, audio:false });
     const video = document.getElementById('hidden-camera-feed');
     video.srcObject = STATE.cameraStream;
     await video.play();
     STATE.cameraReady = true;
     updateEmotionBadge('camera ready', '#72b090');
-    // Start sharing frames to localStorage so parent can display them
     startCameraShare();
-    
-    // ADD THIS LINE - Test backend connection after camera is ready
-    setTimeout(testBackendConnection, 2000);
-    
-  } catch (err) {
-    console.warn('Camera not available:', err.message);
+  } catch(err) {
+    console.warn('Camera unavailable:', err.message);
     updateEmotionBadge('no camera', '#a8a2bc');
-    updateLiveStatus({ cameraAvailable: false });
+    updateLiveStatus({ cameraAvailable:false });
   }
 }
 
-// Share a low-res snapshot to localStorage every 1.5s for parent feed
 function startCameraShare() {
   setInterval(() => {
     if (!STATE.cameraReady || STATE.isOnBreak) return;
-    try {
-      const frame = captureFrame();
-      if (frame) localStorage.setItem('nic_cam_frame', frame);
-    } catch(_) {}
+    try { const f=captureFrame(); if(f) localStorage.setItem('nic_cam_frame',f); } catch(_){}
   }, 1500);
 }
 
 /* ================================================
-   EMOTION BACKEND COMMUNICATION
-================================================ */
-
-// ADD THIS NEW FUNCTION - sendFrameToBackend
-async function sendFrameToBackend(frame) {
-  const response = await fetch("http://localhost:5000/emotion", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      image: frame
-    })
-  });
-
-  const data = await response.json();
-  console.log("Emotion:", data);
-  return data;
-}
-
-// ADD THIS NEW FUNCTION - testBackendConnection (optional but helpful)
-async function testBackendConnection() {
-  try {
-    const testFrame = captureFrame();
-    if (!testFrame) {
-      console.log("Camera not ready for test");
-      return false;
-    }
-    
-    const result = await sendFrameToBackend(testFrame);
-    showToast('✅ Emotion backend connected');
-    return true;
-  } catch (err) {
-    console.warn('Backend test failed:', err.message);
-    showToast('⚠️ Emotion backend not available');
-    return false;
-  }
-}
-
-
-/* ================================================
-   EMOTION POLLING  — canvas.toDataURL() every 3s
-   Sends frame to Flask /emotion endpoint.
-   Falls back to face-detection heuristic if Flask offline.
+   EMOTION POLLING
 ================================================ */
 function startEmotionPolling() {
   STATE.emotionInterval = setInterval(async () => {
-    if (!STATE.cameraReady)        return;
-    if (STATE.isOnBreak)           return;
-    if (STATE.isProcessingEmotion) return;
-
+    if (!STATE.cameraReady || STATE.isOnBreak || STATE.isProcessingEmotion) return;
     STATE.isProcessingEmotion = true;
     try {
       const frame = captureFrame();
       if (!frame) return;
-
-      // UPDATED: Use the new sendFrameToBackend function
-      const data = await sendFrameToBackend(frame);
-      
-      // Add studentId and taskId for context (keeping your existing structure)
-      data.studentId = STATE.studentId;
-      data.taskId = STATE.currentTaskId;
-      
-      handleEmotionResult(data);
-
-    } catch (err) {
-      // Flask offline — emit a live reading from camera presence (jittered rawScores so chart lines move)
+      const res = await fetch('http://localhost:5000/emotion', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ frame, studentId:STATE.studentId, taskId:STATE.currentTaskId }),
+        signal:AbortSignal.timeout(4000)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      handleEmotionResult(await res.json());
+    } catch(err) {
       console.warn('Emotion API offline:', err.message);
       if (STATE.cameraReady) {
-        const j = () => +(Math.random() * 0.1).toFixed(3);
-        handleEmotionResult({
-          dominant:   'neutral',
-          confidence: 0.55 + j(),
-          look_away:  false,
-          rawScores:  { happy: 0.18+j(), frustrated: 0.09+j(), neutral: 0.52+j(), sad: 0.06+j(), surprised: 0.04+j() },
-          source: 'fallback'
-        });
+        const j = () => +(Math.random()*0.1).toFixed(3);
+        handleEmotionResult({ dominant:'neutral', confidence:0.55+j(), look_away:false, rawScores:{happy:0.18+j(),frustrated:0.09+j(),neutral:0.52+j(),sad:0.06+j(),surprised:0.04+j()}, source:'fallback' });
       }
-    } finally {
-      STATE.isProcessingEmotion = false;
-    }
+    } finally { STATE.isProcessingEmotion = false; }
   }, 3000);
 }
 
 function captureFrame() {
-  const video  = document.getElementById('hidden-camera-feed');
-  const canvas = document.getElementById('capture-canvas');
-  if (video.readyState < 2) return null;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(video, 0, 0, 320, 240);
-  return canvas.toDataURL('image/jpeg', 0.75);   // base64 JPEG, 75% quality
+  const v = document.getElementById('hidden-camera-feed');
+  const c = document.getElementById('capture-canvas');
+  if (v.readyState < 2) return null;
+  c.getContext('2d').drawImage(v, 0, 0, 320, 240);
+  return c.toDataURL('image/jpeg', 0.75);
 }
 
-/* ── Handle emotion result from Flask ── */
 function handleEmotionResult(data) {
-  /* Expected shape:
-     { dominant: "happy", confidence: 0.87,
-       look_away: false,
-       rawScores: { happy:0.87, frustrated:0.04, neutral:0.06, sad:0.02, surprised:0.01 } }
-  */
   const { dominant, confidence, look_away, rawScores } = data;
-
   STATE.lastEmotion = { dominant, confidence, rawScores };
-
-  // Update UI badge
-  const colorMap = {
-    happy:      '#72b090',
-    neutral:    '#8b9ed4',
-    frustrated: '#c98b68',
-    sad:        '#a09ab0',
-    surprised:  '#d4a8c0'
-  };
+  const colorMap = { happy:'#72b090', neutral:'#8b9ed4', frustrated:'#c98b68', sad:'#a09ab0', surprised:'#d4a8c0' };
   updateEmotionBadge(dominant, colorMap[dominant] || '#a8a2bc');
 
-  STATE.emotionBuffer.push({
-    dominant, confidence,
-    rawScores: rawScores || {},
-    timestamp: new Date().toISOString(),
-    context:   STATE.isOnBreak ? 'break' : (STATE.timerRunning ? 'focus' : 'idle')
-  });
-
-  // ── Push to localStorage — always write rawScores so chart has per-emotion confidence lines ──
-  // Write even before timer starts so the chart is live as soon as camera is on
+  STATE.emotionBuffer.push({ dominant, confidence, rawScores:rawScores||{}, timestamp:new Date().toISOString(), context:STATE.isOnBreak?'break':(STATE.timerRunning?'focus':'idle') });
   if (dominant && dominant !== 'unknown') {
     try {
-      const rs = rawScores || {};
-      const samples = JSON.parse(localStorage.getItem('nic_emotion_samples') || '[]');
-      samples.push({
-        e:    dominant,
-        conf: confidence || 0.5,
-        // Store per-emotion scores explicitly for the chart's separate dataset lines
-        happy:      +(rs.happy      || 0).toFixed(3),
-        frustrated: +(rs.frustrated || 0).toFixed(3),
-        neutral:    +(rs.neutral    || 0).toFixed(3),
-        sad:        +(rs.sad        || 0).toFixed(3),
-        surprised:  +(rs.surprised  || 0).toFixed(3),
-        t: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'})
-      });
-      if (samples.length > 100) samples.shift();
+      const rs = rawScores||{};
+      const samples = JSON.parse(localStorage.getItem('nic_emotion_samples')||'[]');
+      samples.push({ e:dominant, conf:confidence||0.5, happy:+(rs.happy||0).toFixed(3), frustrated:+(rs.frustrated||0).toFixed(3), neutral:+(rs.neutral||0).toFixed(3), sad:+(rs.sad||0).toFixed(3), surprised:+(rs.surprised||0).toFixed(3), t:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}) });
+      if (samples.length>100) samples.shift();
       localStorage.setItem('nic_emotion_samples', JSON.stringify(samples));
-    } catch(_) {}
+    } catch(_){}
   }
-
   if (STATE.emotionBuffer.length >= 10) flushEmotionBuffer();
+  if (dominant==='frustrated' && confidence>0.75 && !STATE.isOnBreak) triggerAIBreakSuggestion();
 
-  // AI-detected high frustration → suggest break
-  if (dominant === 'frustrated' && confidence > 0.75 && !STATE.isOnBreak) {
-    triggerAIBreakSuggestion();
-  }
-
-  // Look-away → grace period
+  // Grace period: look_away from camera starts 10s countdown
   if (look_away && STATE.timerRunning && !STATE.gracePeriodActive) {
     startGracePeriod();
   } else if (!look_away && STATE.gracePeriodActive) {
     cancelGracePeriod();
   }
-
-  // Update Firestore liveStatus
-  updateLiveStatus({ currentEmotion: dominant });
+  updateLiveStatus({ currentEmotion:dominant });
 }
 
 function updateEmotionBadge(emotion, color) {
-  document.getElementById('emotion-label').textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+  document.getElementById('emotion-label').textContent = emotion.charAt(0).toUpperCase()+emotion.slice(1);
   document.getElementById('emotion-dot').style.background = color;
 }
 
 /* ================================================
-   GRACE PERIOD  — 10s before pausing on look-away
-   Gives space for stimming / sensory processing.
+   GRACE PERIOD  — 10s before registering look-away
 ================================================ */
 function startGracePeriod() {
   if (STATE.gracePeriodActive) return;
-  STATE.gracePeriodActive  = true;
-  STATE.graceSecondsLeft   = 10;
-
+  STATE.gracePeriodActive = true;
+  STATE.graceSecondsLeft  = 10;
   document.getElementById('grace-banner').classList.add('visible');
   document.getElementById('grace-countdown').textContent = '10';
-
   STATE.graceTimer = setInterval(() => {
     STATE.graceSecondsLeft--;
     document.getElementById('grace-countdown').textContent = STATE.graceSecondsLeft;
-
     if (STATE.graceSecondsLeft <= 0) {
       clearInterval(STATE.graceTimer);
       STATE.gracePeriodActive = false;
       document.getElementById('grace-banner').classList.remove('visible');
-      // Only pause if camera still shows look-away
-      pauseSession('ai-look-away');
+      // Start the 2-minute away counter
+      startAwayCounter('ai-look-away');
     }
   }, 1000);
 }
@@ -1249,122 +1316,145 @@ function cancelGracePeriod() {
 }
 
 /* ================================================
-   TAB-SWITCH DETECTION
-   Uses visibilitychange + blur for broad coverage.
+   TAB-SWITCH / WINDOW BLUR DETECTION
+   Only fires distraction logic when timer is running.
 ================================================ */
 function setupTabSwitchDetection() {
-
-  // ── visibilitychange: fires when browser tab is hidden (most reliable) ──
   document.addEventListener('visibilitychange', () => {
-    if (STATE.isOnBreak) return;
-    if (document.hidden) {
-      pauseSession('tab-switch');
-    } else {
-      resumeAfterDistraction();
-    }
+    if (STATE.isOnBreak || !STATE.timerRunning) return;
+    if (document.hidden) startAwayCounter('tab-switch');
+    else stopAwayCounter();
   });
-
-  // ── window blur: fires when user clicks into another window/app ──
   window.addEventListener('blur', () => {
-    if (STATE.isOnBreak) return;
-    if (!document.hidden) {    // prevent double-fire with visibilitychange
-      pauseSession('window-blur');
-    }
+    if (STATE.isOnBreak || !STATE.timerRunning || document.hidden) return;
+    startAwayCounter('window-blur');
   });
-
-  // ── window focus: student is back ──
   window.addEventListener('focus', () => {
     if (STATE.isOnBreak) return;
-    resumeAfterDistraction();
+    stopAwayCounter();
   });
 }
 
-function pauseSession(eventType = 'tab-switch') {
-  if (!STATE.timerRunning || STATE.timerPaused) return;
+/* ================================================
+   THE 2-MINUTE RULE
+   ─ Away < 2 min  → do nothing (silent counter)
+   ─ Away = 2 min  → stop timer, deduct 120s
+   ─ Away > 2 min  → deduct each additional second
+================================================ */
+function startAwayCounter(reason = 'tab-switch') {
+  if (STATE.awayTimer) return; // already counting
+  if (!STATE.timerRunning)    return;
 
-  STATE.timerPaused = true;
-  pauseTimer();
-  pauseYouTube();
+  STATE.awaySeconds = 0;
+  STATE.timerStoppedByRule = false;
 
-  // Log distraction event
-  const event = {
-    type:           eventType,
-    timestamp:      new Date(),
-    durationSeconds:0,
-    gracePeriodUsed:(eventType === 'ai-look-away')
-  };
-  STATE.distractionEvents.push(event);
+  // Log distraction event (once)
   STATE.distractionCount++;
   document.getElementById('distraction-count').textContent = STATE.distractionCount;
-  appendLogItem(eventType);
-  updateLiveStatus({ distractionCount: STATE.distractionCount, focusState: 'distracted' });
+  appendLogItem(reason);
+  updateLiveStatus({ distractionCount:STATE.distractionCount, focusState:'distracted' });
 
-  showToast('📌 Paused — come back whenever you\'re ready');
+  const notice = document.getElementById('distraction-notice');
+  notice.classList.add('visible');
+
+  STATE.awayTimer = setInterval(() => {
+    STATE.awaySeconds++;
+    const m = String(Math.floor(STATE.awaySeconds/60)).padStart(1,'0');
+    const s = String(STATE.awaySeconds%60).padStart(2,'0');
+    document.getElementById('distraction-countdown').textContent = `${m}:${s}`;
+
+    // At exactly 120s — fire the rule
+    if (STATE.awaySeconds === 120 && !STATE.timerStoppedByRule) {
+      STATE.timerStoppedByRule = true;
+      // Deduct 120s from elapsed time
+      STATE.elapsedSeconds = Math.max(0, STATE.elapsedSeconds - 120);
+      STATE.deductedSeconds += 120;
+      // Pause the timer (but keep session open)
+      STATE.timerPaused = true;
+      pauseYouTube();
+      updateTimerStatus('paused');
+      renderTimer();
+      showToast('⏸ Focus paused after 2 min away — deducted from session');
+    }
+
+    // Beyond 120s — deduct each additional second
+    if (STATE.awaySeconds > 120) {
+      STATE.elapsedSeconds = Math.max(0, STATE.elapsedSeconds - 1);
+      STATE.deductedSeconds++;
+      renderTimer();
+    }
+  }, 1000);
 }
 
-function resumeAfterDistraction() {
-  if (!STATE.timerPaused || !STATE.currentTaskId) return;
+function stopAwayCounter() {
+  if (!STATE.awayTimer) return;
+  clearInterval(STATE.awayTimer);
+  STATE.awayTimer = null;
 
-  STATE.timerPaused = false;
-  resumeTimer();
-  // YouTube: don't auto-resume video — let student decide
-  updateTimerStatus('focusing');
-  updateLiveStatus({ focusState: 'focusing' });
-  showToast('✨ Welcome back!');
+  const notice = document.getElementById('distraction-notice');
+  notice.classList.remove('visible');
+
+  if (STATE.awaySeconds < 120) {
+    // Under 2 min — just resume, no penalty
+    showToast('✨ Welcome back!');
+    updateLiveStatus({ focusState:'focusing' });
+  } else {
+    // Was paused by the rule — resume timer
+    if (STATE.timerPaused && STATE.currentTaskId) {
+      STATE.timerPaused = false;
+      updateTimerStatus('focusing');
+      updateLiveStatus({ focusState:'focusing' });
+      showToast(`✨ Back! ${STATE.deductedSeconds}s deducted from focus time`);
+      STATE.deductedSeconds = 0;
+    }
+  }
+  STATE.awaySeconds = 0;
+  STATE.timerStoppedByRule = false;
 }
 
 /* ================================================
    FOCUS TIMER
 ================================================ */
 function startTimer() {
-  STATE.timerRunning      = true;
-  STATE.timerPaused       = false;
-  STATE.elapsedSeconds    = 0;
+  if (STATE.timerRunning) return;
+  STATE.timerRunning = true;
+  STATE.timerPaused  = false;
+  STATE.elapsedSeconds = 0;
   STATE.currentSessionStart = new Date();
-
   STATE.timerInterval = setInterval(() => {
     if (!STATE.timerPaused && !STATE.isOnBreak) {
       STATE.elapsedSeconds++;
       renderTimer();
       updateRingProgress();
-      if (STATE.elapsedSeconds % 5 === 0)  updateLiveStatus({});   // push to localStorage every 5s
+      if (STATE.elapsedSeconds % 5 === 0)  updateLiveStatus({});
       if (STATE.elapsedSeconds % 30 === 0) flushEmotionBuffer();
     }
   }, 1000);
-
   updateTimerStatus('focusing');
 }
 
-function pauseTimer() {
-  // Timer interval keeps running but elapsedSeconds stops incrementing
-  // (timerPaused flag prevents counting in setInterval)
-  updateTimerStatus('paused');
-}
-
-function resumeTimer() {
-  STATE.timerPaused = false;
-  updateTimerStatus('focusing');
-}
-
+function pauseTimer()  { STATE.timerPaused = true; updateTimerStatus('paused'); }
+function resumeTimer() { STATE.timerPaused=false; updateTimerStatus('focusing'); }
 function stopTimer() {
   clearInterval(STATE.timerInterval);
-  STATE.timerRunning   = false;
-  STATE.timerPaused    = false;
+  STATE.timerRunning=false; STATE.timerPaused=false;
   updateTimerStatus('idle');
   renderTimer();
+  // Reset ring to empty
+  document.getElementById('ring-fill').style.strokeDashoffset = '157';
   closeFocusLog(true);
 }
 
 function renderTimer() {
-  const m = String(Math.floor(STATE.elapsedSeconds / 60)).padStart(2,'0');
-  const s = String(STATE.elapsedSeconds % 60).padStart(2,'0');
+  const m = String(Math.floor(STATE.elapsedSeconds/60)).padStart(2,'0');
+  const s = String(STATE.elapsedSeconds%60).padStart(2,'0');
   document.getElementById('timer-display').textContent = `${m}:${s}`;
 }
 
 function updateRingProgress() {
-  // Ring animates for first 30 min (1800s), then stays full
+  const DASH = 157; // matches stroke-dasharray:157 in CSS (2π×25 ≈ 157.08, clamped)
   const pct    = Math.min(STATE.elapsedSeconds / 1800, 1);
-  const offset = 314 * (1 - pct);
+  const offset = DASH * (1 - pct);
   document.getElementById('ring-fill').style.strokeDashoffset = offset;
 }
 
@@ -1373,56 +1463,34 @@ function updateTimerStatus(status) {
   const ring = document.getElementById('ring-fill');
   const lbl  = document.getElementById('timer-label');
   const map  = {
-    idle:     { pill:'Idle',     cls:'pill-idle',     stroke:'',        lbl:'idle'    },
-    focusing: { pill:'Focusing', cls:'pill-focusing', stroke:'',        lbl:'focus'   },
-    paused:   { pill:'Paused',   cls:'pill-paused',   stroke:'paused',  lbl:'paused'  },
-    break:    { pill:'Break',    cls:'pill-break',    stroke:'stopped', lbl:'break'   },
-    grace:    { pill:'Grace',    cls:'pill-grace',    stroke:'',        lbl:'grace'   }
+    idle:    {pill:'Idle',    cls:'pill-idle',    stroke:'',       lbl:'idle'},
+    focusing:{pill:'Focusing',cls:'pill-focusing',stroke:'',       lbl:'focus'},
+    paused:  {pill:'Paused',  cls:'pill-paused',  stroke:'paused', lbl:'paused'},
+    break:   {pill:'Break',   cls:'pill-break',   stroke:'stopped',lbl:'break'},
+    grace:   {pill:'Grace',   cls:'pill-grace',   stroke:'',       lbl:'grace'}
   };
-  const s = map[status] || map['idle'];
-  pill.textContent = s.pill;
-  pill.className   = `pill ${s.cls}`;
-  ring.className   = `ring-fill${s.stroke ? ' '+s.stroke : ''}`;
+  const s = map[status]||map['idle'];
+  pill.textContent = s.pill; pill.className = `pill ${s.cls}`;
+  ring.className   = `ring-fill${s.stroke?' '+s.stroke:''}`;
   lbl.textContent  = s.lbl;
 }
 
 /* ================================================
    YOUTUBE IFRAME API
-   onYouTubeIframeAPIReady is called by YT script.
 ================================================ */
 let ytAPIReady = false;
-function onYouTubeIframeAPIReady() {
-  ytAPIReady = true;
-  // Player created when task is clicked (loadYouTubeVideo)
-}
+function onYouTubeIframeAPIReady() { ytAPIReady = true; }
 
 function loadYouTubeVideo(videoId) {
   document.getElementById('video-placeholder').style.display = 'none';
   STATE.currentVideoId = videoId;
-
   if (STATE.ytPlayer && STATE.ytPlayer.loadVideoById) {
-    // Player already exists — just load new video
-    STATE.ytPlayer.loadVideoById(videoId);
-    return;
+    STATE.ytPlayer.loadVideoById(videoId); return;
   }
-
   STATE.ytPlayer = new YT.Player('yt-player', {
-    height: '100%',
-    width:  '100%',
-    videoId: videoId,
-    playerVars: {
-      autoplay:       1,
-      rel:            0,
-      modestbranding: 1,
-      iv_load_policy: 3,
-      cc_load_policy: 1,   // captions on by default (accessibility)
-      playsinline:    1
-    },
-    events: {
-      onReady:       onYTPlayerReady,
-      onStateChange: onYTPlayerStateChange,
-      onError:       onYTPlayerError
-    }
+    height:'100%', width:'100%', videoId,
+    playerVars:{ autoplay:1, rel:0, modestbranding:1, iv_load_policy:3, cc_load_policy:1, playsinline:1 },
+    events:{ onReady:onYTPlayerReady, onStateChange:onYTPlayerStateChange, onError:onYTPlayerError }
   });
 }
 
@@ -1432,75 +1500,109 @@ function onYTPlayerReady(event) {
 }
 
 function onYTPlayerStateChange(event) {
-  /* YT.PlayerState:
-     UNSTARTED=-1 | ENDED=0 | PLAYING=1 | PAUSED=2 | BUFFERING=3 | CUED=5
-  */
   const S = YT.PlayerState;
-
-  if (event.data === S.ENDED) {
-    // ── Video ended → stop timer, mark task complete ──
-    handleVideoEnded();
-  } else if (event.data === S.PLAYING) {
+  if (event.data === S.PLAYING) {
+    // ── Auto-start timer on PLAY ──
     if (!STATE.timerRunning && STATE.currentTaskId) {
       startTimer();
     } else if (STATE.timerPaused) {
-      // Student manually resumed video — resume timer too
       resumeTimer();
     }
+    // Student came back to video — stop away counter
+    stopAwayCounter();
+  } else if (event.data === S.ENDED) {
+    handleVideoEnded();
   } else if (event.data === S.PAUSED) {
+    // Only log distraction if timer is running and not an intentional break
     if (STATE.timerRunning && !STATE.timerPaused && !STATE.isOnBreak) {
-      pauseSession('video-pause');
+      startAwayCounter('video-pause');
     }
   }
 }
 
 function onYTPlayerError(event) {
-  console.warn('YouTube player error code:', event.data);
+  console.warn('YouTube error:', event.data);
   showToast('⚠️ Video issue — please try the link again');
 }
 
 function handleVideoEnded() {
   stopTimer();
+  stopAwayCounter();
   if (STATE.currentTaskId) markTaskComplete(STATE.currentTaskId);
-  updateLiveStatus({ focusState: 'idle' });
-  showToast('🎉 Great work — you finished the video!');
+  updateLiveStatus({ focusState:'idle' });
+  const task = STATE.tasks.find(t => t.id === STATE.currentTaskId);
+  const taskName = task ? (task.taskName || task.name || 'Task') : 'Task';
   appendLogItem('video-completed');
+  triggerMissionAccomplished(taskName);
 }
 
-function pauseYouTube() {
-  if (STATE.ytPlayer && STATE.ytReady) {
-    try { STATE.ytPlayer.pauseVideo(); } catch(e) {}
-  }
+function pauseYouTube() { try { if(STATE.ytPlayer&&STATE.ytReady) STATE.ytPlayer.pauseVideo(); } catch(e){} }
+function playYouTube()  { try { if(STATE.ytPlayer&&STATE.ytReady) STATE.ytPlayer.playVideo();  } catch(e){} }
+
+/* ================================================
+   MISSION ACCOMPLISHED  — confetti + badge
+================================================ */
+function triggerMissionAccomplished(taskName) {
+  document.getElementById('mission-task-name').textContent = `"${taskName}" — incredible work! 🌟`;
+  document.getElementById('mission-overlay').classList.add('show');
+  launchConfetti();
+  showToast('🎉 Mission complete — you are a learning hero!');
 }
 
-function playYouTube() {
-  if (STATE.ytPlayer && STATE.ytReady) {
-    try { STATE.ytPlayer.playVideo(); } catch(e) {}
+function dismissMission() {
+  document.getElementById('mission-overlay').classList.remove('show');
+}
+
+function launchConfetti() {
+  const colors = ['#ddd7f2','#cce9d8','#f5dfd0','#cce3f5','#f5efcc','#f0d5de','#c8ede6','#b5c4e8','#72b090','#c98b68'];
+  const shapes = ['2px','50%'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left       = Math.random()*100 + 'vw';
+    el.style.top        = '-20px';
+    el.style.width      = (8 + Math.random()*10) + 'px';
+    el.style.height     = (6 + Math.random()*8)  + 'px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius = shapes[Math.floor(Math.random()*shapes.length)];
+    el.style.animationDuration  = (1.8 + Math.random()*2.4) + 's';
+    el.style.animationDelay     = (Math.random()*0.8) + 's';
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
   }
 }
 
 /* ================================================
-   TASKS — Load from Firestore
+   TASKS
 ================================================ */
 function loadTasks() {
-  // Load from localStorage first (parent may have added tasks)
   try {
-    const stored = JSON.parse(localStorage.getItem('nic_tasks') || 'null');
-    if (stored && stored.length) {
-      STATE.tasks = stored;
+    const raw = JSON.parse(localStorage.getItem('nic_tasks') || 'null');
+    if (raw && raw.length) {
+      STATE.tasks = raw.map(t => ({
+        ...t,
+        taskName:    t.taskName    || t.name  || 'Unnamed Task',
+        resourceUrl: t.resourceUrl || t.url   || '',
+        isCompleted: !!(t.isCompleted || t.done)
+      }));
       renderTaskList();
     } else {
       loadDemoTasks();
     }
   } catch(_) { loadDemoTasks(); }
-
-  // Watch for parent adding/removing tasks in real-time
   window.addEventListener('storage', e => {
     if (e.key === 'nic_tasks' && e.newValue) {
       try {
-        STATE.tasks = JSON.parse(e.newValue);
+        const raw = JSON.parse(e.newValue);
+        // Normalise both field-name conventions (parent uses name/url, demo uses taskName/resourceUrl)
+        STATE.tasks = raw.map(t => ({
+          ...t,
+          taskName:    t.taskName    || t.name  || 'Unnamed Task',
+          resourceUrl: t.resourceUrl || t.url   || '',
+          isCompleted: !!(t.isCompleted || t.done)
+        }));
         renderTaskList();
-        showToast('📋 Task list updated by parent');
+        showToast('📋 Tasks updated by parent');
       } catch(_) {}
     }
   });
@@ -1512,7 +1614,6 @@ function loadDemoTasks() {
     { id:'demo-2', taskName:'The Water Cycle Explained',      resourceUrl:'https://www.youtube.com/watch?v=al-do-HGuIk', isCompleted:false, order:1 },
     { id:'demo-3', taskName:'How Plants Grow — Khan Academy', resourceUrl:'https://www.youtube.com/watch?v=J1GPlBINzWA', isCompleted:true,  order:2 }
   ];
-  // Sync to localStorage so parent can read the task list
   try { localStorage.setItem('nic_tasks', JSON.stringify(STATE.tasks)); } catch(_) {}
   renderTaskList();
 }
@@ -1520,345 +1621,542 @@ function loadDemoTasks() {
 function renderTaskList() {
   const list  = document.getElementById('task-list');
   const empty = document.getElementById('task-list-empty');
-
-  if (!STATE.tasks.length) {
-    list.innerHTML = '';
-    if (empty) empty.style.display = '';
-    return;
-  }
+  if (!STATE.tasks.length) { list.innerHTML=''; if(empty) empty.style.display=''; return; }
   if (empty) empty.style.display = 'none';
-
   list.innerHTML = STATE.tasks.map(task => {
-    const isYT    = task.resourceUrl && (task.resourceUrl.includes('youtube.com') || task.resourceUrl.includes('youtu.be'));
-    const icon    = isYT ? '▶️' : '🔗';
-    const active  = task.id === STATE.currentTaskId ? 'active' : '';
-    const done    = task.isCompleted ? 'completed' : '';
-    return `
-      <li class="task-item ${active} ${done}"
-          data-id="${task.id}"
-          data-url="${task.resourceUrl || ''}"
-          data-name="${escapeHtml(task.taskName)}"
-          onclick="handleTaskClick(this)"
-          role="button"
-          tabindex="${task.isCompleted ? -1 : 0}"
-          aria-label="Start task: ${escapeHtml(task.taskName)}">
-        <div class="task-icon">${icon}</div>
-        <div class="task-info">
-          <div class="name">${escapeHtml(task.taskName)}</div>
-          <div class="url-hint">${isYT ? 'YouTube Video' : (task.resourceUrl || 'No link')}</div>
-        </div>
-        <div class="task-check">${task.isCompleted ? '✓' : ''}</div>
-      </li>`;
+    // Normalise field names — parent uses name/url, demo uses taskName/resourceUrl
+    const name = task.taskName || task.name || 'Unnamed Task';
+    const url  = task.resourceUrl || task.url || '';
+    const done = !!(task.isCompleted || task.done);
+    const isYT = url && (url.includes('youtube.com') || url.includes('youtu.be'));
+    const active = task.id === STATE.currentTaskId ? 'active' : '';
+    const doneClass = done ? 'completed' : '';
+    return `<li class="task-item ${active} ${doneClass}" data-id="${task.id}" data-url="${url}" data-name="${escapeHtml(name)}" onclick="handleTaskClick(this)" role="button" tabindex="${done?-1:0}">
+      <div class="task-icon">${isYT?'▶️':'🔗'}</div>
+      <div class="task-info">
+        <div class="name">${escapeHtml(name)}</div>
+        <div class="url-hint">${isYT?'YouTube Video':(url||'No link')}</div>
+      </div>
+      <div class="task-check">${done?'✓':''}</div>
+    </li>`;
   }).join('');
 }
 
-/* ── Task clicked ── */
 function handleTaskClick(el) {
   const taskId   = el.dataset.id;
   const taskName = el.dataset.name;
   const url      = el.dataset.url;
-
-  if (taskId === STATE.currentTaskId) return;  // already active
-
-  // Stop previous session
+  if (taskId === STATE.currentTaskId) return;
+  stopAwayCounter();
   if (STATE.timerRunning) closeFocusLog(false);
   clearInterval(STATE.timerInterval);
-  STATE.timerRunning   = false;
-  STATE.elapsedSeconds = 0;
-  STATE.distractionEvents = [];
+  STATE.timerRunning=false; STATE.timerPaused=false;
+  STATE.elapsedSeconds=0; STATE.deductedSeconds=0;
+  STATE.distractionEvents=[]; STATE.distractionCount=0;
+  document.getElementById('distraction-count').textContent='0';
+  document.getElementById('ring-fill').style.strokeDashoffset='157';
   renderTimer();
-
+  updateTimerStatus('idle');
   STATE.currentTaskId = taskId;
-  document.getElementById('current-task-name').textContent = taskName;
-  document.getElementById('current-task-name').classList.remove('empty');
+  const nameEl = document.getElementById('current-task-name');
+  nameEl.textContent = taskName; nameEl.classList.remove('empty');
   renderTaskList();
-
-  // Open Firestore focus log
   openFocusLog(taskId);
-
-  // Extract YouTube video ID and load player
   const videoId = extractYouTubeId(url);
-  if (videoId && ytAPIReady) {
-    loadYouTubeVideo(videoId);
-  } else if (!ytAPIReady) {
-    // YT API not ready yet — wait
-    const wait = setInterval(() => {
-      if (ytAPIReady) { clearInterval(wait); loadYouTubeVideo(videoId); }
-    }, 300);
-  } else {
+  if (videoId) {
+    if (ytAPIReady) {
+      loadYouTubeVideo(videoId);
+    } else {
+      const w = setInterval(() => { if(ytAPIReady){clearInterval(w);loadYouTubeVideo(videoId);} }, 300);
+    }
+  } else if (url) {
     showToast('🔗 Opening link…');
-    window.open(url, '_blank', 'noopener');
+    window.open(url,'_blank','noopener');
     startTimer();
+  } else {
+    showToast('⚠️ No URL attached to this task');
   }
-
-  updateLiveStatus({ currentTaskId: taskId, focusState: 'focusing' });
+  updateLiveStatus({ currentTaskId:taskId, focusState:'focusing' });
 }
 
 function extractYouTubeId(url) {
   if (!url) return null;
-  const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
-  ];
-  for (const p of patterns) {
-    const m = url.match(p);
-    if (m) return m[1];
-  }
+  const patterns = [/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/, /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/];
+  for (const p of patterns) { const m=url.match(p); if(m) return m[1]; }
   return null;
 }
 
 /* ================================================
-   SENSORY BREAK
+   SENSORY BREAK  →  Calm Space panel
 ================================================ */
 async function startSensoryBreak() {
   if (STATE.isOnBreak) return;
   STATE.isOnBreak    = true;
   STATE.breakStartTime = new Date();
 
-  // Capture pre-break emotion BEFORE overlay shows
   const preBreakEmotion = { ...STATE.lastEmotion, timestamp: new Date() };
 
-  // Pause everything
+  // Pause all focus activity
   pauseTimer();
   pauseYouTube();
   cancelGracePeriod();
-
-  // Stop emotion polling
+  stopAwayCounter();
   clearInterval(STATE.emotionInterval);
-
   updateTimerStatus('break');
-  updateLiveStatus({ focusState: 'break' });
+  updateLiveStatus({ focusState:'break' });
 
-  // Show zen overlay
-  const overlay = document.getElementById('zen-overlay');
-  const badge   = document.getElementById('zen-pre-emotion-badge');
-  const emoLabel= preBreakEmotion.dominant !== 'unknown' ? preBreakEmotion.dominant : 'detecting…';
-  badge.innerHTML = `🧠 Feeling before break: <strong style="margin-left:4px">${capitalize(emoLabel)}</strong>`;
-  overlay.classList.add('visible');
+  // Show pre-break emotion in calm card
+  const badge = document.getElementById('calm-emotion-badge');
+  const wrap  = document.getElementById('calm-pre-emotion');
+  if (preBreakEmotion.dominant && preBreakEmotion.dominant !== 'unknown') {
+    badge.textContent = `🧠 Feeling before break: ${capitalize(preBreakEmotion.dominant)}`;
+    wrap.hidden = false;
+  } else {
+    wrap.hidden = true;
+  }
 
-  // Demo mode: store break locally, no Firestore write
-  STATE.currentBreakId = 'local-break-' + Date.now();
+  // Navigate to Calm Space
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-calm').classList.add('active');
+  document.getElementById('tab-calm').classList.add('active');
+
+  startCalmBreathing();
+
   await updateLiveStatusBreakCount();
-
   appendLogItem('sensory-break');
-  showToast('🌿 Break started — you\'ve got this');
+  showToast("🌿 Calm Space — take all the time you need");
+}
+
+// 4-4-4-4 box breathing — in sync with the CSS breathCore 8s animation
+let _calmBreathTimer = null;
+function startCalmBreathing() {
+  clearTimeout(_calmBreathTimer);
+  const el = document.getElementById('calm-breath-lbl');
+  if (!el) return;
+  const phases = [
+    { text:'Breathe in…',  ms:4000 },
+    { text:'Hold…',        ms:1000 },
+    { text:'Breathe out…', ms:4000 },
+    { text:'Rest…',        ms:1000 },
+  ];
+  let i = 0;
+  function tick() {
+    if (!el) return;
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = phases[i].text;
+      el.style.opacity = '1';
+      el.style.transition = 'opacity 0.5s ease';
+    }, 280);
+    _calmBreathTimer = setTimeout(() => {
+      i = (i + 1) % phases.length;
+      tick();
+    }, phases[i].ms);
+  }
+  tick();
 }
 
 async function endSensoryBreak() {
   if (!STATE.isOnBreak) return;
   STATE.isOnBreak = false;
+  clearTimeout(_calmBreathTimer);
+  _calmBreathTimer = null;
 
-  // Capture post-break emotion
-  const postBreakEmotion = { ...STATE.lastEmotion, timestamp: new Date() };
-
-  // Hide overlay with soft fade
-  const overlay = document.getElementById('zen-overlay');
-  overlay.style.opacity = '0';
-  overlay.style.transition = 'opacity 0.8s ease';
-  setTimeout(() => {
-    overlay.classList.remove('visible');
-    overlay.style.opacity = '';
-    overlay.style.transition = '';
-  }, 800);
-
-  // Close the open break record in localStorage
   closeOpenBreak();
-
-  // Restart emotion polling
   startEmotionPolling();
 
-  // Resume timer (don't auto-resume video — let student re-click)
+  // Go back to Learn tab
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-learn').classList.add('active');
+  document.getElementById('tab-learn').classList.add('active');
+
   if (STATE.currentTaskId) {
     STATE.timerPaused = false;
     updateTimerStatus('focusing');
-    updateLiveStatus({ focusState: 'focusing' });
+    updateLiveStatus({ focusState:'focusing' });
   } else {
     updateTimerStatus('idle');
   }
-
   showToast('✨ Welcome back — take it at your own pace');
 }
 
-/* AI-detected high frustration → suggest break (not force) */
-function triggerAIBreakSuggestion() {
-  // Non-intrusive suggestion — just a gentle toast
-  // No red alert, no alarm, no flashing
-  showToast('🌿 You\'ve been working hard — a break is available anytime');
+function goToGamesFromCalm() {
+  // Navigate to Games while staying in break (timer stays paused)
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-games').classList.add('active');
+  document.getElementById('tab-games').classList.add('active');
+}
 
-  // Demo: log locally. Will write to breakEvents when Firebase is connected.
-  console.log('AI break suggestion logged (demo mode)');
+function triggerAIBreakSuggestion() {
+  showToast("🌿 You've been working hard — a break is available anytime");
 }
 
 /* ================================================
-   FOCUS LOG  —  Firestore
+   FOCUS LOG (stubs)
 ================================================ */
-async function openFocusLog(taskId) {
-  // Demo mode: generate a local ID, no Firestore write
-  STATE.currentFocusLogId = 'local-log-' + Date.now();
-}
-
-async function closeFocusLog(videoCompleted = false) {
-  // Demo mode: just reset local state, no Firestore write
-  STATE.emotionBuffer     = [];
-  STATE.currentFocusLogId = null;
-}
-
+async function openFocusLog(taskId)              { STATE.currentFocusLogId='local-log-'+Date.now(); }
+async function closeFocusLog(videoCompleted=false){ STATE.emotionBuffer=[]; STATE.currentFocusLogId=null; }
 async function flushEmotionBuffer() {
-  // Append emotion samples to localStorage for parent to read
   if (!STATE.emotionBuffer.length) return;
-  try {
-    const existing = JSON.parse(localStorage.getItem('nic_emotion_samples') || '[]');
-    const merged   = [...existing, ...STATE.emotionBuffer].slice(-60); // keep last 60
-    localStorage.setItem('nic_emotion_samples', JSON.stringify(merged));
-  } catch(e) {}
-  STATE.emotionBuffer = [];
+  try { const e=JSON.parse(localStorage.getItem('nic_emotion_samples')||'[]'); const m=[...e,...STATE.emotionBuffer].slice(-60); localStorage.setItem('nic_emotion_samples',JSON.stringify(m)); } catch(e){}
+  STATE.emotionBuffer=[];
 }
-
 async function markTaskComplete(taskId) {
   const t = STATE.tasks.find(t => t.id === taskId);
-  if (t) { t.isCompleted = true; renderTaskList(); }
-  // Sync updated tasks to localStorage
+  if (t) {
+    t.isCompleted = true;
+    t.done = true;   // keep both fields in sync for parent compatibility
+    renderTaskList();
+  }
   try { localStorage.setItem('nic_tasks', JSON.stringify(STATE.tasks)); } catch(e) {}
 }
 
-/* ── localStorage live bridge (replaces Firestore liveStatus) ──
-   Student writes here every emotion poll & on every state change.
-   Parent reads this via storage event + polling.
-*/
+/* ================================================
+   localStorage BRIDGE
+================================================ */
 function updateLiveStatus(updates) {
   try {
-    const current = JSON.parse(localStorage.getItem('nic_live') || '{}');
-    const next = {
-      ...current,
-      studentId:    STATE.studentId   || 'student-001',
-      studentName:  STATE.studentName || 'Student',
-      isOnline:     true,
-      lastUpdated:  new Date().toISOString(),
-      focusState:   STATE.isOnBreak ? 'break' : (STATE.timerRunning && !STATE.timerPaused ? 'focusing' : 'idle'),
-      currentEmotion:   STATE.lastEmotion.dominant,
-      currentTaskId:    STATE.currentTaskId,
-      elapsedSeconds:   STATE.elapsedSeconds,
-      distractionCount: STATE.distractionCount,
-      ...updates
-    };
+    const current = JSON.parse(localStorage.getItem('nic_live')||'{}');
+    const next = { ...current, studentId:STATE.studentId||'demo-student-001', studentName:STATE.studentName||'Hero', isOnline:true, lastUpdated:new Date().toISOString(), focusState:STATE.isOnBreak?'break':(STATE.timerRunning&&!STATE.timerPaused?'focusing':'idle'), currentEmotion:STATE.lastEmotion.dominant, currentConfidence:STATE.lastEmotion.confidence||0, currentTaskId:STATE.currentTaskId, elapsedSeconds:STATE.elapsedSeconds, distractionCount:STATE.distractionCount, ...updates };
     localStorage.setItem('nic_live', JSON.stringify(next));
-  } catch(e) {}
+  } catch(e){}
 }
-
 function updateLiveStatusBreakCount() {
   try {
-    const current = JSON.parse(localStorage.getItem('nic_live') || '{}');
-    const breakCount = (current.breakCount || 0) + 1;
-    const breaks = JSON.parse(localStorage.getItem('nic_breaks') || '[]');
-    breaks.unshift({
-      id:         'brk-' + Date.now(),
-      initiatedBy:'student',
-      breakStart:  new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
-      durationSeconds: 0,
-      pre:         STATE.lastEmotion.dominant || 'unknown',
-      delta:       null,
-      open:        true
-    });
-    localStorage.setItem('nic_breaks', JSON.stringify(breaks.slice(0, 20)));
-    localStorage.setItem('nic_live', JSON.stringify({ ...current, breakCount, focusState:'break', lastUpdated: new Date().toISOString() }));
-  } catch(e) {}
+    const current=JSON.parse(localStorage.getItem('nic_live')||'{}');
+    const breakCount=(current.breakCount||0)+1;
+    const breaks=JSON.parse(localStorage.getItem('nic_breaks')||'[]');
+    breaks.unshift({ id:'brk-'+Date.now(), initiatedBy:'student', breakStart:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}), durationSeconds:0, pre:STATE.lastEmotion.dominant||'unknown', delta:null, open:true });
+    localStorage.setItem('nic_breaks',JSON.stringify(breaks.slice(0,20)));
+    localStorage.setItem('nic_live',JSON.stringify({...current,breakCount,focusState:'break',lastUpdated:new Date().toISOString()}));
+  } catch(e){}
 }
-
 function closeOpenBreak() {
   try {
-    const breaks = JSON.parse(localStorage.getItem('nic_breaks') || '[]');
-    const open   = breaks.find(b => b.open);
-    if (open) {
-      open.durationSeconds = Math.round((new Date() - STATE.breakStartTime) / 1000);
-      const preFrust  = 0; // without Flask we don't have rawScores
-      open.delta = null;
-      open.open  = false;
-      localStorage.setItem('nic_breaks', JSON.stringify(breaks));
-    }
-  } catch(e) {}
+    const breaks=JSON.parse(localStorage.getItem('nic_breaks')||'[]');
+    const open=breaks.find(b=>b.open);
+    if(open){open.durationSeconds=Math.round((new Date()-STATE.breakStartTime)/1000);open.delta=null;open.open=false;localStorage.setItem('nic_breaks',JSON.stringify(breaks));}
+  } catch(e){}
 }
 
-/* liveStatus stubs are defined above */
-
 /* ================================================
-   DISTRACTION LOG  —  UI
+   EVENT LOG  (Focus Events)
 ================================================ */
 function appendLogItem(type) {
-  const list  = document.getElementById('log-list');
-  const empty = list.querySelector('.log-empty');
-  if (empty) empty.remove();
-
+  const list=document.getElementById('log-list');
+  const empty=list.querySelector('.log-empty');
+  if(empty) empty.remove();
   const iconMap = {
-    'tab-switch':      { icon:'📑', text:'Switched to another tab' },
-    'window-blur':     { icon:'🪟', text:'Left the window' },
-    'ai-look-away':    { icon:'👀', text:'Looked away (AI detected)' },
-    'video-pause':     { icon:'⏸',  text:'Video paused' },
-    'video-completed': { icon:'🎉', text:'Video completed!' },
-    'sensory-break':   { icon:'🌿', text:'Sensory break started' }
+    'tab-switch':     {icon:'📑',text:'Switched to another tab'},
+    'window-blur':    {icon:'🪟',text:'Left the window'},
+    'ai-look-away':   {icon:'👀',text:'Looked away (AI detected)'},
+    'video-pause':    {icon:'⏸',text:'Video paused'},
+    'video-completed':{icon:'🎉',text:'Video completed!'},
+    'sensory-break':  {icon:'🌿',text:'Sensory break started'}
   };
-  const meta = iconMap[type] || { icon:'📌', text: type };
-  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
-
-  const item = document.createElement('div');
-  item.className = 'log-item';
-  item.innerHTML = `
-    <span class="log-icon">${meta.icon}</span>
-    <span>${meta.text}</span>
-    <span class="log-time">${time}</span>`;
+  const meta=iconMap[type]||{icon:'📌',text:type};
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const item=document.createElement('div');
+  item.className='log-item';
+  item.innerHTML=`<span class="log-icon">${meta.icon}</span><span>${meta.text}</span><span class="log-time">${time}</span>`;
   list.prepend(item);
-
-  // Keep max 20 items
-  const items = list.querySelectorAll('.log-item');
-  if (items.length > 20) items[items.length-1].remove();
+  const items=list.querySelectorAll('.log-item');
+  if(items.length>20) items[items.length-1].remove();
 }
 
 /* ================================================
-   BREATHING GUIDE  (Zen Mode)
-================================================ */
-function startBreathingGuide() {
-  const el = document.getElementById('breathe-text');
-  let inhale = true;
-  setInterval(() => {
-    el.textContent = inhale ? 'Breathe in...' : 'Breathe out...';
-    inhale = !inhale;
-  }, 3000);
-}
-
-/* ================================================
-   TOAST NOTIFICATIONS
-   Soft, non-alarming, auto-dismiss after 3.5s.
+   TOAST
 ================================================ */
 function showToast(message) {
-  const container = document.getElementById('toast-container');
-  const toast     = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = message;
+  const container=document.getElementById('toast-container');
+  const toast=document.createElement('div');
+  toast.className='toast'; toast.textContent=message;
   container.appendChild(toast);
-  setTimeout(() => {
-    toast.classList.add('removing');
-    setTimeout(() => toast.remove(), 380);
-  }, 3500);
+  setTimeout(()=>{ toast.classList.add('removing'); setTimeout(()=>toast.remove(),380); },3500);
+}
+
+/* ================================================
+   GAMES — MEMORY MATCH
+================================================ */
+const EMOJI_POOL = ['🦋','🌈','🌸','⭐','🍎','🎵','🌙','🐬'];
+let memState = { cards:[], flipped:[], matched:0, moves:0, locked:false };
+
+function initMemoryGame() { resetMemoryGame(); }
+
+function resetMemoryGame() {
+  const pairs = [...EMOJI_POOL, ...EMOJI_POOL]
+    .sort(()=>Math.random()-0.5)
+    .map((emoji,i)=>({ id:i, emoji, flipped:false, matched:false }));
+  memState = { cards:pairs, flipped:[], matched:0, moves:0, locked:false };
+  document.getElementById('mem-moves').textContent='0';
+  document.getElementById('mem-pairs').textContent='0';
+  document.getElementById('memory-win').style.display='none';
+  renderMemoryGrid();
+}
+
+function renderMemoryGrid() {
+  const grid = document.getElementById('memory-grid');
+  // Full re-render — only safe because we use CSS classes, not inline transforms
+  grid.innerHTML = memState.cards.map((card, i) => {
+    const isVisible = card.flipped || card.matched;
+    const cls = ['mem-card', isVisible ? 'flipped' : '', card.matched ? 'matched' : ''].filter(Boolean).join(' ');
+    return `<div class="${cls}" onclick="flipCard(${i})" role="button" aria-label="Memory card ${isVisible ? card.emoji : 'hidden'}">
+      <div class="mem-card-face mem-card-back">❓</div>
+      <div class="mem-card-face mem-card-front">${card.emoji}</div>
+    </div>`;
+  }).join('');
+}
+
+function flipCard(index) {
+  const card = memState.cards[index];
+  if (memState.locked || card.flipped || card.matched) return;
+  card.flipped = true;
+  memState.flipped.push(index);
+  renderMemoryGrid();
+
+  if (memState.flipped.length === 2) {
+    memState.moves++;
+    document.getElementById('mem-moves').textContent = memState.moves;
+    memState.locked = true;
+    const [a, b] = memState.flipped;
+    if (memState.cards[a].emoji === memState.cards[b].emoji) {
+      // Match!
+      memState.cards[a].matched = memState.cards[b].matched = true;
+      memState.matched++;
+      document.getElementById('mem-pairs').textContent = memState.matched;
+      memState.flipped = []; memState.locked = false;
+      renderMemoryGrid();
+      if (memState.matched === 8) {
+        setTimeout(()=>{
+          document.getElementById('memory-win-msg').textContent = `You matched all 8 pairs in ${memState.moves} moves! 🎊`;
+          document.getElementById('memory-win').style.display='block';
+        }, 400);
+      }
+    } else {
+      // No match — flip back after 900ms
+      setTimeout(()=>{
+        memState.cards[a].flipped = memState.cards[b].flipped = false;
+        memState.flipped = []; memState.locked = false;
+        renderMemoryGrid();
+      }, 900);
+    }
+  }
+}
+
+/* ================================================
+   GAME 2 — ZEN PUZZLE  (drag-and-drop shape sort)
+   6 shapes, 6 labelled slots. Match shape to slot.
+================================================ */
+const ZEN_SHAPES = [
+  { id:'circle',   emoji:'🔵', label:'Circle'   },
+  { id:'star',     emoji:'⭐', label:'Star'     },
+  { id:'heart',    emoji:'💜', label:'Heart'    },
+  { id:'diamond',  emoji:'💎', label:'Diamond'  },
+  { id:'flower',   emoji:'🌸', label:'Flower'   },
+  { id:'moon',     emoji:'🌙', label:'Moon'     },
+];
+let zenState = { placed:{}, dragId:null };
+
+function initZenPuzzle() { resetZenPuzzle(); }
+
+function resetZenPuzzle() {
+  zenState = { placed:{}, dragId:null };
+  document.getElementById('zen-progress').textContent = '0/6';
+  document.getElementById('zen-msg').textContent = 'Drag each shape to its matching slot 🌸';
+  document.getElementById('zen-msg').className = 'zen-puzzle-msg';
+  renderZenPuzzle();
+}
+
+function renderZenPuzzle() {
+  const src   = document.getElementById('zen-source');
+  const slots = document.getElementById('zen-slots');
+
+  // Source — only shapes not yet placed
+  const unplaced = ZEN_SHAPES.filter(s => !zenState.placed[s.id]);
+  src.innerHTML = unplaced.map(s =>
+    `<div class="zen-shape" draggable="true" data-id="${s.id}"
+          ondragstart="zenDragStart(event,'${s.id}')"
+          ondragend="zenDragEnd(event)"
+          title="${s.label}">${s.emoji}</div>`
+  ).join('');
+
+  // Slots
+  const shuffled = [...ZEN_SHAPES].sort(() => Math.random() - 0.5);
+  // Keep slot order stable after first render
+  if (!slots._order) slots._order = shuffled.map(s=>s.id);
+  slots.innerHTML = slots._order.map(id => {
+    const shape = ZEN_SHAPES.find(s=>s.id===id);
+    const placed = zenState.placed[id];
+    const cls    = placed ? 'zen-slot correct' : 'zen-slot';
+    return `<div class="${cls}" data-slot="${id}"
+                 ondragover="zenDragOver(event)"
+                 ondragleave="zenDragLeave(event)"
+                 ondrop="zenDrop(event,'${id}')"
+                 title="${shape.label}">
+      ${placed ? shape.emoji : `<span style="font-size:11px;font-weight:700;color:#c0b8d8">${shape.label}</span>`}
+    </div>`;
+  }).join('');
+}
+
+function zenDragStart(e, id) {
+  zenState.dragId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  e.target.classList.add('dragging');
+}
+function zenDragEnd(e) { e.target.classList.remove('dragging'); }
+function zenDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('over'); }
+function zenDragLeave(e){ e.currentTarget.classList.remove('over'); }
+
+function zenDrop(e, slotId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('over');
+  const dragId = zenState.dragId;
+  if (!dragId) return;
+
+  if (dragId === slotId) {
+    // Correct!
+    zenState.placed[dragId] = true;
+    const count = Object.keys(zenState.placed).length;
+    document.getElementById('zen-progress').textContent = `${count}/6`;
+    renderZenPuzzle();
+    if (count === 6) {
+      document.getElementById('zen-msg').textContent = '🎉 All shapes sorted! Beautiful work!';
+      document.getElementById('zen-msg').className = 'zen-puzzle-msg zen-win-msg';
+    }
+  } else {
+    // Wrong — flash the slot
+    e.currentTarget.classList.add('wrong');
+    setTimeout(() => e.currentTarget.classList.remove('wrong'), 400);
+  }
+  zenState.dragId = null;
+}
+
+function zenDropOnSource(e) {
+  e.preventDefault();
+  zenState.dragId = null;
+}
+
+/* ================================================
+   GAME 3 — PATH FINDER  (simple maze, keyboard + dpad)
+================================================ */
+// Maze: 0=path, 1=wall, S=start, E=end  (11×11)
+const MAZES = [
+  [
+    [1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,0,1,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,1,1,0,1],
+    [1,0,1,0,0,0,0,0,1,0,1],
+    [1,0,1,1,1,1,1,0,1,0,1],
+    [1,0,0,0,0,0,1,0,0,0,1],
+    [1,1,1,0,1,0,1,1,1,0,1],
+    [1,0,0,0,1,0,0,0,0,0,1],
+    [1,0,1,1,1,1,1,0,1,1,1],
+    [1,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1],
+  ],
+  [
+    [1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,1,0,0,0,1],
+    [1,0,1,1,1,0,1,0,1,0,1],
+    [1,0,1,0,0,0,1,0,1,0,1],
+    [1,0,1,0,1,1,1,0,1,0,1],
+    [1,0,0,0,0,0,0,0,1,0,1],
+    [1,1,1,1,1,0,1,1,1,0,1],
+    [1,0,0,0,1,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,1,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1],
+  ],
+];
+const MAZE_START = {row:1,col:1};
+const MAZE_END   = {row:9,col:9};
+
+let mazeState = { grid:[], player:{...MAZE_START}, steps:0, solved:false, mazeIdx:0 };
+
+function initMaze() { resetMaze(); }
+
+function resetMaze() {
+  mazeState.mazeIdx   = Math.floor(Math.random() * MAZES.length);
+  mazeState.grid      = MAZES[mazeState.mazeIdx].map(r=>[...r]);
+  mazeState.player    = {...MAZE_START};
+  mazeState.steps     = 0;
+  mazeState.solved    = false;
+  document.getElementById('maze-steps').textContent = '0';
+  document.getElementById('maze-win').style.display = 'none';
+  renderMaze();
+
+  // Keyboard control — scoped to when the path tab is active
+  document._mazeHandler && document.removeEventListener('keydown', document._mazeHandler);
+  document._mazeHandler = (e) => {
+    const active = document.getElementById('gpanel-path')?.classList.contains('active') &&
+                   document.getElementById('panel-games')?.classList.contains('active');
+    if (!active) return;
+    const dir = {ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];
+    if (dir) { e.preventDefault(); movePlayer(...dir); }
+  };
+  document.addEventListener('keydown', document._mazeHandler);
+}
+
+function renderMaze() {
+  const grid = document.getElementById('maze-grid');
+  const rows = mazeState.grid.length;
+  const cols = mazeState.grid[0].length;
+  grid.style.gridTemplateColumns = `repeat(${cols},38px)`;
+  grid.innerHTML = mazeState.grid.map((row, r) =>
+    row.map((cell, c) => {
+      const isPlayer = r===mazeState.player.row && c===mazeState.player.col;
+      const isGoal   = r===MAZE_END.row && c===MAZE_END.col;
+      let cls = cell===1 ? 'maze-cell wall' : 'maze-cell path';
+      let content = '';
+      if (isPlayer) { cls = 'maze-cell player'; content = '🐣'; }
+      else if (isGoal) { cls = 'maze-cell goal'; content = '🌟'; }
+      else if (mazeState.visited && mazeState.visited[`${r},${c}`]) cls = 'maze-cell visited';
+      return `<div class="${cls}">${content}</div>`;
+    }).join('')
+  ).join('');
+}
+
+function movePlayer(dc, dr) {
+  if (mazeState.solved) return;
+  const nr = mazeState.player.row + dr;
+  const nc = mazeState.player.col + dc;
+  const rows = mazeState.grid.length;
+  const cols = mazeState.grid[0].length;
+  if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) return;
+  if (mazeState.grid[nr][nc] === 1) return; // wall
+
+  // Mark visited
+  if (!mazeState.visited) mazeState.visited = {};
+  mazeState.visited[`${mazeState.player.row},${mazeState.player.col}`] = true;
+
+  mazeState.player = {row:nr, col:nc};
+  mazeState.steps++;
+  document.getElementById('maze-steps').textContent = mazeState.steps;
+  renderMaze();
+
+  if (nr===MAZE_END.row && nc===MAZE_END.col) {
+    mazeState.solved = true;
+    document.getElementById('maze-win').style.display = 'block';
+    showToast('🌟 You found the path! Amazing!');
+  }
 }
 
 /* ================================================
    HELPERS
 ================================================ */
-function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function capitalize(str) {
-  if (!str) return '';
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+function escapeHtml(str) { if(!str)return''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function capitalize(str) { if(!str)return''; return str.charAt(0).toUpperCase()+str.slice(1); }
 
 /* ================================================
-   CLEANUP on page unload
+   CLEANUP
 ================================================ */
 window.addEventListener('beforeunload', () => {
   closeFocusLog(false);
-  updateLiveStatus({ isOnline: false, focusState: 'idle' });
-  if (STATE.cameraStream) STATE.cameraStream.getTracks().forEach(t => t.stop());
+  updateLiveStatus({ isOnline:false, focusState:'idle' });
+  if (STATE.cameraStream) STATE.cameraStream.getTracks().forEach(t=>t.stop());
 });
 </script>
 </body>
