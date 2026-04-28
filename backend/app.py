@@ -21,6 +21,7 @@ from flask_cors import CORS
 
 import config
 from routes.emotion import emotion_bp
+from routes.chat import chat_bp
 
 # ── Logging ────────────────────────────────────────────
 logging.basicConfig(
@@ -41,6 +42,7 @@ def create_app() -> Flask:
 
     # ── Register blueprints ───────────────────────────
     app.register_blueprint(emotion_bp)
+    app.register_blueprint(chat_bp)
 
     # ── Health probe ──────────────────────────────────
     @app.route("/health", methods=["GET"])

@@ -1,8 +1,7 @@
 venv/
-ai-module/
+node_modules/
 .env
+*.log
 __pycache__/
 *.pyc
-node_modules/
-dist/
-build/
+.DS_Store

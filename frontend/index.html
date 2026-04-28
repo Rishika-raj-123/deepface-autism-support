@@ -750,6 +750,123 @@ body {
 
 /* ── Path Finder — maze ── */
 .maze-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+
+/* ================================================
+   CALM SPACE OVERLAY  (full-screen, fixed, hidden by default)
+================================================ */
+#calm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(237,233,227,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow-y: auto;
+  padding: 32px 20px;
+}
+#calm-overlay.open {
+  display: flex;
+  animation: calmOverlayIn 0.55s cubic-bezier(0.25,0.8,0.25,1) both;
+}
+@keyframes calmOverlayIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ================================================
+   CHATBOT TAB
+================================================ */
+.chat-page {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeUp 0.35s var(--ease-spring) both;
+  height: calc(100vh - 220px);
+  min-height: 460px;
+}
+.chat-header { padding: 16px 22px; flex-shrink: 0; }
+.chat-header-inner { display: flex; align-items: center; gap: 14px; }
+.chat-avatar {
+  width: 46px; height: 46px;
+  background: linear-gradient(135deg, var(--pastel-lavender), var(--pastel-mint));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.75);
+}
+.chat-title { font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--text-primary); }
+.chat-subtitle { font-family:var(--font-body); font-size:12px; font-weight:600; color:var(--text-muted); margin-top:2px; }
+.chat-status-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:var(--accent-sage); margin-left:auto; flex-shrink:0;
+  animation: softPulse 2.8s ease-in-out infinite;
+}
+.chat-messages {
+  flex:1; overflow-y:auto; padding:22px 20px;
+  display:flex; flex-direction:column; gap:14px;
+  scrollbar-width:thin; scrollbar-color:var(--text-light) transparent;
+}
+.chat-msg { display:flex; gap:10px; animation:fadeUp 0.25s ease both; }
+.chat-msg.user { flex-direction:row-reverse; }
+.chat-bubble {
+  max-width:72%; padding:12px 18px;
+  border-radius:var(--radius-lg);
+  font-size:14px; font-weight:500; line-height:1.65; word-break:break-word;
+}
+.chat-msg.bot .chat-bubble {
+  background:rgba(255,255,255,0.72); border:1.5px solid rgba(255,255,255,0.85);
+  color:var(--text-primary); border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) 6px;
+}
+.chat-msg.user .chat-bubble {
+  background:linear-gradient(135deg,var(--pastel-lavender),var(--pastel-sky));
+  border:1.5px solid rgba(255,255,255,0.8); color:var(--text-primary);
+  border-radius:var(--radius-lg) var(--radius-lg) 6px var(--radius-lg);
+}
+.chat-msg-avatar {
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; flex-shrink:0;
+  background:rgba(255,255,255,0.5); border:1.5px solid rgba(255,255,255,0.8);
+  margin-top:2px;
+}
+.chat-msg.user .chat-msg-avatar { background:linear-gradient(135deg,var(--pastel-peach),var(--pastel-rose)); }
+.chat-typing {
+  display:flex; align-items:center; gap:5px; padding:12px 18px;
+  background:rgba(255,255,255,0.65); border:1.5px solid rgba(255,255,255,0.85);
+  border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) 6px; width:fit-content;
+}
+.chat-typing span {
+  width:7px; height:7px; border-radius:50%; background:var(--text-muted);
+  animation:typingDot 1.4s ease-in-out infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay:0.2s; }
+.chat-typing span:nth-child(3) { animation-delay:0.4s; }
+@keyframes typingDot {
+  0%,80%,100% { transform:scale(0.75); opacity:0.45; }
+  40%         { transform:scale(1.15); opacity:1; }
+}
+.chat-input-bar { display:flex; align-items:center; gap:10px; padding:10px 14px; flex-shrink:0; }
+.chat-input {
+  flex:1; border:none; background:transparent;
+  font-family:var(--font-body); font-size:14px; font-weight:500;
+  color:var(--text-primary); outline:none; padding:8px 6px;
+}
+.chat-input::placeholder { color:var(--text-muted); }
+.chat-send-btn {
+  width:42px; height:42px; border:1.5px solid rgba(255,255,255,0.8);
+  background:linear-gradient(135deg,var(--pastel-lavender),var(--pastel-sky));
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:var(--tr); font-size:15px; color:var(--text-secondary); flex-shrink:0;
+}
+.chat-send-btn:hover  { transform:scale(1.1) translateY(-1px); box-shadow:0 6px 18px rgba(140,120,200,0.2); }
+.chat-send-btn:active { transform:scale(0.95); }
+.chat-send-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
 .maze-grid {
   display: grid;
   gap: 2px;
@@ -837,7 +954,7 @@ body {
   <!-- TAB NAV -->
   <nav class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('learn')" id="tab-learn">📚 Learn</button>
-    <button class="tab-btn"        onclick="switchTab('calm')"  id="tab-calm"> 🌿 Calm Space</button>
+    <button class="tab-btn"        onclick="switchTab('chat')"  id="tab-chat">💬 Chatbot</button>
     <button class="tab-btn"        onclick="switchTab('games')" id="tab-games">🎮 Games</button>
   </nav>
 
@@ -928,8 +1045,42 @@ body {
     </div>
   </div><!-- /panel-learn -->
 
-  <!-- ═══ CALM SPACE TAB ═══ -->
-  <div class="tab-panel" id="panel-calm">
+  <!-- ═══ CHATBOT TAB ═══ -->
+  <div class="tab-panel" id="panel-chat">
+    <div class="chat-page">
+      <div class="chat-header glass">
+        <div class="chat-header-inner">
+          <div class="chat-avatar">🤖</div>
+          <div>
+            <div class="chat-title">Learning Assistant</div>
+            <div class="chat-subtitle">Ask me anything about your lessons!</div>
+          </div>
+          <div class="chat-status-dot"></div>
+        </div>
+      </div>
+      <div class="chat-messages glass" id="chat-messages">
+        <div class="chat-msg bot">
+          <div class="chat-bubble">Hey! 👋 I'm your learning assistant. Ask me anything — I can help explain topics, answer questions about your videos, or just chat. What's on your mind?</div>
+        </div>
+      </div>
+      <div class="chat-input-bar glass">
+        <input
+          type="text"
+          id="chat-input"
+          class="chat-input"
+          placeholder="Type your message…"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"
+          autocomplete="off"
+        />
+        <button class="chat-send-btn" onclick="sendChatMessage()" id="chat-send-btn" aria-label="Send">
+          <span class="chat-send-icon">➤</span>
+        </button>
+      </div>
+    </div>
+  </div><!-- /panel-chat -->
+
+  <!-- ═══ CALM SPACE OVERLAY ═══ -->
+  <div id="calm-overlay" aria-modal="true" role="dialog" aria-label="Calm Space Break">
     <div class="calm-space">
       <div class="calm-card">
         <div class="calm-orb calm-orb-1"></div>
@@ -971,7 +1122,7 @@ body {
         </div>
       </div>
     </div>
-  </div><!-- /panel-calm -->
+  </div><!-- /calm-overlay -->
 
   <!-- ═══ GAMES TAB ═══ -->
   <div class="tab-panel" id="panel-games">
@@ -1186,12 +1337,6 @@ function switchGame(name) {
   document.getElementById('gtab-' + name).classList.add('active');
 }
 
-function goToGamesFromCalm() {
-  // Switch to games tab without ending the break
-  switchTab('games');
-  document.getElementById('tab-calm').classList.remove('active');
-}
-
 /* ================================================
    CAMERA INIT
 ================================================ */
@@ -1263,9 +1408,22 @@ function handleEmotionResult(data) {
   if (dominant && dominant !== 'unknown') {
     try {
       const rs = rawScores||{};
-      const samples = JSON.parse(localStorage.getItem('nic_emotion_samples')||'[]');
-      samples.push({ e:dominant, conf:confidence||0.5, happy:+(rs.happy||0).toFixed(3), frustrated:+(rs.frustrated||0).toFixed(3), neutral:+(rs.neutral||0).toFixed(3), sad:+(rs.sad||0).toFixed(3), surprised:+(rs.surprised||0).toFixed(3), t:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}) });
-      if (samples.length>100) samples.shift();
+      let samples = JSON.parse(localStorage.getItem('nic_emotion_samples') || '[]');
+      const sample = {
+  e: dominant.toLowerCase(),
+  t: new Date().toISOString(),
+  happy: +(rs.happy || 0).toFixed(3),
+  neutral: +(rs.neutral || 0).toFixed(3),
+  frustrated: +(rs.frustrated || 0).toFixed(3),
+  sad: +(rs.sad || 0).toFixed(3),
+  surprised: +(rs.surprised || 0).toFixed(3)
+};
+
+samples.push(sample);
+
+if (samples.length > 200) {
+  samples = samples.slice(-200);
+}
       localStorage.setItem('nic_emotion_samples', JSON.stringify(samples));
     } catch(_){}
   }
@@ -1478,25 +1636,78 @@ function updateTimerStatus(status) {
 /* ================================================
    YOUTUBE IFRAME API
 ================================================ */
-let ytAPIReady = false;
-function onYouTubeIframeAPIReady() { ytAPIReady = true; }
+
+let ytRetryCount = 0;
+
+function waitForYTAndLoad(videoId) {
+  if (window.YT && YT.Player) {
+    ytRetryCount = 0;
+    loadYouTubeVideo(videoId);
+  } else {
+    if (ytRetryCount > 20) {
+      console.error("YT failed to load after multiple attempts");
+      showToast("⚠️ Could not load video. Check connection.");
+      return;
+    }
+    ytRetryCount++;
+    console.warn("YT not ready, retrying...", ytRetryCount);
+    setTimeout(() => waitForYTAndLoad(videoId), 300);
+  }
+}
 
 function loadYouTubeVideo(videoId) {
+  if (!videoId) {
+    console.warn("Invalid videoId");
+    return;
+  }
+
   document.getElementById('video-placeholder').style.display = 'none';
   STATE.currentVideoId = videoId;
-  if (STATE.ytPlayer && STATE.ytPlayer.loadVideoById) {
-    STATE.ytPlayer.loadVideoById(videoId); return;
-  }
+
+  // If player already exists → reuse it
+  if (
+  STATE.ytPlayer &&
+  typeof STATE.ytPlayer.loadVideoById === 'function' &&
+  STATE.ytReady
+) {
+  console.log("[YT] Loading into existing player");
+  STATE.ytPlayer.loadVideoById(videoId);
+  return;
+}
+
+  console.log("[YT] Creating new player");
+
+  STATE.ytReady = false; 
+
   STATE.ytPlayer = new YT.Player('yt-player', {
-    height:'100%', width:'100%', videoId,
-    playerVars:{ autoplay:1, rel:0, modestbranding:1, iv_load_policy:3, cc_load_policy:1, playsinline:1 },
-    events:{ onReady:onYTPlayerReady, onStateChange:onYTPlayerStateChange, onError:onYTPlayerError }
+    height: '100%',
+    width: '100%',
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      mute: 1, // REQUIRED for autoplay to actually work
+      rel: 0,
+      modestbranding: 1,
+      iv_load_policy: 3,
+      cc_load_policy: 1,
+      playsinline: 1
+    },
+    events: {
+      onReady: onYTPlayerReady,
+      onStateChange: onYTPlayerStateChange,
+      onError: onYTPlayerError
+    }
   });
 }
 
 function onYTPlayerReady(event) {
   STATE.ytReady = true;
+
   event.target.playVideo();
+
+  setTimeout(() => {
+    try { event.target.unMute(); } catch(e) {}
+  }, 1000);
 }
 
 function onYTPlayerStateChange(event) {
@@ -1715,11 +1926,11 @@ async function startSensoryBreak() {
     wrap.hidden = true;
   }
 
-  // Navigate to Calm Space
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-calm').classList.add('active');
-  document.getElementById('tab-calm').classList.add('active');
+  // Show Calm Space overlay (fullscreen, above everything)
+  const overlay = document.getElementById('calm-overlay');
+  overlay.classList.add('open');
+  // Prevent background scroll/interaction
+  document.body.style.overflow = 'hidden';
 
   startCalmBreathing();
 
@@ -1763,14 +1974,16 @@ async function endSensoryBreak() {
   clearTimeout(_calmBreathTimer);
   _calmBreathTimer = null;
 
+  // Hide overlay and restore background interaction
+  const overlay = document.getElementById('calm-overlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+
   closeOpenBreak();
   startEmotionPolling();
 
   // Go back to Learn tab
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-learn').classList.add('active');
-  document.getElementById('tab-learn').classList.add('active');
+  switchTab('learn');
 
   if (STATE.currentTaskId) {
     STATE.timerPaused = false;
@@ -1783,11 +1996,12 @@ async function endSensoryBreak() {
 }
 
 function goToGamesFromCalm() {
-  // Navigate to Games while staying in break (timer stays paused)
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-games').classList.add('active');
-  document.getElementById('tab-games').classList.add('active');
+  // Hide overlay (stay on break — timer stays paused)
+  const overlay = document.getElementById('calm-overlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  // Navigate to Games tab while keeping break state
+  switchTab('games');
 }
 
 function triggerAIBreakSuggestion() {
@@ -2142,6 +2356,86 @@ function movePlayer(dc, dr) {
     document.getElementById('maze-win').style.display = 'block';
     showToast('🌟 You found the path! Amazing!');
   }
+}
+
+/* ================================================
+   CHATBOT
+================================================ */
+let chatHistory = [];
+
+async function sendChatMessage() {
+  const input = document.getElementById('chat-input');
+  const btn   = document.getElementById('chat-send-btn');
+  const text  = input.value.trim();
+  if (!text) return;
+
+  // Append user message
+  appendChatMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  input.value = '';
+  btn.disabled = true;
+
+  // Show typing indicator
+  const typingId = appendChatTyping();
+
+  try {
+    const emotion = STATE.lastEmotion?.dominant || 'neutral';
+    const res = await fetch('http://127.0.0.1:5000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, emotion }),
+      signal: AbortSignal.timeout(15000)
+    });
+
+    removeChatTyping(typingId);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const reply = data.reply || data.message || data.response || 'I had trouble responding. Please try again!';
+    appendChatMessage('bot', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+
+  } catch (err) {
+    removeChatTyping(typingId);
+    console.warn('Chat API error:', err.message);
+    appendChatMessage('bot', "Hmm, I can't reach the server right now 🌿 — but I'm still here! Try again in a moment.");
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+}
+
+function appendChatMessage(role, text) {
+  const container = document.getElementById('chat-messages');
+  const isUser = role === 'user';
+  const div = document.createElement('div');
+  div.className = `chat-msg ${isUser ? 'user' : 'bot'}`;
+  div.innerHTML = `
+    <div class="chat-msg-avatar">${isUser ? '🙂' : '🤖'}</div>
+    <div class="chat-bubble">${escapeHtml(text).replace(/\n/g,'<br>')}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function appendChatTyping() {
+  const container = document.getElementById('chat-messages');
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.id = id;
+  div.innerHTML = `
+    <div class="chat-msg-avatar">🤖</div>
+    <div class="chat-typing"><span></span><span></span><span></span></div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function removeChatTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
 }
 
 /* ================================================
