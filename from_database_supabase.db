@@ -1,0 +1,43 @@
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.children (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  parent_id uuid NOT NULL,
+  name text NOT NULL,
+  age integer NOT NULL,
+  child_user_id uuid,
+  CONSTRAINT children_pkey PRIMARY KEY (id),
+  CONSTRAINT children_parent_fkey FOREIGN KEY (parent_id) REFERENCES public.custom_users(id),
+  CONSTRAINT children_child_fkey FOREIGN KEY (child_user_id) REFERENCES public.custom_users(id)
+);
+CREATE TABLE public.custom_users (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  email text NOT NULL UNIQUE,
+  password text NOT NULL,
+  name text NOT NULL,
+  role text NOT NULL CHECK (role = ANY (ARRAY['parent'::text, 'child'::text])),
+  CONSTRAINT custom_users_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.profiles (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  user_id uuid NOT NULL UNIQUE,
+  name text NOT NULL,
+  role text NOT NULL CHECK (role = ANY (ARRAY['parent'::text, 'child'::text])),
+  CONSTRAINT profiles_pkey PRIMARY KEY (id),
+  CONSTRAINT profiles_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.sessions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  child_id uuid NOT NULL,
+  start_time timestamp with time zone NOT NULL DEFAULT now(),
+  end_time timestamp with time zone,
+  focus_duration integer,
+  break_count integer DEFAULT 0,
+  is_active boolean NOT NULL DEFAULT true,
+  CONSTRAINT sessions_pkey PRIMARY KEY (id)
+);

@@ -1,9 +1,13 @@
-import google.generativeai as genai
-import os
-
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-model = genai.GenerativeModel("gemini-1.5-flash")
+try:
+    import google.generativeai as genai
+    import os
+    if os.getenv("GEMINI_API_KEY"):
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        model = genai.GenerativeModel("gemini-1.5-flash")
+    else:
+        model = None
+except ImportError:
+    model = None
 
 def generate_response(message: str, emotion: str) -> str:
     try:
@@ -28,6 +32,11 @@ def generate_response(message: str, emotion: str) -> str:
 
         if emotion == "happy":
             return "Nice! 😊 Keep going, you're doing great!"
+
+        if model:
+            prompt = f"You are a supportive AI companion for an autistic child. The child says: '{message}'. Their current emotion is {emotion}. Give a short, encouraging, and sensory-safe response."
+            response = model.generate_content(prompt)
+            return response.text
 
         # 🧠 Default fallback (normal conversation)
         return "Got it. Tell me more."

@@ -88,6 +88,17 @@ def emotion():
         "studentId":  student_id,
         "taskId":     task_id,
     }
+
+    # ── 5. Sync with Supabase (Background or Async would be better) ──
+    from services.supabase_service import save_session_data
+    # We'll assume the frontend sends a valid child_id in 'studentId'
+    # For now, we only update if it's a real session (not warming up)
+    if student_id != "unknown":
+        # We don't have the full session stats here easily without more state,
+        # but we can at least log that the student is active.
+        # This is a bit simplified; a better way would be a dedicated /sync endpoint.
+        pass
+
     return jsonify(response), 200
 
 

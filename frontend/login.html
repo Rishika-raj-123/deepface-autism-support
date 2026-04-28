@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — CalmPath</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #7BA7F7;
+      --blue-dk: #4A85F2;
+      --sky: #D2E3FC;
+      --mint: #B2F2BB;
+      --mint-deep: #3AB795;
+      --lav: #D8D2F2;
+      --lav-deep: #9078E6;
+      --peach: #FFE3D8;
+      --peach-deep: #E8835A;
+      --ink: #1F2937;
+      --ink-mid: #4B5563;
+      --white: #FFFFFF;
+      --r-xl: 32px;
+      --r-lg: 24px;
+      --tr: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8faff 0%, #edf2ff 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .bg-blobs {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: drift 20s infinite alternate;
+    }
+    .blob-1 { width: 400px; height: 400px; background: var(--blue); top: -100px; right: -100px; }
+    .blob-2 { width: 300px; height: 300px; background: var(--lav); bottom: -50px; left: -50px; animation-delay: -5s; }
+    .blob-3 { width: 250px; height: 250px; background: var(--mint); top: 20%; left: 10%; animation-delay: -10s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(30px, 50px) scale(1.1); }
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      width: 100%;
+      max-width: 440px;
+      padding: 48px;
+      border-radius: var(--r-xl);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+      border: 1.5px solid rgba(255,255,255,0.5);
+      text-align: center;
+      position: relative;
+    }
+
+    .logo-area {
+      margin-bottom: 32px;
+    }
+    .logo-ico {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--blue), var(--lav-deep));
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 32px;
+      color: white;
+      box-shadow: 0 10px 20px rgba(123, 167, 247, 0.3);
+    }
+    h1 { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 32px; margin-bottom: 8px; letter-spacing: -0.02em; }
+    p.sub { color: var(--ink-mid); font-size: 15px; margin-bottom: 32px; }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-mid);
+      margin-bottom: 8px;
+      margin-left: 4px;
+    }
+    input {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--white);
+      border: 2px solid #E5E7EB;
+      border-radius: 14px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: var(--tr);
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(123, 167, 247, 0.1);
+    }
+
+    .btn-pri {
+      width: 100%;
+      padding: 16px;
+      background: var(--ink);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--tr);
+      margin-top: 12px;
+    }
+    .btn-pri:hover {
+      background: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .btn-pri:active { transform: translateY(0); }
+    .btn-pri:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .toggle-auth {
+      margin-top: 24px;
+      font-size: 14px;
+      color: var(--ink-mid);
+    }
+    .toggle-auth a {
+      color: var(--blue-dk);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+    .toggle-auth a:hover { text-decoration: underline; }
+
+    #error-msg {
+      background: #FEE2E2;
+      color: #DC2626;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .role-opt {
+      padding: 12px;
+      border: 2px solid #E5E7EB;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--tr);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .role-opt span { font-size: 20px; }
+    .role-opt.active {
+      border-color: var(--blue);
+      background: rgba(123, 167, 247, 0.05);
+      color: var(--blue-dk);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="auth-card">
+    <div class="logo-area">
+      <div class="logo-ico">🌿</div>
+      <h1 id="auth-title">Welcome Back</h1>
+      <p class="sub" id="auth-sub">Please sign in to continue to CalmPath</p>
+    </div>
+
+    <div id="error-msg"></div>
+
+    <label>I am a...</label>
+    <div class="role-selector">
+      <div class="role-opt active" id="opt-student" onclick="setRole('child')">
+        <span>👶</span> Student
+      </div>
+      <div class="role-opt" id="opt-parent" onclick="setRole('parent')">
+        <span>🏠</span> Parent
+      </div>
+    </div>
+
+    <div id="signup-fields" style="display:none">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="full-name" placeholder="Enter your name">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="name@example.com">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="••••••••">
+    </div>
+
+    <button class="btn-pri" id="btn-submit" onclick="handleAuth()">Sign In</button>
+
+    <div class="toggle-auth">
+      <span id="toggle-text">Don't have an account?</span>
+      <a href="#" id="toggle-link" onclick="toggleMode()">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    // Config from your .env
+    const SUPABASE_URL = "https://xqqcafiukbmqlzcdujku.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxcWNhZml1a2JtcWx6Y2R1amt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDI3MDAsImV4cCI6MjA5Mjc3ODcwMH0.htU2YQzYWpUF8BLcDLsraldNiidozdvnaC0bp9nPpKE";
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let mode = 'signin';
+    let selectedRole = 'child';
+
+    function setRole(r) {
+      selectedRole = r;
+      document.getElementById('opt-student').classList.toggle('active', r === 'child');
+      document.getElementById('opt-parent').classList.toggle('active', r === 'parent');
+    }
+
+    function toggleMode() {
+      mode = mode === 'signin' ? 'signup' : 'signin';
+      document.getElementById('auth-title').textContent = mode === 'signin' ? 'Welcome Back' : 'Create Account';
+      document.getElementById('auth-sub').textContent = mode === 'signin' ? 'Please sign in to continue to CalmPath' : 'Join our supportive learning community';
+      document.getElementById('btn-submit').textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
+      document.getElementById('toggle-text').textContent = mode === 'signin' ? "Don't have an account?" : 'Already have an account?';
+      document.getElementById('toggle-link').textContent = mode === 'signin' ? 'Sign Up' : 'Sign In';
+      document.getElementById('signup-fields').style.display = mode === 'signin' ? 'none' : 'block';
+      // The role selector stays visible in both modes now.
+      document.getElementById('error-msg').style.display = 'none';
+    }
+
+    async function handleAuth() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const name = document.getElementById('full-name').value.trim();
+      const btn = document.getElementById('btn-submit');
+      const errorEl = document.getElementById('error-msg');
+
+      if (!email || !password) {
+        showError('Please enter both email and password');
+        return;
+      }
+
+      btn.disabled = true;
+
+      try {
+        if (mode === 'signup') {
+          // 1. Manual Insert into custom_users
+          const { data, error } = await supabaseClient
+            .from('custom_users')
+            .insert([{ email, password: password, name, role: selectedRole }])
+            .select();
+
+          if (error) {
+             if (error.code === '23505') throw new Error("Email already registered.");
+             throw error;
+          }
+
+          alert('✨ Account created! Please sign in.');
+          toggleMode();
+        } else {
+          // 2. Manual Login Check
+          const { data: user, error } = await supabaseClient
+            .from('custom_users')
+            .select('*')
+            .eq('email', email)
+            .eq('password', password)
+            .single();
+
+          if (error || !user) throw new Error("Invalid email or password.");
+          
+          if (user.role.toLowerCase() !== selectedRole.toLowerCase()) {
+            throw new Error(`This account is registered as a ${user.role}, not a ${selectedRole}.`);
+          }
+
+          // Store manual session
+          localStorage.setItem('calmpath_user', JSON.stringify(user));
+          
+          if (user.role === 'parent') {
+            window.location.href = 'parent.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }
+      } catch (err) {
+        showError(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
+      }
+    }
+
+    function showError(m) {
+      const el = document.getElementById('error-msg');
+      el.textContent = m;
+      el.style.display = 'block';
+    }
+
+    // Check if already logged in (Manual)
+    window.onload = () => {
+      console.log("Login page loaded. Manual session check...");
+      const user = JSON.parse(localStorage.getItem('calmpath_user') || 'null');
+      console.log("Current manual user:", user);
+      // Auto-redirect disabled to prevent loops. User must click Login.
+      /*
+      if (user) {
+        window.location.href = user.role === 'parent' ? 'parent.html' : 'index.html';
+      }
+      */
+    };
+  </script>
+</body>
+</html>

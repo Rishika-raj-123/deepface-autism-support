@@ -5,8 +5,12 @@ into an OpenCV-compatible numpy array (BGR, uint8).
 """
 import base64
 import re
-import numpy as np
-import cv2
+try:
+    import numpy as np
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
 
 # Optional: Add max size constant
 MAX_IMAGE_SIZE = 1024 * 768 * 3  # ~2.3MB for 1024x768 RGB
@@ -47,6 +51,9 @@ def decode_frame(data_url: str) -> np.ndarray:
     # Optional: Check decoded size
     if len(raw_bytes) > MAX_IMAGE_SIZE:
         raise ValueError(f"Decoded image too large: {len(raw_bytes)} bytes")
+
+    if not CV2_AVAILABLE:
+        return None
 
     img_array = np.frombuffer(raw_bytes, dtype=np.uint8)
     img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)

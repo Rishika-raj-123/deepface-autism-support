@@ -21,6 +21,8 @@ echo SECRET_KEY=calmpath-dev-secret-change-in-prod >> .env
 echo DEEPFACE_MODEL=VGG-Face >> .env
 echo DEEPFACE_DETECTOR=opencv >> .env
 echo FRUSTRATION_THRESHOLD=0.72 >> .env
+echo SUPABASE_URL=your-project-url.supabase.co >> .env
+echo SUPABASE_KEY=your-anon-key >> .env
 
 echo Step 5: Pre-warming DeepFace model (downloads ~550MB first time)...
 python -c "from services.emotion_service import _ensure_model; _ensure_model()"

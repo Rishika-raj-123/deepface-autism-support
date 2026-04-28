@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>CalmPath · Parent Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -442,6 +443,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   </div>
   <div class="topbar-right">
     <button class="tb-btn danger" onclick="clearSession()">🗑 Clear Session</button>
+    <button class="tb-btn" style="background:var(--lav);color:var(--lav-deep)" onclick="auth.signOut()">🚪 Logout</button>
     <div class="badge-conn off" id="conn-badge"><div class="conn-dot"></div><span id="conn-lbl">Waiting for student…</span></div>
   </div>
 </nav>
@@ -731,8 +733,19 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 'use strict';
 
 /* ================================================================
-   STATE — zero hardcoded data, all from localStorage
+   SUPABASE INIT
 ================================================================ */
+const SUPABASE_URL = "https://xqqcafiukbmqlzcdujku.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxcWNhZml1a2JtcWx6Y2R1amt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMDI3MDAsImV4cCI6MjA5Mjc3ODcwMH0.htU2YQzYWpUF8BLcDLsraldNiidozdvnaC0bp9nPpKE";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const auth = {
+  signOut: async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
+  }
+};
+
 const S = {
   tasks:[]   , breaks:[]  , emoHistory:[],
   pieChart:null, online:false,
@@ -746,7 +759,39 @@ const PIE_COLORS = {
   frustrated:'#e8835a', sad:'#c9bdf5', surprised:'#fde68a'
 };
 
-document.addEventListener('DOMContentLoaded', () => { initPieChart(); startBridge(); });
+document.addEventListener('DOMContentLoaded', async () => {
+  // Check session (Manual Auth)
+  const user = JSON.parse(localStorage.getItem('calmpath_user') || 'null');
+  if (!user || user.role.toLowerCase() !== 'parent') {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  S.parentProfile = user;
+
+  // Fetch linked children via backend (bypasses RLS)
+  try {
+    const res = await fetch(`http://localhost:5000/children/${user.id}`);
+    if (res.ok) {
+      const children = await res.json();
+      if (children && children.length > 0) {
+        S.activeChildId = children[0].id;
+        S.activeChildName = children[0].name;
+        document.getElementById('sname').textContent = S.activeChildName;
+        setChk('chk-student', true, `Linked to ${S.activeChildName} ✓`);
+      } else {
+        console.warn("No children linked to this parent profile.");
+      }
+    } else {
+      console.warn("Failed to fetch children from backend.");
+    }
+  } catch (err) {
+    console.warn("Error fetching children:", err.message);
+  }
+
+  initPieChart(); 
+  startBridge(); 
+});
 
 /* ================================================================
    TAB NAVIGATION
@@ -798,12 +843,34 @@ function sync() {
     const samples = JSON.parse(localStorage.getItem('nic_emotion_samples') ||'null');
     const frame   =             localStorage.getItem('nic_cam_frame');
 
-    const wasOnline = S.online; S.online = !!live;
+    // ── Sync with Supabase via Backend ──
+    const targetChildId = S.activeChildId || (live ? live.studentId : null);
+    if (targetChildId) {
+      fetch(`http://localhost:5000/get_latest_session/${targetChildId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            // Update UI with Supabase data if live data is missing or older
+            if (!live || new Date(data.created_at) > new Date(live.lastUpdated)) {
+               updateLiveUI({
+                 focusState: data.is_active ? 'focusing' : 'idle',
+                 currentEmotion: 'neutral', // backend doesn't store last emotion yet
+                 elapsedSeconds: data.focus_duration,
+                 breakCount: data.break_count
+               });
+               document.getElementById('s-focus').textContent = fmtDur(data.focus_duration);
+               document.getElementById('s-breaks').textContent = data.break_count;
+            }
+          }
+        }).catch(err => console.warn('Supabase fetch failed:', err.message));
+    }
+
+    const wasOnline = S.online; S.online = !!(live || S.activeChildId);
     const badge=document.getElementById('conn-badge'), lbl=document.getElementById('conn-lbl');
     if (S.online) {
-      badge.className='badge-conn live'; lbl.textContent='Student Online';
-      if (!wasOnline) toast('👋 Student session started');
-      setChk('chk-student', true, 'Connected ✓');
+      badge.className='badge-conn live'; lbl.textContent=live ? 'Student Online' : 'Child Monitoring Active';
+      if (!wasOnline && live) toast('👋 Student session started');
+      if (S.activeChildId) setChk('chk-student', true, `Linked to ${S.activeChildName} ✓`);
     } else {
       badge.className='badge-conn off'; lbl.textContent='Waiting for student…';
     }

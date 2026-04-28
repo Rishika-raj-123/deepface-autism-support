@@ -26,6 +26,8 @@ SECRET_KEY=calmpath-dev-secret-change-in-prod
 DEEPFACE_MODEL=VGG-Face
 DEEPFACE_DETECTOR=opencv
 FRUSTRATION_THRESHOLD=0.72
+SUPABASE_URL=your-project-url.supabase.co
+SUPABASE_KEY=your-anon-key
 "@
 $content | Out-File -FilePath .env -Encoding utf8
 

@@ -42,8 +42,14 @@ def _ensure_model() -> None:
         t0 = time.time()
 
         # Lazy import — avoids 3-4s import time on every restart
-        from deepface import DeepFace as _df
-        _deepface = _df
+        try:
+            from deepface import DeepFace as _df
+            _deepface = _df
+            # Warm-up: analyse a black 48×48 frame
+            # ...
+        except ImportError:
+            logger.warning("DeepFace not found. Running in mock mode.")
+            _deepface = None
 
         # Warm-up: analyse a black 48×48 frame so the model weights are
         # loaded into GPU/CPU memory before the first real request arrives.
@@ -84,6 +90,14 @@ def analyse_frame(frame_data: str) -> dict:
     _ensure_model()
 
     t0 = time.time()
+    if _deepface is None:
+        return {
+            "dominant": "neutral",
+            "confidence": 0.95,
+            "emotions": {"neutral": 95, "happy": 2, "sad": 1, "frustrated": 1, "surprised": 1},
+            "isAway": False,
+            "mock": True
+        }
     try:
         with _lock:
             results = _deepface.analyze(

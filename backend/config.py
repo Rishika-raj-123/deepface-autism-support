@@ -53,6 +53,12 @@ DEEPFACE_ENFORCE = os.getenv("DEEPFACE_ENFORCE", "false").lower() == "true"
 FIREBASE_CRED_PATH = os.getenv("FIREBASE_CRED_PATH", "firebase-adminsdk.json")
 FIREBASE_ENABLED   = os.getenv("FIREBASE_ENABLED", "false").lower() == "true"
 
+# ── Supabase ───────────────────────────────────────────
+_proj_id = os.getenv("SUPABASE_PROJECT_ID")
+SUPABASE_URL = f"https://{_proj_id}.supabase.co" if _proj_id else None
+SUPABASE_KEY = os.getenv("SUPABASE_ANON_KEY")
+
+
 # ── Emotion Mapping ────────────────────────────────────
 
 # Convert DeepFace 7 emotions → 5 app-safe emotions

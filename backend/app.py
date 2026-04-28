@@ -16,12 +16,14 @@ First-time setup:
 """
 import logging
 import threading
+import os
 from flask import Flask, jsonify
 from flask_cors import CORS
 
 import config
 from routes.emotion import emotion_bp
 from routes.chat import chat_bp
+from routes.sync import sync_bp
 
 # ── Logging ────────────────────────────────────────────
 logging.basicConfig(
@@ -37,14 +39,24 @@ def create_app() -> Flask:
     app.config["SECRET_KEY"] = config.SECRET_KEY
     app.config["JSON_SORT_KEYS"] = False
 
-    # Allow requests from the frontend (file://, localhost, etc.)
+    # Allow requests from the frontend
     CORS(app, origins=config.CORS_ORIGINS, supports_credentials=True)
+    from flask import send_from_directory
+    frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend'))
+
+    @app.route("/")
+    def index():
+        return send_from_directory(frontend_dir, 'login.html')
+
+    @app.route("/<path:filename>")
+    def serve_frontend(filename):
+        return send_from_directory(frontend_dir, filename)
 
     # ── Register blueprints ───────────────────────────
     app.register_blueprint(emotion_bp)
     app.register_blueprint(chat_bp)
+    app.register_blueprint(sync_bp)
 
-    # ── Health probe ──────────────────────────────────
     @app.route("/health", methods=["GET"])
     def health():
         from services.emotion_service import is_model_ready, get_model_name
